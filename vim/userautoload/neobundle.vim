@@ -39,6 +39,7 @@ NeoBundle 'hail2u/vim-css3-syntax'
 " StatusLine
 NeoBundle 'itchyny/lightline.vim'
 
+NeoBundle 'rking/ag.vim'
 NeoBundle 'tpope/vim-fugitive'
 
 NeoBundle 'tpope/vim-surround'
@@ -56,6 +57,10 @@ NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : {
   \ 'insert' : 1,
   \ 'filetypes': 'ruby',
   \ }}
+
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'skwp/vim-rspec'
+
 
 call neobundle#end()
 filetype plugin indent on

@@ -1,8 +1,6 @@
 
 set backspace=indent,eol,start
 
-inoremap <C-j> <ESC>
-
 if has('persistent_undo')
   set undodir=~/.vim/undo/
   set undofile
@@ -34,11 +32,4 @@ set nowrap
 
 set tabstop=4 shiftwidth=4
 set cindent
-
-nnoremap <silent> <F10> mpgg"*yG`p:delmarks p<CR>
-
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-
 
