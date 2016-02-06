@@ -48,6 +48,8 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'Townk/vim-autoclose'
 NeoBundle 'vim-scripts/ruby-matchit'
+NeoBundle 'vim-scripts/AnsiEsc.vim'
+NeoBundle 'isRuslan/vim-es6'
 
 NeoBundle 'scrooloose/syntastic'
 
