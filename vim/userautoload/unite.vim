@@ -13,12 +13,44 @@ nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> [unite]m :<C-u>Unite file_mru<CR>
 nnoremap <silent> [unite]c :<C-u>Unite bookmark<CR>
 nnoremap <silent> [unite]a :<C-u>UniteBookmarkAdd<CR>
+nnoremap <silent> [unite]g :<C-u>Unite -silent menu:git<CR>
 
-autocmd FileType unite call s:unite_my_settings()
+augroup UniteCommand
+    autocmd!
+    autocmd FileType unite call <SID>unite_my_settings()
+augroup END
 
 function! s:unite_my_settings()
     nmap <buffer> <ESC> <Plug>(unite_exit)
     imap <buffer> <C-w> <Plug>(unite_insert_leave)
+    for source in unite#get_current_unite().sources
+        let source_name = substitute(source.name, '[-/]', '_', 'g')
+        if !empty(source_name) && has_key(s:unite_hooks, source_name)
+            call s:unite_hooks[source_name]()
+        endif
+    endfor
+endfunction
+
+let s:unite_hooks = {}
+
+function! s:unite_hooks.giti_status()
+	nnoremap <silent><buffer><expr>gM unite#do_action('ammend')
+	nnoremap <silent><buffer><expr>gm unite#do_action('commit')
+	nnoremap <silent><buffer><expr>ga unite#do_action('stage')
+	nnoremap <silent><buffer><expr>gc unite#do_action('checkout')
+	nnoremap <silent><buffer><expr>gd unite#do_action('diff')
+	nnoremap <silent><buffer><expr>gu unite#do_action('unstage')
+endfunction
+
+function! s:unite_hooks.giti_branch()
+  nnoremap <silent><buffer><expr>d unite#do_action('delete')
+  nnoremap <silent><buffer><expr>D unite#do_action('delete_force')
+  nnoremap <silent><buffer><expr>rd unite#do_action('delete_remote')
+  nnoremap <silent><buffer><expr>rD unite#do_action('delete_remote_force')
+endfunction
+
+function! s:unite_hooks.giti_branch_all() "{{{
+  call self.giti_branch()
 endfunction
 
 if !exists('gUunite_source_menu_menus')
@@ -59,7 +91,6 @@ let g:unite_source_menu_menus.git.command_candidates = [
     \['▷ git cd           (Fugitive)',
         \'Gcd'],
     \]
-nnoremap <silent>[menu]g :Unite -silent -start-insert menu:git<CR>
 
 
 if executable('ag')

@@ -19,6 +19,8 @@ NeoBundle 'Shougo/vimproc.vim', {
 " Filter
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
+NeoBundle 'Shougo/neomru.vim'
+NeoBundle 'kmnk/vim-unite-giti'
 
 " AutoComplete
 NeoBundle 'Shougo/neocomplete'
