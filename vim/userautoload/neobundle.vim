@@ -21,6 +21,9 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'kmnk/vim-unite-giti'
+NeoBundle 'basyura/unite-rails'
+NeoBundle 'tsukkee/unite-tag'
+NeoBundle 'Shougo/neoinclude.vim'
 
 " AutoComplete
 NeoBundle 'Shougo/neocomplete'
@@ -43,6 +46,7 @@ NeoBundle 'itchyny/lightline.vim'
 
 NeoBundle 'rking/ag.vim'
 NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'rhysd/committia.vim'
 
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-endwise'
@@ -50,6 +54,7 @@ NeoBundle 'Townk/vim-autoclose'
 NeoBundle 'vim-scripts/ruby-matchit'
 NeoBundle 'vim-scripts/AnsiEsc.vim'
 NeoBundle 'isRuslan/vim-es6'
+NeoBundle 'slim-template/vim-slim'
 
 NeoBundle 'scrooloose/syntastic'
 

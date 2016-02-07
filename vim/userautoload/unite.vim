@@ -6,7 +6,8 @@ let g:unite_enable_start_insert = 1
 let g:unite_source_file_mru_limit = 50
 let g:unite_source_file_mru_filename_format = ''
 
-nnoremap [unite]u  :<C-u>Unite -no-split<Space>
+nnoremap [unite]u  :<C-u>Unite<Space>
+nnoremap <silent> [unite]s :<C-u>Unite source<CR>
 nnoremap <silent> [unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 nnoremap <silent> [unite]b :<C-u>Unite buffer
 nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
@@ -22,7 +23,7 @@ augroup END
 
 function! s:unite_my_settings()
     nmap <buffer> <ESC> <Plug>(unite_exit)
-    imap <buffer> <C-w> <Plug>(unite_insert_leave)
+    imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
     for source in unite#get_current_unite().sources
         let source_name = substitute(source.name, '[-/]', '_', 'g')
         if !empty(source_name) && has_key(s:unite_hooks, source_name)
