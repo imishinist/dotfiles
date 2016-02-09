@@ -15,6 +15,7 @@ nnoremap <silent> [unite]m :<C-u>Unite file_mru<CR>
 nnoremap <silent> [unite]c :<C-u>Unite bookmark<CR>
 nnoremap <silent> [unite]a :<C-u>UniteBookmarkAdd<CR>
 nnoremap <silent> [unite]g :<C-u>Unite -silent menu:git<CR>
+nnoremap <silent> [unite]q :<C-u>Unite -no-quit -direction=botright quickfix<CR>
 
 augroup UniteCommand
     autocmd!
@@ -72,7 +73,7 @@ let g:unite_source_menu_menus.git.command_candidates = [
     \['▷ git commit       (Fugitive)                                ⌘ ,gc',
         \'Gcommit'],
     \['▷ git log          (Fugitive)                                ⌘ ,gl',
-        \'exe "silent Glog | Unite quickfix"'],
+        \'exe "silent Glog | Unite -no-quit -direction=botright quickfix"'],
     \['▷ git blame        (Fugitive)                                ⌘ ,gb',
         \'Gblame'],
     \['▷ git stage        (Fugitive)                                ⌘ ,gw',
