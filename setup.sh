@@ -1,12 +1,13 @@
 #!/bin/bash
 
+source util.sh
+
 for f in .??*;
 do
     [[ "$f" == ".git" ]] && continue
     [[ "$f" == ".DS_Store" ]] && continue
     if [[ ! -e ~/$f ]]; then
-        ln -s $(cd $(dirname $0) && pwd)/$f ~/
-        echo ln -s $(cd $(dirname $0) && pwd)/$f ~/
+        invoke 'ln -s $(cd $(dirname $0) && pwd)/$f ~/'
     fi
 done
 
