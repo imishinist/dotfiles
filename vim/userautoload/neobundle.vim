@@ -24,6 +24,7 @@ NeoBundle 'kmnk/vim-unite-giti'
 NeoBundle 'basyura/unite-rails'
 NeoBundle 'tsukkee/unite-tag'
 NeoBundle 'osyo-manga/unite-quickfix'
+NeoBundle 'Shougo/unite-outline'
 NeoBundle 'Shougo/neoinclude.vim'
 
 " AutoComplete
