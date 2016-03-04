@@ -2,6 +2,9 @@
 set backspace=indent,eol,start
 
 if has('persistent_undo')
+  if !isdirectory("~/.vim/undo")
+    call system("mkdir -p ~/.vim/undo")
+  endif
   set undodir=~/.vim/undo/
   set undofile
 endif
