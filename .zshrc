@@ -18,6 +18,7 @@ export MANPAGER="col -b -x|vim -R -c 'set ft=man nolist nomod noma' -"
 
 alias vi='vim'
 alias -g C=' | pbcopy'
+bindkey -e
 
 if [ -d ${HOME}/.rbenv ] ; then
     PATH=${HOME}/.rbenv/bin:${PATH}
