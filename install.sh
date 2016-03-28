@@ -1,5 +1,12 @@
 #!/bin/bash
 
+function install_brew() {
+    if [ type brew >/dev/null 2>&1 -a $(uname) =~ "Darwin" ]; then
+        ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+        brew tap Homebrew/bundle
+    fi
+}
+
 function install_prezto() {
     if [ ! -d "${ZDOTDIR:-$HOME}/.zprezto" ]; then
         git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
@@ -20,6 +27,7 @@ function install_rbenv() {
     fi
 }
 
+install_brew
 install_prezto
 install_neobundle
 install_rbenv
