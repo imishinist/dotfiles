@@ -5,7 +5,7 @@ if !isdirectory("~/.vim/")
   call system("mkdir -p ~/.vim/")
 endif
 
-if isdirectory("~/.vim/userautoload")
+if !isdirectory("~/.vim/userautoload")
   call system("mkdir -p ~/.vim/userautoload")
 endif
 
