@@ -9,7 +9,7 @@ let g:unite_source_file_mru_filename_format = ''
 nnoremap [unite]u  :<C-u>Unite<Space>
 nnoremap <silent> [unite]s :<C-u>Unite source<CR>
 nnoremap <silent> [unite]f :<C-u>UniteWithBufferDir -buffer-name=files file file/new<CR>
-nnoremap <silent> [unite]b :<C-u>Unite buffer
+nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
 nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> [unite]m :<C-u>Unite file_mru<CR>
 nnoremap <silent> [unite]c :<C-u>Unite bookmark<CR>
