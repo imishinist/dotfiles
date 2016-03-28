@@ -17,6 +17,16 @@ nnoremap <silent> [unite]a :<C-u>UniteBookmarkAdd<CR>
 nnoremap <silent> [unite]g :<C-u>Unite -silent menu:git<CR>
 nnoremap <silent> [unite]q :<C-u>Unite -no-quit -direction=botright quickfix<CR>
 
+autocmd BufEnter *
+\   if empty(&buftype)
+\|      nnoremap <buffer> <C-]> :<C-u>UniteWithCursorWord -immediately tag<CR>
+\|  endif
+
+autocmd BufEnter *
+\   if empty(&buftype)
+\|      nnoremap <buffer> <C-t> :<C-u>Unite jump<CR>
+\|  endif
+
 augroup UniteCommand
     autocmd!
     autocmd FileType unite call <SID>unite_my_settings()
