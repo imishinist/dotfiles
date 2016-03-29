@@ -1,9 +1,11 @@
 #!/bin/bash
 
 function install_brew() {
-    if [ type brew >/dev/null 2>&1 -a $(uname) =~ "Darwin" ]; then
-        ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
-        brew tap Homebrew/bundle
+    if [[ $(uname) =~ "Darwin" ]]; then
+        if ! type brew > /dev/null 2>&1; then
+            ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+            brew tap Homebrew/bundle
+        fi
     fi
 }
 
