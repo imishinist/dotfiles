@@ -11,7 +11,7 @@ if !exists('g:neocomplete#force_omni_input_patterns')
 endif
 let g:neocomplete#force_omni_input_patterns.ruby = '[^.*\t]\.\w*\|\h\w*::'
 
-let g:neocomplete#sources#rsense#home_directory = '/usr/local/bin/rsense'
+"let g:neocomplete#sources#rsense#home_directory = '/usr/local/bin/rsense'
 
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" . neocomplete#close_popup() : "<TAB>"
 

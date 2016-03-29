@@ -64,10 +64,10 @@ NeoBundle 'thinca/vim-quickrun'
 
 NeoBundleLazy 'Blackrush/vim-gocode', {"autoload": {"filetypes": ['go']}}
 
-NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : {
-  \ 'insert' : 1,
-  \ 'filetypes': 'ruby',
-  \ }}
+"NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : {
+"  \ 'insert' : 1,
+"  \ 'filetypes': 'ruby',
+"  \ }}
 
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'skwp/vim-rspec'
