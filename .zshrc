@@ -32,3 +32,6 @@ if [ -e "${NVM_HOME}" ]; then
     nvm use stable
     NODE_PATH=${HOME}/.nvm/current/lib/node_modules
 fi
+
+# added by travis gem
+[ -f /Users/taisuke/.travis/travis.sh ] && source /Users/taisuke/.travis/travis.sh
