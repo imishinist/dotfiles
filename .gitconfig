@@ -1,0 +1,16 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+	name = Taisuke Miyazaki
+	email = imishinist@gmail.com
+[core]
+	editor = vim -c \"set fenc=utf-8\"
+[alias]
+	st = status
+	co = checkout
+[pager]
+	log = diff-highlight | less
+	show = diff-highlight | less
+	diff = diff-highlight | less
+[diff]
+	compactionHeuristic = true

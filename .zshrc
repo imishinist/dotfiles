@@ -32,3 +32,5 @@ if [ -e "${NVM_HOME}" ]; then
     nvm use stable
     NODE_PATH=${HOME}/.nvm/current/lib/node_modules
 fi
+
+export PATH=$PATH:/usr/local/share/git-core/contrib/diff-highlight
