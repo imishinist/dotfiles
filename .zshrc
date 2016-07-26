@@ -34,3 +34,5 @@ if [ -e "${NVM_HOME}" ]; then
 fi
 
 export PATH=$PATH:/usr/local/share/git-core/contrib/diff-highlight
+# added by travis gem
+[ -f /Users/taisuke/.travis/travis.sh ] && source /Users/taisuke/.travis/travis.sh
