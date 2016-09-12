@@ -12,11 +12,13 @@ fi
 
 # Customize to your needs...
 
+export GOPATH=$HOME/.golang
+export GOROOT=$(go env GOROOT)
 export PATH="/usr/local/bin:/usr/local/sbin:$HOME/.rbenv/bin:$PATH:$GOPATH/bin"
-export EDITOR='vim'
+export EDITOR='nvim'
 export MANPAGER="col -b -x|vim -R -c 'set ft=man nolist nomod noma' -"
 
-alias vi='vim'
+alias vi='nvim'
 alias -g C=' | pbcopy'
 bindkey -e
 
