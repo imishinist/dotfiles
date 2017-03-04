@@ -1,0 +1,62 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'neomake/neomake'
+hook_add = '''
+let g:neomake_error_sign = {'text': '>>', 'texthl': 'Error'}
+let g:neomake_warning_sign = {'text': '>>',  'texthl': 'Todo'}
+let g:neomake_go_errcheck_maker = {
+    \ 'append_file': 0,
+    \ 'errorformat': '%f:%l:%c: %m, %f:%l:%c: %#%m',
+    \ }
+let g:neomake_go_enabled_makers = ['golint', 'govet', 'errcheck']
+let g:neomake_cpp_enabled_makers = ['clang']
+let g:neomake_cpp_clang_args = ["-std=c++14"]
+autocmd! BufWritePost * Neomake
+'''
+
+
+[[plugins]]
+repo = 'Shougo/vimproc.vim'
+build = 'make'
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+
+[[plugins]]
+repo = 'arakashic/nvim-colors-solarized'
+
+[[plugins]]
+repo = 'tomasr/molokai'
+
+[[plugins]]
+repo = 'w0ng/vim-hybrid'
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+
+[[plugins]] 
+repo = 'osyo-manga/vim-precious'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'tpope/vim-endwise'
+
+[[plugins]]
+repo = 'majutsushi/tagbar'
+
+[[plugins]]
+repo = 'rhysd/accelerated-jk'
+hook_add = '''
+nmap j <Plug>(accelerated_jk_gj_position)
+nmap k <Plug>(accelerated_jk_gk_position)
+'''
+
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+
+[[plugins]]
+repo = 'vim-scripts/AnsiEsc.vim'

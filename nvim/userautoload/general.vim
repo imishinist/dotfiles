@@ -5,6 +5,8 @@ set shiftwidth=4
 set tabstop=4
 set softtabstop=4
 set cindent
+set smartindent
+set expandtab
 
 set clipboard+=unnamedplus
 
@@ -17,7 +19,8 @@ augroup END
 
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set background=dark
-colorscheme solarized
+" colorscheme solarized
+colorscheme hybrid
 
 if has('persistent_undo')
   let &undodir = expand('~/.cache/nvim/undo')
@@ -26,3 +29,6 @@ if has('persistent_undo')
   endif
   set undofile
 endif
+
+autocmd BufRead,BufNewFile *.go set nocindent
+autocmd QuickFixCmdPost *grep* cwindow

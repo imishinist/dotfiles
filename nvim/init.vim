@@ -14,8 +14,8 @@ if dein#load_state(s:dein_dir)
   call dein#begin(s:dein_dir)
 
   " 管理するプラグインを記述したファイル
-  let s:toml = s:nvim_path . '/.dein.toml'
-  let s:lazy_toml = s:nvim_path . '/.dein_lazy.toml'
+  let s:toml = s:nvim_path . '/dein.toml'
+  let s:lazy_toml = s:nvim_path . '/dein_lazy.toml'
   call dein#load_toml(s:toml, {'lazy': 0})
   call dein#load_toml(s:lazy_toml, {'lazy': 1})
 
@@ -46,3 +46,11 @@ if !isdirectory(expand(s:autoload_path))
 endif
 runtime! userautoload/*.vim
 
+hi CursorLine guifg=#E19972
+
+set tags+=.git/tags;
+set tags+=.tags;
+
+autocmd BufRead,BufNewFile *.slim setfiletype slim
+
+filetype plugin indent on
