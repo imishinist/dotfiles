@@ -1,11 +1,17 @@
+if &compatible
+    set nocompatible
+endif
 
 let s:dein_dir = expand('~/.cache/dein')
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
-if !isdirectory(s:dein_repo_dir)
-  execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+
+if &runtimepath !~ '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath+=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
-execute 'set runtimepath^=' . s:dein_repo_dir
 
 let s:config_path = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config') : $XDG_CONFIG_HOME
 let s:nvim_path = s:config_path . '/nvim'
