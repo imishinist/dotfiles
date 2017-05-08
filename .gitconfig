@@ -5,12 +5,20 @@
 	email = imishinist@gmail.com
 [core]
 	editor = vim -c \"set fenc=utf-8\"
+	excludesfile = ~/.gitignore_global
 [alias]
-	st = status
+	st = status -sb
+	s = status
 	co = checkout
+	lg = log --graph --pretty=oneline --decorate --date=short --abbrev-commit --branches
+	lp = log -p
+	ls = log --stat
 [pager]
 	log = diff-highlight | less
 	show = diff-highlight | less
 	diff = diff-highlight | less
 [diff]
 	compactionHeuristic = true
+[color]
+	diff = auto
+	ui = auto
