@@ -1,6 +1,8 @@
+# プラグイン管理
 [[plugins]]
 repo = 'Shougo/dein.vim'
 
+# 非同期でlint実行
 [[plugins]]
 repo = 'neomake/neomake'
 hook_add = '''
@@ -16,43 +18,62 @@ let g:neomake_cpp_clang_args = ["-std=c++14"]
 autocmd! BufWritePost * Neomake
 '''
 
-
+# コマンドを非同期で実行
 [[plugins]]
 repo = 'Shougo/vimproc.vim'
 build = 'make'
 
+# status line
 [[plugins]]
 repo = 'itchyny/lightline.vim'
 
-[[plugins]]
-repo = 'arakashic/nvim-colors-solarized'
-
-[[plugins]]
-repo = 'tomasr/molokai'
-
-[[plugins]]
-repo = 'w0ng/vim-hybrid'
-
+# コンテキストによってfiletypeを決定する
 [[plugins]]
 repo = 'Shougo/context_filetype.vim'
 
+# カーソル位置のコンテキストによってfiletypeを切り替える
 [[plugins]] 
 repo = 'osyo-manga/vim-precious'
 
+# colorscheme 関連{{{
+# solarized
+[[plugins]]
+repo = 'arakashic/nvim-colors-solarized'
+
+# molokai
+[[plugins]]
+repo = 'tomasr/molokai'
+
+# hybrid
+[[plugins]]
+repo = 'w0ng/vim-hybrid'
+# }}}
+
+# git関連{{{
+# gitを使う
 [[plugins]]
 repo = 'tpope/vim-fugitive'
 
+# gitの差分をgutterに表示
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+# }}}
+
+# do endなどの中括弧{}以外で対応するものを自動入力
 [[plugins]]
 repo = 'tpope/vim-endwise'
 
+# ctagsを使って現在の関数の位置を表示
 [[plugins]]
 repo = 'majutsushi/tagbar'
 
-[[plugins]]
-repo = 'airblade/vim-gitgutter'
 
+# ANSI colorを適用
 [[plugins]]
 repo = 'vim-scripts/AnsiEsc.vim'
 
+# undo treeを表示
 [[plugins]]
 repo = 'mbbill/undotree'
+
+# vim:set foldmethod=marker:
