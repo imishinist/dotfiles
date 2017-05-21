@@ -49,18 +49,10 @@ repo = 'tpope/vim-endwise'
 repo = 'majutsushi/tagbar'
 
 [[plugins]]
-repo = 'rhysd/accelerated-jk'
-hook_add = '''
-nmap j <Plug>(accelerated_jk_gj_position)
-nmap k <Plug>(accelerated_jk_gk_position)
-'''
-
-[[plugins]]
 repo = 'airblade/vim-gitgutter'
 
 [[plugins]]
 repo = 'vim-scripts/AnsiEsc.vim'
-
 
 [[plugins]]
 repo = 'mbbill/undotree'
