@@ -21,9 +21,7 @@ if dein#load_state(s:dein_dir)
 
   " 管理するプラグインを記述したファイル
   let s:toml = s:nvim_path . '/dein.toml'
-  let s:lazy_toml = s:nvim_path . '/dein_lazy.toml'
-  call dein#load_toml(s:toml, {'lazy': 0})
-  call dein#load_toml(s:lazy_toml, {'lazy': 1})
+  call dein#load_toml(s:toml, {'lazy': 1})
 
   call dein#end()
   call dein#save_state()
