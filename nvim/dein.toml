@@ -59,10 +59,6 @@ repo = 'tpope/vim-fugitive'
 repo = 'airblade/vim-gitgutter'
 # }}}
 
-# do endなどの中括弧{}以外で対応するものを自動入力
-[[plugins]]
-repo = 'tpope/vim-endwise'
-
 # ctagsを使って現在の関数の位置を表示
 [[plugins]]
 repo = 'majutsushi/tagbar'
@@ -141,6 +137,9 @@ hook_add = '''
 let g:deoplete#sources#omni#input_patterns = {
     \   "ruby" : '[^. *\t]\.\w*\|\h\w*::',
     \ }
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_smart_case = 1
+
 '''
 
 [[plugins]]
@@ -249,6 +248,7 @@ repo = 'tpope/vim-bundler.git'
 on_ft = 'ruby'
 # }}}
 
+# 括弧関連{{{
 # 括弧を自動で閉じて、改行時にインデント
 [[plugins]]
 repo = 'cohama/lexima.vim'
@@ -256,6 +256,11 @@ on_i = 1
 hook_post_source = '''
 call lexima#add_rule({'at': '\%#.*[-0-9a-zA-Z_,:]', 'char': '{', 'input': '{'})'
 '''
+
+# do endなどの中括弧{}以外で対応するものを自動入力
+[[plugins]]
+repo = 'tpope/vim-endwise'
+# }}}
 
 # テキストを囲うものを編集
 [[plugins]]

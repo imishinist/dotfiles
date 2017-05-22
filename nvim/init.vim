@@ -41,9 +41,7 @@ let g:python2_host_prog  = '/usr/local/bin/python2.7'
 let g:python3_host_prog  = '/usr/local/bin/python3'
 "}}}
 
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_smart_case = 1
-
+" 標準の設定{{{
 set termguicolors
 
 set shiftwidth=4
@@ -56,17 +54,23 @@ set expandtab
 set clipboard+=unnamedplus
 
 set number
+"}}}
 
+" vimrc Ex 最終変更行に移動{{{
 augroup vimrcEx
   au BufRead * if line("'\"") > 0 && line("'\"") <= line("$") |
   \ exe "normal g`\"" | endif
 augroup END
+"}}}
 
+" colorscheme{{{
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set background=dark
 " colorscheme solarized
 colorscheme hybrid
+"}}}
 
+" undo{{{
 if has('persistent_undo')
   let &undodir = expand('~/.cache/nvim/undo')
   if !isdirectory(&undodir)
@@ -74,9 +78,7 @@ if has('persistent_undo')
   endif
   set undofile
 endif
-
-autocmd BufRead,BufNewFile *.go set nocindent
-autocmd QuickFixCmdPost *grep* cwindow
+"}}}
 
 " lightline{{{
 let g:lightline = {
@@ -211,7 +213,12 @@ hi CursorLine guifg=#E19972
 set tags+=.git/tags;
 set tags+=.tags;
 
+" autocmd関連{{{
+autocmd BufRead,BufNewFile *.go set nocindent
+autocmd QuickFixCmdPost *grep* cwindow
+
 autocmd BufRead,BufNewFile *.slim setfiletype slim
+"}}}
 
 filetype plugin indent on
 
