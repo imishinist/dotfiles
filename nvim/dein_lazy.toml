@@ -1,0 +1,197 @@
+# syntax 関連{{{
+[[plugins]]
+repo = 'cespare/vim-toml'
+on_ft = 'toml'
+
+[[plugins]]
+repo = 'slim-template/vim-slim'
+on_ft = 'slim'
+# }}}
+
+# denite 関連{{{
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+hook_add = '''
+nnoremap [denite] <Nop>
+nmap <Space>u [denite]
+
+nnoremap <silent> [denite]b :<C-u>Denite buffer<CR>
+nnoremap <silent> [denite]f :<C-u>DeniteBufferDir file_rec<CR>
+nnoremap <silent> [denite]m :<C-u>Denite file_mru<CR>
+nnoremap <silent> [denite]l :<C-u>Denite line<CR>
+nnoremap <silent> [denite]s :<C-u>Denite unite:source<CR>
+nnoremap <silent> [denite]c :<C-u>Denite unite:bookmark<CR>
+
+nnoremap <silent> [denite]g :<C-u>DeniteBufferDir grep -buffer-name=search-buffer<CR>
+nnoremap <silent> [denite]r :<C-u>Denite -resume -buffer-name=search-buffer<CR>
+nnoremap <silent> [denite]n :<C-u>Denite -resume -buffer-name=search-buffer -select=+1 -immediately<CR>
+nnoremap <silent> [denite]p :<C-u>Denite -resume -buffer-name=search-buffer -select=-1 -immediately<CR>
+'''
+hook_post_source = '''
+call denite#custom#var('file_rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+
+call denite#custom#alias('source', 'file_rec/git', 'file_rec')
+call denite#custom#var('file_rec/git', 'command', ['git', 'ls-files', '-co', '--exclude-standard'])
+
+call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>')
+call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>')
+'''
+
+[[plugins]]
+repo = 'Shougo/unite.vim'
+on_source = ['denite.nvim']
+
+[[plugins]]
+repo = 'cocopon/vaffle.vim'
+on_source = ['denite.nvim']
+
+[[plugins]]
+repo      = 'Shougo/neomru.vim'
+on_source = ['unite.vim', 'denite.nvim']
+
+[[plugins]]
+repo = 'osyo-manga/unite-quickfix'
+on_source = ['unite.vim']
+# }}}
+
+# deoplete 関連{{{
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+if = 'has("nvim")'
+on_i = 1
+hook_add = '''
+let g:deoplete#sources#omni#input_patterns = {
+    \   "ruby" : '[^. *\t]\.\w*\|\h\w*::',
+    \ }
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_smart_case = 1
+
+'''
+
+[[plugins]]
+repo = 'zchee/deoplete-clang'
+on_ft = ['c', 'cpp', 'cmake']
+hook_add = '''
+let g:deoplete#sources#clang#libclang_path = '/usr/local/Cellar/llvm/4.0.0/lib/libclang.dylib'
+let g:deoplete#sources#clang#clang_header = '/usr/local/Cellar/llvm/4.0.0/lib/clang'
+'''
+
+[[plugins]]
+repo = 'zchee/deoplete-go'
+build = 'make'
+on_ft = 'go'
+hook_add = '''
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+let g:deoplete#sources#go#package_dot = 1
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+let g:deoplete#sources#go#use_cache = 1
+let g:deoplete#sources#go#json_directory = expand('~/.cache/deoplete/go')
+'''
+
+[[plugins]]
+repo = 'Shougo/neco-vim'
+on_ft = 'vim'
+on_source = ['deoplete']
+# }}}
+
+# format 関連
+[[plugins]]
+repo = 'rhysd/vim-clang-format'
+on_ft = ['c', 'cpp']
+
+
+[[plugins]]
+repo = 'fatih/vim-go'
+on_ft = 'go'
+hook_add = '''
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
+let g:go_highlight_operators = 1
+
+let g:go_fmt_command = "goimports"
+let g:go_bin_path = expand($GOPATH."/bin")
+let g:go_list_type = "quickfix"
+
+let g:go_term_mode = "split"
+let g:go_term_enabled = 1
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+		\ }
+'''
+hook_post_source = '''
+let s:goargs = go#package#ImportPath(expand('%:p:h'))
+'''
+
+# テキストを囲うものを編集
+[[plugins]]
+repo = 'tpope/vim-surround'
+on_i = 1
+
+# ruby 関連{{{
+[[plugins]]
+repo = 'osyo-manga/vim-monster'
+on_ft = 'ruby'
+hook_add = '''
+let g:monster#completion#rcodetools#backend = "async_rct_complete"
+'''
+
+[[plugins]]
+repo = 'vim-ruby/vim-ruby'
+on_ft = 'ruby'
+
+[[plugins]]
+repo = 'vim-scripts/ruby-matchit'
+on_ft = 'ruby'
+
+[[plugins]]
+repo = 'tpope/vim-rails.git'
+on_ft = 'ruby'
+
+[[plugins]]
+repo = 'tpope/vim-bundler.git'
+on_ft = 'ruby'
+# }}}
+
+# 括弧関連{{{
+# 括弧を自動で閉じて、改行時にインデント
+[[plugins]]
+repo = 'cohama/lexima.vim'
+on_i = 1
+hook_post_source = '''
+call lexima#add_rule({'at': '\%#.*[-0-9a-zA-Z_,:]', 'char': '{', 'input': '{'})'
+'''
+
+# do endなどの中括弧{}以外で対応するものを自動入力
+[[plugins]]
+repo = 'tpope/vim-endwise'
+on_i = 1
+# }}}
+
+# vim:set foldmethod=marker:
