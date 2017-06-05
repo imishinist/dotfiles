@@ -65,7 +65,6 @@ set nohlsearch
 set title
 set ruler
 set number
-set list
 set showcmd
 set laststatus=2
 set showmatch
@@ -194,21 +193,28 @@ NeoBundleLazy 'Shougo/vimfiler', {
             \ }
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'kmnk/vim-unite-giti'
-NeoBundle 'basyura/unite-rails'
 NeoBundle 'tsukkee/unite-tag'
-NeoBundle 'osyo-manga/unite-quickfix'
 NeoBundle 'Shougo/unite-outline'
-NeoBundle 'Shougo/neoinclude.vim'
 
-" AutoComplete
-NeoBundle 'Shougo/neocomplete'
+if has('lua') && (v:version > 703 || (v:version == 703 && has('patch885')))
+    " AutoComplete
+    NeoBundle 'Shougo/neocomplete', {
+                \ "autoload" : { "insert" : 1 }
+                \ }
 
-" Snippet
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
+    " Snippet
+    NeoBundle 'Shougo/neosnippet', {
+                \ "autoload" : { "insert" : 1 }
+                \ }
+    NeoBundle 'Shougo/neosnippet-snippets', {
+                \ "autoload" : { "insert" : 1 },
+                \ "depends" : [ "Shougo/neosnippet" ]
+                \ }
+endif
 
 " Color Scheme
 NeoBundle 'tomasr/molokai'
+NeoBundle 'w0ng/vim-hybrid'
 
 " StatusLine
 NeoBundle 'itchyny/lightline.vim'
@@ -218,11 +224,11 @@ NeoBundle 'rking/ag.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'rhysd/committia.vim'
 
-NeoBundle 'vim-scripts/AnsiEsc.vim'
+" NeoBundle 'vim-scripts/AnsiEsc.vim'
 
-NeoBundle 'scrooloose/syntastic'
+" NeoBundle 'scrooloose/syntastic'
 
-NeoBundle 'thinca/vim-quickrun'
+" NeoBundle 'thinca/vim-quickrun'
 
 "NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : {
 "  \ 'insert' : 1,
@@ -236,7 +242,9 @@ NeoBundleLazy 'vim-scripts/nginx.vim', {
 NeoBundleLazy 'kchmck/vim-coffee-script', {
             \ "autoload" : { "filetypes" : ["coffee"] }
             \ }
-NeoBundle 'hail2u/vim-css3-syntax'
+NeoBundle 'hail2u/vim-css3-syntax', {
+            \ "autoload" : { "filetypes" : ["css"] }
+            \ }
 
 NeoBundleLazy 'tpope/vim-endwise', {
             \ "autoload" : { "insert" : 1 }
@@ -263,6 +271,9 @@ NeoBundleLazy 'tpope/vim-rails', {
             \ "autoload" : { "filetypes" : ["ruby"] }
             \ }
 NeoBundleLazy 'skwp/vim-rspec', {
+            \ "autoload" : { "filetypes" : ["ruby"] }
+            \ }
+NeoBundleLazy 'basyura/unite-rails', {
             \ "autoload" : { "filetypes" : ["ruby"] }
             \ }
 
@@ -632,6 +643,6 @@ let g:neocomplete#force_omni_input_patterns.ruby = '[^.*\t]\.\w*\|\h\w*::'
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" . neocomplete#close_popup() : "<TAB>"
 "}}}
 
-colorscheme molokai
+colorscheme hybrid
 
 " vim: foldmethod=marker:
