@@ -1,7 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_cnt =6
 let g:netrw_dirhist_1='/Users/taisuke/workspace/eromanga_teacher/config/Migrations'
 let g:netrw_dirhist_2='/Users/taisuke/workspace/eromanga_teacher/config'
 let g:netrw_dirhist_3='/Users/taisuke/workspace/eromanga_teacher/config/Seeds'
 let g:netrw_dirhist_4='/Users/taisuke/workspace/eromanga_teacher/config/Migrations'
 let g:netrw_dirhist_5='/Users/taisuke/workspace/eromanga_teacher/src/Template/Approval/SalonManages'
+let g:netrw_dirhist_6='/Users/taisuke/.dotfiles/vim/userautoload'
