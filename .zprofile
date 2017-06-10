@@ -17,7 +17,13 @@ fi
 # Editors
 #
 
-export EDITOR='nano'
+if type nvim >/dev/null 2>&1; then
+  export EDITOR='nvim'
+elif type vim >/dev/null 2>&1; then
+  export EDITOR='vim'
+else
+  export EDITOR='nano'
+fi
 export VISUAL='nano'
 export PAGER='less'
 

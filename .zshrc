@@ -11,24 +11,19 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+export XDG_CONFIG_HOME=$HOME/.config
 
-export GOPATH=$HOME/workspace/golang
-export GOROOT=$(go env GOROOT)
-export PATH="$GOPATH/bin:/usr/local/bin:/usr/local/sbin:$HOME/.rbenv/bin:$PATH"
-export EDITOR='nvim'
-export MANPAGER="col -b -x|nvim -R -c 'set ft=man nolist nomod noma' -"
-
-alias vi='nvim'
-alias -g C=' | pbcopy'
-alias hi='highlight -u utf-8 -s edit-xcode'
+if [[ -e /usr/libexec/path_helper ]]; then
+    eval $(/usr/libexec/path_helper -s)
+fi
 bindkey -e
 
-if [ -d ${HOME}/.rbenv ] ; then
-    PATH=${HOME}/.rbenv/bin:${PATH}
-    export PATH
-    eval "$(rbenv init -)"
-fi
+# Go
+export GOPATH=$HOME/workspace/golang
+export GOROOT=$(go env GOROOT)
+export PATH=$GOPATH/bin:$PATH
 
+# Node.js
 NVM_HOME=${HOME}/.nvm
 if [ -e "${NVM_HOME}" ]; then
     source ${NVM_HOME}/nvm.sh
@@ -36,30 +31,33 @@ if [ -e "${NVM_HOME}" ]; then
     NODE_PATH=${HOME}/.nvm/current/lib/node_modules
 fi
 
-export PATH=$PATH:/usr/local/share/git-core/contrib/diff-highlight
-# added by travis gem
-[ -f /Users/taisuke/.travis/travis.sh ] && source /Users/taisuke/.travis/travis.sh
+# Ruby
+if [ -d ${HOME}/.rbenv ] ; then
+    export PATH=$HOME/.rbenv/bin:$PATH
+    eval "$(rbenv init -)"
+fi
 
-export XDG_CONFIG_HOME=$HOME/.config
-export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+# Rust
+if [[ -d $HOME/.cargo ]]; then
+    export PATH=$HOME/.cargo/bin:$PATH
+fi
 
-alias ch='cheat list | peco | xargs cheat show'
+# PHP
+if type brew >/dev/null 2>&1; then
+    export PATH="$(brew --prefix homebrew/php/php70)/bin:$PATH"
+fi
 
-pomodoro() {
-    echo Pomodoro ${1:-25} minutes \(break ${2:-5} minutes\) ... $3
-    echo Pomodoro ${1:-25} minutes \(break ${2:-5} minutes\) ... $3 >> ~/pomodoro.log
+# Java
+if [[ -e /usr/libexec/java_home ]]; then
+    export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+fi
 
-    echo 'Start ...' `date`
-    echo 'Start ...' `date` >> ~/pomodoro.log
-    afplay /System/Library/Sounds/Glass.aiff
-    sleep `expr 60 \* ${1:-25}`
-    echo 'Break ...' `date`
-    echo 'Break ...' `date` >> ~/pomodoro.log
-    afplay /System/Library/Sounds/Glass.aiff
-    pmset displaysleepnow
-    sleep `expr 60 \* ${2:-5}`
-    echo 'End ...' `date`
-    echo 'End ...' `date` >> ~/pomodoro.log
-    afplay /System/Library/Sounds/Glass.aiff
-}
-eval $(/usr/libexec/path_helper -s)
+# Git diff
+if [[ -e /usr/local/share/git-core/contrib/diff-highlight ]]; then
+    export PATH=$PATH:/usr/local/share/git-core/contrib/diff-highlight
+fi
+
+# source own profile
+if [[ -e $HOME/.profile ]]; then
+    source $HOME/.profile
+fi
