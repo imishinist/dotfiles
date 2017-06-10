@@ -24,11 +24,9 @@ export GOROOT=$(go env GOROOT)
 export PATH=$GOPATH/bin:$PATH
 
 # Node.js
-NVM_HOME=${HOME}/.nvm
-if [ -e "${NVM_HOME}" ]; then
-    source ${NVM_HOME}/nvm.sh
-    nvm use stable
-    NODE_PATH=${HOME}/.nvm/current/lib/node_modules
+if [[ -e $HOME/.nodebrew/current/bin ]]; then
+    export PATH=$HOME/.nodebrew/current/bin:$PATH
+    nodebrew use stable
 fi
 
 # Ruby
