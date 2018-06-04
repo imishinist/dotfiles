@@ -59,3 +59,7 @@ fi
 if [[ -e $HOME/.profile ]]; then
     source $HOME/.profile
 fi
+
+alias -g C='| pbcopy'
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
