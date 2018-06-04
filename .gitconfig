@@ -4,7 +4,7 @@
 	name = Taisuke Miyazaki
 	email = imishinist@gmail.com
 [core]
-	editor = vim -c \"set fenc=utf-8\"
+	editor = $EDITOR -c \"set fenc=utf-8\"
 	excludesfile = ~/.gitignore_global
 [alias]
 	st = status -sb
