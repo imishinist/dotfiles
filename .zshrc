@@ -19,9 +19,12 @@ fi
 bindkey -e
 
 # Go
-export GOPATH=$HOME/workspace/golang
-export GOROOT=$(go env GOROOT)
-export PATH=$GOPATH/bin:$PATH
+if type go >/dev/null 2>&1; then
+    export GOPATH=$HOME/workspace/golang
+    export GOROOT=$(go env GOROOT)
+    export PATH=$GOPATH/bin:$PATH
+fi
+
 
 # Node.js
 if [[ -e $HOME/.nodebrew/current/bin ]]; then
@@ -40,16 +43,6 @@ if [[ -d $HOME/.cargo ]]; then
     export PATH=$HOME/.cargo/bin:$PATH
 fi
 
-# PHP
-if type brew >/dev/null 2>&1; then
-    export PATH="$(brew --prefix homebrew/php/php70)/bin:$PATH"
-fi
-
-# Java
-if [[ -e /usr/libexec/java_home ]]; then
-    export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-fi
-
 # Git diff
 if [[ -e /usr/local/share/git-core/contrib/diff-highlight ]]; then
     export PATH=$PATH:/usr/local/share/git-core/contrib/diff-highlight
@@ -60,6 +53,7 @@ if [[ -e $HOME/.profile ]]; then
     source $HOME/.profile
 fi
 
-alias -g C='| pbcopy'
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# alias
+alias -g C='| pbcopy'
