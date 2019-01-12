@@ -29,6 +29,12 @@ function install_rbenv() {
     fi
 }
 
+function install_fisher() {
+    if [ ! -d "$HOME/.config/fish/functions" ]; then
+        curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
+    fi
+}
+
 install_brew
 install_prezto
 install_neobundle
