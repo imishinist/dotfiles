@@ -54,6 +54,8 @@ if [[ -e $HOME/.profile ]]; then
 fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.profile ] && source ~/.profile
 
 # alias
 alias -g C='| pbcopy'
+
