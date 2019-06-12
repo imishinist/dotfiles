@@ -14,6 +14,7 @@
      company-rtags
      company-racer
      company-irony
+     go-mode
      racer
      material-theme
      irony
@@ -158,6 +159,13 @@
 ; rust設定
 ; ------------------------------------------------------------------------------
 (add-to-list 'exec-path (expand-file-name "~/.cargo/bin"))
+(setq racer-rust-src-path
+      (concat (string-trim
+               (shell-command-to-string "rustc --print sysroot"))
+              "/lib/rustlib/src/rust/src"))
+; rustup component add rustfmt
+; cargo install racer
+; rustup componant add rust-src
 (eval-after-load "rust-mode" '(setq-default rust-format-on-save t))
 (eval-after-load "rust-mode" '(require 'racer))
 
@@ -170,7 +178,35 @@
   (set (make-variable-buffer-local 'company-idle-delay) 0.1)
   (set (make variable-buffer-local 'company-minimum-prefix-length) 0))
 (add-hook 'racer-mode-hook 'racer-mode-hook)
+(add-hook 'rust-mode-hook (lambda()
+			    (racer-mode)
+			    (flycheck-rust-setup)))
+
+
 ; ------------------------------------------------------------------------------
+
+; go設定
+; ------------------------------------------------------------------------------
+; goimports on file save
+
+; go get github.com/rogpeppe/godef
+; go get -u github.com/nsf/gocode
+; go get github.com/golang/lint/golint
+; go get github.com/kisielk/errcheck
+
+(setq gofmt-command "goimports")
+(add-hook 'go-mode-hook 'flycheck-mode)
+(add-hook 'go-mode-hook (lambda()
+			  (add-hook 'before-save-hook 'gofmt-before-save)
+			  (local-set-key (kbd "M-.") 'godef-jump)
+			  (set (make-local-variable 'company-backends) '(company-go))
+			  (setq indent-tabs-mode nil)
+			  (setq c-basic-offset 4)
+			  (setq tab-width 4)))
+
+
+; ------------------------------------------------------------------------------
+
 
 ; rtags設定
 ; ------------------------------------------------------------------------------
@@ -187,19 +223,21 @@
 
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
-  '(company-idle-delay 0)
-  '(package-selected-packages
-     (quote
-       (company-quickhelp company company-go racer material-theme irony flycheck-rust flycheck-rtags company-rtags company-racer))))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-idle-delay 0)
+ '(inhibit-startup-screen t)
+ '(org-agenda-files (quote ("~/Documents/org/todo.org")))
+ '(package-selected-packages
+   (quote
+    (company-quickhelp company company-go racer material-theme irony flycheck-rust flycheck-rtags company-rtags company-racer))))
 
 
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
-  )
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
