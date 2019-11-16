@@ -110,6 +110,12 @@ function install_golang() {
         echo "[Error]: install script doesn't exist"
       fi
     fi
+
+    go get -u github.com/go-delve/delve/cmd/dlv
+    go get -u github.com/motemen/ghq
+    go get -u github.com/golang/mock/mockgen
+    go get -u github.com/golang/protobuf/protoc-gen-go
+    go get -u github.com/tsenart/vegeta
   fi
 }
 
