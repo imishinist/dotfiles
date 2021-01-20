@@ -1,243 +1,293 @@
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(setq default-input-method "MacOSX")
+;;; init.el --- My init.el -*- lexical-binding: t; -*-
 
-; package
-; ------------------------------------------------------------------------------
+;;; Commentary:
+;;; Code:
+(eval-and-compile
+  (when (or load-file-name byte-compile-current-file)
+    (setq user-emacs-directory
+          (expand-file-name
+           (file-name-directory (or load-file-name byte-compile-current-file))))))
 
-(defvar package-list
-  '(company-quickhelp
-     company
-     company-go
-     company-rtags
-     company-racer
-     company-irony
-     go-mode
-     racer
-     material-theme
-     irony
-     flycheck-rust
-     flycheck-rtags)
-  "packages to be installed")
+(eval-and-compile
+  (customize-set-variable
+   'package-archives '(("gnu"   . "https://elpa.gnu.org/packages/")
+                       ("melpa" . "https://melpa.org/packages/")
+                       ("org"   . "https://orgmode.org/elpa/")))
+  (package-initialize)
+  (unless (package-installed-p 'leaf)
+    (package-refresh-contents)
+    (package-install 'leaf))
 
-(require 'package)
-(add-to-list 'package-archives '("melpa"    .	"http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives '("marmalade"	.	"http://marmalade-repo.org/packages/"))
-(fset 'package-desc-vers 'package--ac-desc-version)
-(package-initialize)
-(unless package-archive-contents (package-refresh-contents))
-(dolist (pkg package-list)
-  (unless (package-installed-p pkg)
-    (package-install pkg)))
+  (leaf leaf-keywords
+    :ensure t
+    :init
+    ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
+    (leaf hydra :ensure t)
+    (leaf el-get :ensure t)
+    (leaf blackout :ensure t)
 
-; ------------------------------------------------------------------------------
+    :config
+    ;; initialize leaf-keywords.el
+    (leaf-keywords-init)))
+
+(leaf cus-edit
+  :doc "tools for customizing Emacs and Lisp packages"
+  :tag "buildin" "faces" "help"
+  :custom `((custom-file . ,(locate-user-emacs-file "custom.el"))))
+
+(leaf cus-start
+  :doc "define customization properties of builtins"
+  :tag "buildin" "install"
+  :preface
+  (defun c/redraw-frame nil
+    (interactive)
+    (redraw-frame))
+
+  :bind (("M-ESC ESC" . c/redraw-frame))
+  :custom '((user-full-name . "Naoya Yamashita")
+            (user-mail-address . "conao3@gmail.com")
+            (user-login-name . "conao3")
+            (create-lockfiles . nil)
+            (debug-on-error . t)
+            (init-file-debug . t)
+            (frame-resize-pixelwise . t)
+            (enable-recursive-minibuffers . t)
+            (history-length . 1000)
+            (history-delete-duplicates . t)
+            (scroll-preserve-screen-position . t)
+            (scroll-conservatively . 100)
+            (mouse-wheel-scroll-amount . '(1 ((control) . 5)))
+            (ring-bell-function . 'ignore)
+            (text-quoting-style . 'straight)
+            (truncate-lines . t)
+            ;; (use-dialog-box . nil)
+            ;; (use-file-dialog . nil)
+            ;; (menu-bar-mode . t)
+            ;; (tool-bar-mode . nil)
+            (scroll-bar-mode . nil)
+            (indent-tabs-mode . nil))
+  :config
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  (keyboard-translate ?\C-h ?\C-?))
+    
+
+(leaf autorevert
+      :doc "revert buffers when files on disk change"
+      :tag "builtin"
+      :custom ((auto-revert-interval .0.3)
+	       (auto-revert-check-vc-info . t))
+      :global-minor-mode global-auto-revert-mode)
+
+(leaf cc-mode
+  :doc "major mode for editing C and similar languages"
+  :tag "builtin"
+  :defvar (c-basic-offset)
+  :bind (c-mode-base-map
+         ("C-c c" . compile))
+  :mode-hook
+  (c-mode-hook . ((c-set-style "bsd")
+                  (setq c-basic-offset 4)))
+  (c++-mode-hook . ((c-set-style "bsd")
+                    (setq c-basic-offset 4))))
+
+(leaf delsel
+  :doc "delete selection if you insert"
+  :tag "builtin"
+  :global-minor-mode delete-selection-mode)
 
 
-; emacs setting
-; ------------------------------------------------------------------------------
+(leaf paren
+  :doc "highlight matching paren"
+  :tag "builtin"
+  :custom ((show-paren-delay . 0.1))
+  :global-minor-mode show-paren-mode)
+
+(leaf simple
+  :doc "basic editing commands for Emacs"
+  :tag "builtin" "internal"
+  :custom ((kill-ring-max . 100)
+           (kill-read-only-ok . t)
+           (kill-whole-line . t)
+           (eval-expression-print-length . nil)
+           (eval-expression-print-level . nil)))
+
+(leaf ivy
+  :doc "Incremental Vertical completYon"
+  :req "emacs-24.5"
+  :tag "matching" "emacs>=24.5"
+  :url "https://github.com/abo-abo/swiper"
+  :emacs>= 24.5
+  :ensure t
+  :blackout t
+  :leaf-defer nil
+  :custom ((ivy-initial-inputs-alist . nil)
+           (ivy-re-builders-alist . '((t . ivy--regex-fuzzy)
+                                      (swiper . ivy--regex-plus)))
+           (ivy-use-selectable-prompt . t))
+  :global-minor-mode t
+  :config
+  (leaf swiper
+    :doc "Isearch with an overview. Oh, man!"
+    :req "emacs-24.5" "ivy-0.13.0"
+    :tag "matching" "emacs>=24.5"
+    :url "https://github.com/abo-abo/swiper"
+    :emacs>= 24.5
+    :ensure t
+    :bind (("C-s" . swiper)))
+
+  (leaf counsel
+    :doc "Various completion functions using Ivy"
+    :req "emacs-24.5" "swiper-0.13.0"
+    :tag "tools" "matching" "convenience" "emacs>=24.5"
+    :url "https://github.com/abo-abo/swiper"
+    :emacs>= 24.5
+    :ensure t
+    :blackout t
+    :bind (("C-S-s" . counsel-imenu)
+           ("C-x C-r" . counsel-recentf))
+    :custom `((counsel-yank-pop-separator . "\n----------\n")
+              (counsel-find-file-ignore-regexp . ,(rx-to-string '(or "./" "../") 'no-group)))
+    :global-minor-mode t))
+
+(leaf ivy-rich
+  :doc "More friendly display transformer for ivy."
+  :req "emacs-24.5" "ivy-0.8.0"
+  :tag "ivy" "emacs>=24.5"
+  :emacs>= 24.5
+  :ensure t
+  :after ivy
+  :global-minor-mode t)
+    
+(leaf prescient
+  :doc "Better sorting and filtering"
+  :req "emacs-25.1"
+  :tag "extensions" "emacs>=25.1"
+  :url "https://github.com/raxod502/prescient.el"
+  :emacs>= 25.1
+  :ensure t
+  :commands (prescient-persist-mode)
+  :custom `((prescient-aggressive-file-save . t)
+            (prescient-save-file . ,(locate-user-emacs-file "prescient")))
+  :global-minor-mode prescient-persist-mode)
+  
+(leaf ivy-prescient
+  :doc "prescient.el + Ivy"
+  :req "emacs-25.1" "prescient-4.0" "ivy-0.11.0"
+  :tag "extensions" "emacs>=25.1"
+  :url "https://github.com/raxod502/prescient.el"
+  :emacs>= 25.1
+  :ensure t
+  :after prescient ivy
+  :custom ((ivy-prescient-retain-classic-highlighting . t))
+  :global-minor-mode t)
+
+(leaf flycheck
+  :doc "On-the-fly syntax checking"
+  :req "dash-2.12.1" "pkg-info-0.4" "let-alist-1.0.4" "seq-1.11" "emacs-24.3"
+  :tag "minor-mode" "tools" "languages" "convenience" "emacs>=24.3"
+  :url "http://www.flycheck.org"
+  :emacs>= 24.3
+  :ensure t
+  :bind (("M-n" . flycheck-next-error)
+         ("M-p" . flycheck-previous-error))
+  :global-minor-mode global-flycheck-mode)
+
+(leaf company
+  :doc "Modular text completion framework"
+  :req "emacs-24.3"
+  :tag "matching" "convenience" "abbrev" "emacs>=24.3"
+  :url "http://company-mode.github.io/"
+  :emacs>= 24.3
+  :ensure t
+  :blackout t
+  :leaf-defer nil
+  :bind ((company-active-map
+          ("M-n" . nil)
+          ("M-p" . nil)
+          ("C-s" . company-filter-candidates)
+          ("C-n" . company-select-next)
+          ("C-p" . company-select-previous)
+          ("<tab>" . company-complete-selection))
+         (company-search-map
+          ("C-n" . company-select-next)
+          ("C-p" . company-select-previous)))
+  :custom ((company-idle-delay . 0)
+           (company-minimum-prefix-length . 3)
+           (company-transformers . '(company-sort-by-occurrence)))
+  :global-minor-mode global-company-mode)
+
+(leaf company-c-headers
+  :doc "Company mode backend for C/C++ header files"
+  :req "emacs-24.1" "company-0.8"
+  :tag "company" "development" "emacs>=24.1"
+  :added "2020-03-25"
+  :emacs>= 24.1
+  :ensure t
+  :after company
+  :defvar company-backends
+  :config
+  (add-to-list 'company-backends 'company-c-headers))
+
+(leaf rust-mode
+  :ensure t)
+
+
+(leaf material-theme
+  :doc "material theme"
+  :tag "theme"
+  :ensure t
+  :config (load-theme 'material t))
+
+(setq default-file-name-coding-system nil)
+
 (set-language-environment 'Japanese)
 (set-default-coding-systems 'utf-8-unix)
 (set-terminal-coding-system 'utf-8-unix)
 (setq default-file-name-coding-system 'utf-8)
-(setq default-process-coding-system '(utf-8 .   utf-8))
+(setq default-process-coding-system '(utf-8 . utf-8))
 (prefer-coding-system 'utf-8-unix)
 
-; 余計なファイルを作らない
 (setq create-lockfiles nil)
 (setq make-backup-files nil)
 (setq delete-auto-save-files t)
 
-; 括弧を強調表示
-(show-paren-mode t)
 
-; 行番号表示
-(global-linum-mode t)
-(setq linum-format "%3d │")
-
-; C-kで行削除
-(setq kill-whole-line t)
-
-(global-set-key (kbd "C-h") 'delete-backward-char)
-(global-set-key (kbd "C-c g") 'goto-line)
-(global-set-key (kbd "C-c ;") 'comment-region)
-(global-set-key (kbd "C-c :") 'uncomment-region)
-
-(ido-mode t)
-; ------------------------------------------------------------------------------
-
-
-; org-modeの設定
-; ------------------------------------------------------------------------------
+; org-mode
 (setq org-log-done 'time)
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
-(setq org-directory "~/Documents/org/")
 
-; org-agenda
+(setq org-directory "~/workspace/org/")
+
 (setq org-agenda-files
       (list (concat org-directory "todo.org")
-        (concat org-directory "schedule.org")))
+	    (concat org-directory "schedule.org")))
 
 (setq org-default-notes-file (concat org-directory "notes.org"))
 (setq org-default-todos-file (concat org-directory "todo.org"))
 
 (setq org-agenda-time-grid
       '((daily today require-timed)
-        (900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000)
-        "......" "----------------"))
+	(900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100)
+	"......" "-----------------"))
 
 (require 'org-capture)
 (setq org-capture-templates
       '(("t" "Task" entry (file+headline org-default-todos-file "Inbox")
-         "** TODO %?\n   %U\n %i\n %a")
-        ("n" "Note" entry (file+headline org-default-notes-file "Notes")
-         "* %?\nEntered on %U\n %i\n %a")))
+	 "** TODO %?\n   %U\n %i\n %a")
+	("n" "Note" entry (file+headline org-default-notes-file "Notes")
+	 "* %?\nEntered on %U\n %i\n %a")))
 
-(defun show-org-buffer (file)
-  "Show an org-file FILE on the current buffer."
-  (interactive)
-  (if (get-buffer file)
-    (let ((buffer (get-buffer file)))
-      (switch-to-buffer buffer)
-      (message "%s" file))
-    (find-file (concat org-directory file))))
+(setq org-todo-keywords
+      '((sequence "TODO" "DOING" "WAITING" "REVIEWING" "|" "DONE" "CANCELED")))
 
-(global-set-key (kbd "C-M-^") '(lambda () (interactive)
-                                 (show-org-buffer "notes.org")))
-
-; ------------------------------------------------------------------------------
+(global-set-key (kbd "C-M-^") '(lambda() (interactive)
+				 (show-org-buffer "notes.org")))
 
 
-; themaの設定
-; ------------------------------------------------------------------------------
-(eval-after-load "meterial-theme"
-                 (load-theme 'material t))
-; ------------------------------------------------------------------------------
+(provide 'init)
 
-
-; uniquify
-; ------------------------------------------------------------------------------
-; ファイル名が同じのときにバッファ名を区別する
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
-
-; ------------------------------------------------------------------------------
-
-
-; 補完設定
-; ------------------------------------------------------------------------------
-(require 'company)
-
-; 全バッファで有効
-(global-company-mode +1)
-; 特定のmodeだけ有効にするときは以下
-; (add-hook 'python-mode-hook 'company-mode)
-
-(company-quickhelp-mode +1)
-
-;; C-n, C-pで補完候補を次/前の候補を選択
-(define-key company-active-map (kbd "C-n") 'company-select-next)
-(define-key company-active-map (kbd "C-p") 'company-select-previous)
-(define-key company-search-map (kbd "C-n") 'company-select-next)
-(define-key company-search-map (kbd "C-p") 'company-select-previous)
-
-;; C-sで絞り込む
-(define-key company-active-map (kbd "C-s") 'company-filter-candidates)
-
-;; TABで候補を設定
-(define-key company-active-map (kbd "TAB") 'company-complete-selection)
-(define-key company-active-map (kbd "C-f") 'company-complete-selection)
-
-;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
-(define-key emacs-lisp-mode-map (kbd "C-M-i") 'company-complete)
-
-; ------------------------------------------------------------------------------
-
-; rust設定
-; ------------------------------------------------------------------------------
-(add-to-list 'exec-path (expand-file-name "~/.cargo/bin"))
-(setq racer-rust-src-path
-      (concat (string-trim
-               (shell-command-to-string "rustc --print sysroot"))
-              "/lib/rustlib/src/rust/src"))
-; rustup component add rustfmt
-; cargo install racer
-; rustup componant add rust-src
-(eval-after-load "rust-mode" '(setq-default rust-format-on-save t))
-(eval-after-load "rust-mode" '(require 'racer))
-
-(require 'company-racer)
-(add-hook 'rust-mode-hook #'racer-mode)
-(add-hook 'rust-mode-hook #'flycheck-rust-setup)
-(add-hook 'racer-mode-hook #'eldoc-mode)
-(defun racer-mode-hook()
-  (company-mode)
-  (set (make-variable-buffer-local 'company-idle-delay) 0.1)
-  (set (make variable-buffer-local 'company-minimum-prefix-length) 0))
-(add-hook 'racer-mode-hook 'racer-mode-hook)
-(add-hook 'rust-mode-hook (lambda()
-			    (racer-mode)
-			    (flycheck-rust-setup)))
-
-
-; ------------------------------------------------------------------------------
-
-; go設定
-; ------------------------------------------------------------------------------
-; goimports on file save
-
-; go get github.com/rogpeppe/godef
-; go get -u github.com/nsf/gocode
-; go get github.com/golang/lint/golint
-; go get github.com/kisielk/errcheck
-
-(setq gofmt-command "goimports")
-(add-hook 'go-mode-hook 'flycheck-mode)
-(add-hook 'go-mode-hook (lambda()
-			  (add-hook 'before-save-hook 'gofmt-before-save)
-			  (local-set-key (kbd "M-.") 'godef-jump)
-			  (set (make-local-variable 'company-backends) '(company-go))
-			  (setq indent-tabs-mode nil)
-			  (setq c-basic-offset 4)
-			  (setq tab-width 4)))
-
-
-; ------------------------------------------------------------------------------
-
-
-; rtags設定
-; ------------------------------------------------------------------------------
-(require 'rtags)
-(require 'company-rtags)
-
-(setq rtags-completions-enabled t)
-(eval-after-load 'company
-                 '(add-to-list
-                    'company-backends 'company-rtags))
-(setq rtags-autostart-diagnostics t)
-(rtags-enable-standard-keybindings)
-; ------------------------------------------------------------------------------
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(company-idle-delay 0)
- '(inhibit-startup-screen t)
- '(org-agenda-files (quote ("~/Documents/org/todo.org")))
- '(package-selected-packages
-   (quote
-    (company-quickhelp company company-go racer material-theme irony flycheck-rust flycheck-rtags company-rtags company-racer))))
-
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;;; init.el ends here
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
