@@ -228,6 +228,15 @@
   :config
   (add-to-list 'company-backends 'company-c-headers))
 
+(leaf lsp-mode
+  :ensure t)
+
+(leaf company-lsp
+  :ensure t)
+
+(leaf lsp-mode
+  :ensure t)
+
 (leaf rust-mode
   :ensure t)
 
