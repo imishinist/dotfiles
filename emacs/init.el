@@ -30,6 +30,18 @@
     ;; initialize leaf-keywords.el
     (leaf-keywords-init)))
 
+(leaf *user-settings
+  :config
+  (setq user-full-name "Taisuke Miyazaki"
+        user-mail-address "imishinist@gmail.com"))
+
+(leaf which-key
+  :ensure t
+  :hook (after-init-hook . which-key-mode)
+  :config
+  (which-key-setup-minibuffer)
+  (setq which-key-idle-secondary-delay 0))
+
 (leaf cus-edit
   :doc "tools for customizing Emacs and Lisp packages"
   :tag "buildin" "faces" "help"
@@ -44,9 +56,9 @@
     (redraw-frame))
 
   :bind (("M-ESC ESC" . c/redraw-frame))
-  :custom '((user-full-name . "Naoya Yamashita")
-            (user-mail-address . "conao3@gmail.com")
-            (user-login-name . "conao3")
+  :custom '((user-full-name . "Taisuke Miyazaki")
+            (user-mail-address . "imishinist@gmail.com")
+            (user-login-name . "imishinist")
             (create-lockfiles . nil)
             (debug-on-error . t)
             (init-file-debug . t)
@@ -96,11 +108,25 @@
   :global-minor-mode delete-selection-mode)
 
 
-(leaf paren
-  :doc "highlight matching paren"
-  :tag "builtin"
-  :custom ((show-paren-delay . 0.1))
-  :global-minor-mode show-paren-mode)
+(leaf *delimitor-settings
+  :config
+  (leaf paren
+    :ensure t
+    :doc "highlight matching paren"
+    :tag "builtin"
+    :custom ((show-paren-delay . 0.1)
+             (show-paren-style . 'mixed))
+    :hook (after-init-hook . show-paren-mode)))
+
+(leaf symbol-overlay
+  :ensure t
+  :bind (("M-i" . symbol-overlay-put)
+         (symbol-overlay-map
+          ((kbd "C-p") . symbol-overlay-jump-prev)
+          ((kbd "C-n") . symbol-overlay-jump-next)
+          ((kbd "C-g") . symbol-overlay-remove-all)))
+  :hook ((prog-mode-hook . symbol-overlay-mode)
+         (markdown-mode-hook . symbol-overlay-mode)))
 
 (leaf simple
   :doc "basic editing commands for Emacs"
@@ -121,11 +147,22 @@
   :blackout t
   :leaf-defer nil
   :custom ((ivy-initial-inputs-alist . nil)
+           (ivy-hight . 15)
            (ivy-re-builders-alist . '((t . ivy--regex-fuzzy)
                                       (swiper . ivy--regex-plus)))
            (ivy-use-selectable-prompt . t))
   :global-minor-mode t
   :config
+  (leaf avy-migemo
+    :ensure t
+    :hook (ivy-mode-hook . avy-migemo-mode))
+  (leaf ivy-rich
+    :doc "More friendly display transformer for ivy."
+    :req "emacs-24.5" "ivy-0.8.0"
+    :tag "ivy" "emacs>=24.5"
+    :emacs>= 24.5
+    :ensure t
+    :hook (ivy-mode-hook . ivy-rich-mode))
   (leaf swiper
     :doc "Isearch with an overview. Oh, man!"
     :req "emacs-24.5" "ivy-0.13.0"
@@ -149,14 +186,6 @@
               (counsel-find-file-ignore-regexp . ,(rx-to-string '(or "./" "../") 'no-group)))
     :global-minor-mode t))
 
-(leaf ivy-rich
-  :doc "More friendly display transformer for ivy."
-  :req "emacs-24.5" "ivy-0.8.0"
-  :tag "ivy" "emacs>=24.5"
-  :emacs>= 24.5
-  :ensure t
-  :after ivy
-  :global-minor-mode t)
     
 (leaf prescient
   :doc "Better sorting and filtering"
@@ -188,9 +217,10 @@
   :url "http://www.flycheck.org"
   :emacs>= 24.3
   :ensure t
+  :commands flycheck-mode
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error))
-  :global-minor-mode global-flycheck-mode)
+  :hook (prog-mode-hook . flycheck-mode))
 
 (leaf company
   :doc "Modular text completion framework"
@@ -228,14 +258,31 @@
   :config
   (add-to-list 'company-backends 'company-c-headers))
 
-(leaf lsp-mode
-  :ensure t)
+(defun lsp-go-install-save-hooks()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+
+(leaf smart-jump
+  :ensure t ivy
+  :bind
+  ("C-c C-j" . smart-jump-go)
+  :custom
+  (dumb-jump-mode . t)
+  (dumb-jump-selector . 'ivy)
+  (dumb-jump-use-visible-window . nil)
+  :config
+  (smart-jump-setup-default-registers))
+
+(leaf lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
 
 (leaf company-lsp
   :ensure t)
 
-(leaf lsp-mode
-  :ensure t)
+(leaf go-mode
+  :ensure t
+  :hook (go-mode-hook . #'lsp-deferred))
 
 (leaf rust-mode
   :ensure t)
@@ -247,53 +294,81 @@
   :ensure t
   :config (load-theme 'material t))
 
-(setq default-file-name-coding-system nil)
 
-(set-language-environment 'Japanese)
-(set-default-coding-systems 'utf-8-unix)
-(set-terminal-coding-system 'utf-8-unix)
-(setq default-file-name-coding-system 'utf-8)
-(setq default-process-coding-system '(utf-8 . utf-8))
-(prefer-coding-system 'utf-8-unix)
+(leaf *language-settings
+  :config
+  (setq default-file-name-coding-system nil)
+  (set-language-environment 'Japanese)
+  (set-default-coding-systems 'utf-8-unix)
+  (set-terminal-coding-system 'utf-8-unix)
+  (setq default-file-name-coding-system 'utf-8)
+  (setq default-process-coding-system '(utf-8 . utf-8))
+  (prefer-coding-system 'utf-8-unix))
 
-(setq create-lockfiles nil)
-(setq make-backup-files nil)
-(setq delete-auto-save-files t)
+(leaf *editor-settings
+  :config
+  (setq create-lockfiles nil)
+  (setq make-backup-files nil)
+  (setq delete-auto-save-files t))
 
+(leaf *startup-settings
+  :config
+  (setq inhibit-startup-message t)
+  (setq inhibit-startup-echo-area-message -1))
 
-; org-mode
-(setq org-log-done 'time)
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c c") 'org-capture)
+(leaf *line-settings
+  :config
+  (leaf linum
+    :ensure t
+    :config
+    (global-linum-mode t)
+    (setq linum-format " %d")))
 
-(setq org-directory "~/workspace/org/")
+(leaf yaml-mode
+  :ensure t
+  :mode (("\\.yml\\'")
+         ("\\.yaml\\'")))
 
-(setq org-agenda-files
-      (list (concat org-directory "todo.org")
-	    (concat org-directory "schedule.org")))
+(leaf org
+  :leaf-defer t
+  :bind (("C-c l" . org-store-link)
+         ("C-c a" . org-agenda)
+         ("C-c c" . org-capture))
+  :mode ("\\.org$'" . org-mode)
+  :config
+  (setq org-directory "~/workspace/org/")
+  (setq org-agenda-files
+        (list (concat org-directory "todo.org")
+	      (concat org-directory "schedule.org")))
 
-(setq org-default-notes-file (concat org-directory "notes.org"))
-(setq org-default-todos-file (concat org-directory "todo.org"))
+  (setq org-default-notes-file (concat org-directory "notes.org"))
+  (setq org-default-todos-file (concat org-directory "todo.org"))
+  :custom
+  (org-startup-with-inline-images . t)
+  (org-hide-leading-stars . t)
+  (org-log-done . 'time)
+  (org-todo-keywords . '((sequence "TODO" "DOING" "WAITING" "REVIEWING" "|" "DONE" "CANCELED")))
+  (org-todo-keyword-faces . '(("TODO" :foreground "red" :weight bold)
+                            ("DOING" :foreground "cornflower blue" :weight bold)
+                            ("WAITING" :foreground "orange" :weight bold)
+                            ("REVIEWING" :foreground "magenta" :weight bold)
+                            ("DONE" :foreground "green" :weight bold)
+                            ("CANCELED" :foreground "green" :weight bold)))
+  (org-agenda-time-grid .
+                        '((daily today require-timed)
+	                  (900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100)
+	                  "......" "-----------------")))
 
-(setq org-agenda-time-grid
-      '((daily today require-timed)
-	(900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100)
-	"......" "-----------------"))
-
-(require 'org-capture)
-(setq org-capture-templates
-      '(("t" "Task" entry (file+headline org-default-todos-file "Inbox")
-	 "** TODO %?\n   %U\n %i\n %a")
-	("n" "Note" entry (file+headline org-default-notes-file "Notes")
-	 "* %?\nEntered on %U\n %i\n %a")))
-
-(setq org-todo-keywords
-      '((sequence "TODO" "DOING" "WAITING" "REVIEWING" "|" "DONE" "CANCELED")))
-
-(global-set-key (kbd "C-M-^") '(lambda() (interactive)
-				 (show-org-buffer "notes.org")))
-
+(leaf org-capture
+  :leaf-defer t
+  :after org
+  :commands (org-capture)
+  :custom
+  (org-capture-templates .
+                         '(("t" "Task" entry (file+headline org-default-todos-file "Inbox")
+	                    "** TODO %?\n   %U\n %i\n %a")
+	                   ("n" "Note" entry (file+headline org-default-notes-file "Notes")
+	                    "* %?\nEntered on %U\n %i\n %a"))))
 
 (provide 'init)
 
