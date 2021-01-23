@@ -258,6 +258,10 @@
   :config
   (add-to-list 'company-backends 'company-c-headers))
 
+(leaf lsp-mode
+  :ensure t
+  :hook (go-mode-hook . lsp))
+
 (defun lsp-go-install-save-hooks()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
@@ -275,7 +279,8 @@
 
 (leaf lsp-ui
   :ensure t
-  :commands lsp-ui-mode)
+  :commands lsp-ui-mode
+  :hook (lsp-mode-hook . lsp-ui-mode))
 
 (leaf company-lsp
   :ensure t)
