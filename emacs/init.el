@@ -262,7 +262,7 @@
   :ensure t
   :custom
   (lsp-print-io . nil)
-  :hook (go-mode . lsp))
+  :hook (go-mode-hook . lsp))
 
 (defun lsp-go-install-save-hooks()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
@@ -300,18 +300,40 @@
 (leaf rust-mode
   :ensure t)
 
-(leaf go-mode
-  :ensure t
-  :commands (go-mode)
-  :bind ("C-c i" . gofmt-before-save)
-  :hook ((go-mode . go-eldoc-setup)))
+(leaf exec-path-from-shell
+ :ensure t
+ :config
+    (let ((envs '("GOROOT" "GOPATH" "PATH")))
+      (exec-path-from-shell-copy-envs envs)))
 
-(leaf material-theme
-  :doc "material theme"
-  :tag "theme"
-  :ensure t
-  :config (load-theme 'material t))
+(leaf *golang-settings
+  :config
+  (leaf go-mode
+    :ensure t
+    :commands (go-mode)
+    :bind ("C-c i" . gofmt-before-save)
+    :config
+    (setq indent-tabs-mode t)
+    (setq gofmt-command "goimports")
+    :hook ((go-mode-hook . lsp-deferred)
+           (before-save . gofmt-before-save)
+           )))
 
+(leaf doom-themes
+  :ensure t
+  :custom
+  (doom-themes-enable-italic . t)
+  (doom-themes-enable-bold  . t)
+  :config
+  (load-theme 'doom-material t)
+  (doom-themes-neotree-config)
+  (doom-themes-org-config))
+
+;; (leaf material-theme
+;;   :doc "material theme"
+;;   :tag "theme"
+;;   :ensure t
+;;   :config (load-theme 'material t))
 
 (leaf *language-settings
   :config
