@@ -260,7 +260,9 @@
 
 (leaf lsp-mode
   :ensure t
-  :hook (go-mode-hook . lsp))
+  :custom
+  (lsp-print-io . nil)
+  :hook (go-mode . lsp))
 
 (defun lsp-go-install-save-hooks()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
@@ -279,19 +281,30 @@
 
 (leaf lsp-ui
   :ensure t
+  :after lsp-mode
   :commands lsp-ui-mode
-  :hook (lsp-mode-hook . lsp-ui-mode))
+  :hook (lsp-mode-hook . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-enable . t)
+  (lsp-ui-doc-header . t)
+  (lsp-ui-doc-include-signature . t)
+  (lsp-ui-doc-position . 'top)
+  (lsp-ui-doc-max-width . 60)
+  (lsp-ui-doc-max-height . 20)
+  (lsp-ui-doc-use-childframe . t)
+  (lsp-ui-doc-use-webkit . nil))
 
 (leaf company-lsp
   :ensure t)
 
-(leaf go-mode
-  :ensure t
-  :hook (go-mode-hook . #'lsp-deferred))
-
 (leaf rust-mode
   :ensure t)
 
+(leaf go-mode
+  :ensure t
+  :commands (go-mode)
+  :bind ("C-c i" . gofmt-before-save)
+  :hook ((go-mode . go-eldoc-setup)))
 
 (leaf material-theme
   :doc "material theme"
