@@ -284,6 +284,13 @@
   :after lsp-mode
   :commands lsp-ui-mode
   :hook (lsp-mode-hook . lsp-ui-mode)
+  :bind ((lsp-mode-map
+          ("C-c C-r" . lsp-ui-peek-find-references)
+          ("C-c C-j" . lsp-ui-peek-find-definitions)
+          ("C-c i"   . lsp-ui-peek-find-implementation)
+          ("C-c m"   . lsp-ui-imenu)
+          ("C-c s"   . lsp-ui-sideline-mode)
+          ("C-c d"   . ladicle/toggle-lsp-ui-doc)))
   :custom
   (lsp-ui-doc-enable . t)
   (lsp-ui-doc-header . t)
@@ -292,7 +299,19 @@
   (lsp-ui-doc-max-width . 60)
   (lsp-ui-doc-max-height . 20)
   (lsp-ui-doc-use-childframe . t)
-  (lsp-ui-doc-use-webkit . nil))
+  (lsp-ui-doc-use-webkit . nil)
+  (lsp-ui-flycheck-enable . t)
+  (lsp-ui-sideline-enable . nil)
+  (lsp-ui-sideline-ignore-duplicate . t)
+  (lsp-ui-sideline-show-symbol . t)
+  (lsp-ui-sideline-show-hover . t)
+  (lsp-ui-sideline-show-diagnostics . nil)
+  (lsp-ui-sideline-show-code-actions . nil)
+  (lsp-ui-imenu-enable . nil)
+  (lsp-ui-imenu-kind-position . 'top)
+  (lsp-ui-peek-enable . t)
+  (lsp-ui-peek-peek-height . 20)
+  (lsp-ui-peek-list-width . 50))
 
 (leaf company-lsp
   :ensure t)
@@ -363,6 +382,12 @@
     :config
     (global-linum-mode t)
     (setq linum-format " %d")))
+
+(leaf git-gutter+
+  :emacs>= 25
+  :ensure t
+  :init
+  (global-git-gutter+-mode t))
 
 (leaf yaml-mode
   :ensure t
