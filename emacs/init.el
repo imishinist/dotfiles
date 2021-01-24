@@ -262,7 +262,8 @@
   :ensure t
   :custom
   (lsp-print-io . nil)
-  :hook (go-mode-hook . lsp))
+  :hook ((go-mode-hook . lsp)
+         (java-mode-hook . lsp)))
 
 (defun lsp-go-install-save-hooks()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
@@ -336,6 +337,11 @@
     :hook ((go-mode-hook . lsp-deferred)
            (before-save . gofmt-before-save)
            )))
+
+(leaf *java-settings
+  :config
+  (leaf lsp-java
+    :ensure t))
 
 (leaf doom-themes
   :ensure t
