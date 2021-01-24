@@ -265,7 +265,9 @@
   (lsp-rust-server . 'rls)
   :hook ((go-mode-hook . lsp)
          (java-mode-hook . lsp)
-         (rust-mode-hook . lsp)))
+         (rust-mode-hook . lsp)
+         (c-mode-hook . lsp)
+         (c++-mode-hook . lsp)))
 
 (defun lsp-go-install-save-hooks()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
@@ -354,6 +356,11 @@
   (leaf cargo
     :ensure t
     :hook ((rust-mode . cargo-minor-mode))))
+
+(leaf *c-settings
+  :config
+  (leaf ccls
+    :ensure t))
 
 (leaf doom-themes
   :ensure t
