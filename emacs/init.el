@@ -262,8 +262,10 @@
   :ensure t
   :custom
   (lsp-print-io . nil)
+  (lsp-rust-server . 'rls)
   :hook ((go-mode-hook . lsp)
-         (java-mode-hook . lsp)))
+         (java-mode-hook . lsp)
+         (rust-mode-hook . lsp)))
 
 (defun lsp-go-install-save-hooks()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
@@ -342,6 +344,16 @@
   :config
   (leaf lsp-java
     :ensure t))
+
+(leaf *rust-settings
+  :config
+  (leaf rust-mode
+    :ensure t
+    :custom
+    (rust-format-on-save . t))
+  (leaf cargo
+    :ensure t
+    :hook ((rust-mode . cargo-minor-mode))))
 
 (leaf doom-themes
   :ensure t
