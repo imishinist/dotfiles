@@ -330,7 +330,6 @@
   (leaf go-mode
     :ensure t
     :commands (go-mode)
-    :bind ("C-c i" . gofmt-before-save)
     :config
     (setq indent-tabs-mode t)
     (setq gofmt-command "goimports")
