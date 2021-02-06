@@ -35,13 +35,6 @@
   (setq user-full-name "Taisuke Miyazaki"
         user-mail-address "imishinist@gmail.com"))
 
-(leaf which-key
-  :ensure t
-  :hook (after-init-hook . which-key-mode)
-  :config
-  (which-key-setup-minibuffer)
-  (setq which-key-idle-secondary-delay 0))
-
 (leaf cus-edit
   :doc "tools for customizing Emacs and Lisp packages"
   :tag "buildin" "faces" "help"
@@ -79,8 +72,7 @@
             (scroll-bar-mode . nil)
             (indent-tabs-mode . nil))
   :config
-  (defalias 'yes-or-no-p 'y-or-n-p)
-  (keyboard-translate ?\C-h ?\C-?))
+  (defalias 'yes-or-no-p 'y-or-n-p))
     
 
 (leaf autorevert
@@ -390,6 +382,7 @@
 
 (leaf *editor-settings
   :config
+  (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
   (setq create-lockfiles nil)
   (setq make-backup-files nil)
   (setq delete-auto-save-files t))
