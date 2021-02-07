@@ -31,16 +31,6 @@ function install_neobundle() {
   fi
 }
 
-function install_rbenv() {
-  if [ ! -d "$HOME/.rbenv" ]; then
-    read -rp "Install rbenv?[y/N]" IN
-    if [[ ${IN} = [yY] ]]; then
-      git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
-      git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
-    fi
-  fi
-}
-
 function install_fisher() {
   if [ ! -d "$HOME/.config/fish/functions" ]; then
     read -rp "Install fisher?[y/N]" IN
