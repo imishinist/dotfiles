@@ -11,7 +11,3 @@ dotfile '.tmux.conf.local' do
     raise NotImplmentedError
   end
 end
-
-if node[:os] == "linux"
-  package 'xclip'
-end

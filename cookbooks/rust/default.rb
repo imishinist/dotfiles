@@ -3,7 +3,7 @@ local_ruby_block 'install rust' do
   rustc_path = "#{ENV['HOME']}/.cargo/bin/rustc"
 
   block do
-    case node[:platform]
+    case node[:os]
     when "darwin"
       system("bash -c 'curl https://sh.rustup.rs -sSf | sh'")
     when "linux"

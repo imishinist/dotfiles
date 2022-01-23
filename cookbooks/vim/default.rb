@@ -1,6 +1,9 @@
-
 # NeoVim
-directory "#{ENV['HOME']}/.config"
+directory "#{ENV['HOME']}/.config" do
+  owner node[:user]
+end
+
+package 'neovim'
 
 dotfile '.config/nvim'
 

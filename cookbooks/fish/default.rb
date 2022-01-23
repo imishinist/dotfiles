@@ -1,7 +1,15 @@
-directory "#{ENV['HOME']}/.config"
-directory "#{ENV['HOME']}/.config/fish"
-directory "#{ENV['HOME']}/.config/fish/completions"
-directory "#{ENV['HOME']}/.config/fish/functions"
+# TODO: for ubuntu
+
+[
+  "#{ENV['HOME']}/.config",
+  "#{ENV['HOME']}/.config/fish",
+  "#{ENV['HOME']}/.config/fish/completions",
+  "#{ENV['HOME']}/.config/fish/functions",
+].each do |dir|
+  directory dir do
+    owner node[:user]
+  end
+end
 
 package 'fish'
 
