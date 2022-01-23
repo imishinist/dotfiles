@@ -12,34 +12,6 @@ function install_brew() {
   fi
 }
 
-function install_prezto() {
-  if [ ! -d "${ZDOTDIR:-$HOME}/.zprezto" ]; then
-    read -rp "Install prezto?[y/N]" IN
-    if [[ ${IN} = [yY] ]]; then
-      git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-    fi
-  fi
-  return
-}
-
-function install_neobundle() {
-  if [ ! -d "$HOME/.vim/bundle/neobundle.vim" ]; then
-    read -rp "Install neobundle?[y/N]" IN
-    if [[ ${IN} = [yY] ]]; then
-      curl -s https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh
-    fi
-  fi
-}
-
-function install_fisher() {
-  if [ ! -d "$HOME/.config/fish/functions" ]; then
-    read -rp "Install fisher?[y/N]" IN
-    if [[ ${IN} = [yY] ]]; then
-      curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
-    fi
-  fi
-}
-
 function install_cask_app() {
   if [[ $(uname) =~ "Darwin" ]]; then
     echo "install cask application list:"
@@ -75,15 +47,6 @@ function install_brew_app() {
         tmux \
         hub \
         git
-    fi
-  fi
-}
-
-function install_rustup() {
-  if [[ ! -d "$HOME/.cargo" ]]; then
-    read -rp "Install fisher?[y/N]" IN
-    if [[ ${IN} = [yY] ]]; then
-      curl https://sh.rustup.rs -sSf | sh
     fi
   fi
 }
@@ -140,15 +103,23 @@ function install_aws_cli() {
   fi
 }
 
-install_brew
-install_prezto
-install_neobundle
-install_rbenv
-install_fisher
-install_cask_app
-install_brew_app
-install_rustup
-install_golang
-install_nodebrew
-install_gcloud_cli
-install_aws_cli
+# TODO
+# install_brew
+# install_rbenv
+# install_cask_app
+# install_brew_app
+# install_golang
+# install_nodebrew
+# install_gcloud_cli
+# install_aws_cli
+
+set -ex
+
+bin/setup
+
+case "$(uname)" in
+  "Darwin")  bin/mitamae local $@ lib/recipe.rb ;;
+  *) sudo -E bin/mitamae local $@ lib/recipe.rb ;;
+esac
+
+

@@ -1,0 +1,36 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+	name = Taisuke Miyazaki
+	email = imishinist@gmail.com
+[core]
+	editor = nvim
+	excludesFile = ~/.gitignore
+	filemode = true
+[color]
+	diff = auto
+	ui = true
+[alias]
+	st = status -sb
+	s = status
+	co = checkout
+	lg = log --graph --pretty=oneline --decorate --date=short --abbrev-commit --branches
+	lp = log -p
+	ls = log --stat
+[push]
+	default = simple
+[submodule]
+	recurse = true
+[init]
+	defaultBranch = master
+
+[ghq]
+	root = ~/workspace/repos
+[pager]
+	log = diff-highlight | less
+	show = diff-highlight | less
+	diff = diff-highlight | less
+[diff]
+	compactionHeuristic = true
+[include]
+	path = .gitconfig.local
