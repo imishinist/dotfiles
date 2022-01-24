@@ -37,3 +37,5 @@ include_cookbook 'nodejs'
 include_cookbook 'ruby'
 
 include_cookbook 'rust'
+
+fisher_update

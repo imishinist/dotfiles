@@ -38,4 +38,10 @@ define :fisher do
   end
 end
 
+define :fisher_update do
+  execute "echo \"fisher update\" | fish" do
+    user node[:user]
+  end
+end
+
 dotfile '.config/fish/completions/atcoder-tools.fish'
