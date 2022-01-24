@@ -33,6 +33,13 @@ if type go > /dev/null 2>&1
   set -x PATH $GOPATH/bin/ $PATH
 end
 
+if test -d $HOME/.goenv
+  set -x GOENV_ROOT $HOME/.goenv
+  set -x PATH $GOENV_ROOT/bin $PATH
+  eval (goenv init - | source)
+  set -x PATH $GOPATH/bin $PATH
+end
+
 # Node.js
 if test -d $HOME/.nodebrew
   set -x PATH $HOME/.nodebrew/current/bin $PATH
