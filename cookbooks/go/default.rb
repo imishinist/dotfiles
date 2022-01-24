@@ -1,4 +1,13 @@
 
+case node[:os]
+when 'darwin'
+  package "go"
+when 'linux'
+  snap 'go' do
+    classic true
+  end
+end
+
 execute "install goenv" do
   command "git clone https://github.com/syndbg/goenv.git #{ENV['HOME']}/.goenv"
   user node[:user]
@@ -11,14 +20,20 @@ unless ENV['PATH'].include?("#{ENV['HOME']}/.goenv/bin:")
 end
 
 latest = "1.17.6"
-execute "goenv install -s #{latest}" do
+local_ruby_block "goenv install #{latest}" do
   user node[:user]
-end
-execute "goenv global #{latest}" do
-  user node[:user]
+
+  block do
+    system("goenv install #{latest}")
+  end
+  not_if "goenv versions --bare | grep \"#{latest}\""
 end
 
 gopath = "#{ENV['HOME']}/workspace/golang"
+directory gopath do
+  user node[:user]
+end
+
 define :goinstall, version: nil, bin_name: nil do
   name = params[:name]
   v = params[:version] || "latest"

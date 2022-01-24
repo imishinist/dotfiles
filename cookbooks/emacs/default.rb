@@ -1,6 +1,9 @@
 directory "#{ENV['HOME']}/.config" do
   owner node[:user]
 end
+directory "#{ENV['HOME']}/.config/emacs" do
+  owner node[:user]
+end
 
 case node[:os]
 when "darwin"
@@ -11,4 +14,4 @@ when "linux"
   end
 end
 
-dotfile '.config/emacs'
+dotfile '.config/emacs/init.el'
