@@ -1,6 +1,8 @@
 include_role 'base'
 
 package "build-essential"
+package "pkg-config"
+package "openssl"
 
 include_cookbook 'emacs'
 include_cookbook 'direnv'

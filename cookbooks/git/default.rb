@@ -11,7 +11,9 @@ dotfile '.gitconfig'
 dotfile '.gitignore'
 
 bin_path = "#{ENV['HOME']}/bin"
-directory bin_path
+directory bin_path do
+  owner node[:user]
+end
 
 link File.join(bin_path, "diff-highlight") do
   case node[:platform]
