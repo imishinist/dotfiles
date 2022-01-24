@@ -24,7 +24,14 @@ local_ruby_block "goenv install #{latest}" do
   user node[:user]
 
   block do
-    system("goenv install #{latest}")
+    case node[:os]
+    when "darwin"
+      system("goenv install -s #{latest}")
+    when "linux"
+      system("sudo -u #{node[:user]} goenv install -s #{latest}")
+    else
+      raise NotImplementedError
+    end
   end
   not_if "goenv versions --bare | grep \"#{latest}\""
 end
