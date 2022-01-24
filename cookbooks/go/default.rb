@@ -1,6 +1,7 @@
 
 execute "install goenv" do
   command "git clone https://github.com/syndbg/goenv.git #{ENV['HOME']}/.goenv"
+  user node[:user]
   not_if "test -d #{ENV['HOME']}/.goenv"
 end
 
@@ -10,8 +11,12 @@ unless ENV['PATH'].include?("#{ENV['HOME']}/.goenv/bin:")
 end
 
 latest = "1.17.6"
-execute "goenv install -s #{latest}"
-execute "goenv global #{latest}"
+execute "goenv install -s #{latest}" do
+  user node[:user]
+end
+execute "goenv global #{latest}" do
+  user node[:user]
+end
 
 gopath = "#{ENV['HOME']}/workspace/golang"
 define :goinstall, version: nil, bin_name: nil do
@@ -20,6 +25,7 @@ define :goinstall, version: nil, bin_name: nil do
   b = params[:bin_name] || name.split("/").last
 
   execute "env GOPATH=#{gopath} go install #{name}@#{v}" do
+    user node[:user]
     not_if "test -e #{gopath}/bin/#{b}"
   end
 end

@@ -54,7 +54,7 @@ define :apt_add_repository do
 
   repo = params[:name].split(":")[1]
 
-  execute "apt-add-repository #{params[:name]}" do
+  execute "apt-add-repository -y #{params[:name]}" do
     not_if "apt-add-repository --list | grep \"#{repo}\""
   end
 end

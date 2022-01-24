@@ -27,11 +27,13 @@ dotfile '.config/fish/functions/fish_prompt.fish'
 
 execute "install fisherman" do
   command "echo \"curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher\" | fish"
+  user node[:user]
   not_if "echo \"type fisher >/dev/null 2>&1\" | fish"
 end
 
 define :fisher do
   execute "echo \"fisher install #{params[:name]}\" | fish" do
+    user node[:user]
     not_if "echo \"fisher list\" | fish | grep \"^#{params[:name]}\""
   end
 end
