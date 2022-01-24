@@ -15,10 +15,5 @@ define :goinstall, version: nil, bin_name: nil do
   end
 end
 
-goinstall 'golang.org/x/tools/cmd/goimports'
-goinstall 'github.com/go-delve/delve/cmd/dlv'
-goinstall 'github.com/golang/protobuf/protoc-gen-go'
-goinstall 'github.com/tsenart/vegeta'
-goinstall 'github.com/orisano/dlayer'
-goinstall 'github.com/orisano/bctx'
-goinstall 'github.com/spf13/cobra'
+# TODO: goがまだ入ってないときに失敗する
+# goenv入れただけでは最新版のgoは入らないので
