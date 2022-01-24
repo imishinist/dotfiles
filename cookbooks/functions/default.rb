@@ -48,3 +48,13 @@ define :snap, classic: nil do
     not_if "snap list | grep \"^#{params[:name]}$\""
   end
 end
+
+define :apt_add_repository do
+  raise NotImplementedError unless params[:name].include?("ppa")
+
+  repo = params[:name].split(":")[1]
+
+  execute "apt-add-repository #{params[:name]}" do
+    not_if "apt-add-repository --list | grep \"#{repo}\""
+  end
+end
