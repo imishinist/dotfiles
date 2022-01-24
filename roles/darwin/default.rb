@@ -38,4 +38,4 @@ include_cookbook 'ruby'
 
 include_cookbook 'rust'
 
-fisher_update
+fisher_update 'update'

@@ -19,23 +19,6 @@ unless ENV['PATH'].include?("#{ENV['HOME']}/.goenv/bin:")
   ENV['PATH'] = "#{ENV['HOME']}/.goenv/bin:#{ENV['PATH']}"
 end
 
-latest = "1.17.6"
-local_ruby_block "goenv install #{latest}" do
-  user node[:user]
-
-  block do
-    case node[:os]
-    when "darwin"
-      system("goenv install -s #{latest}")
-    when "linux"
-      system("sudo -u #{node[:user]} goenv install -s #{latest}")
-    else
-      raise NotImplementedError
-    end
-  end
-  not_if "goenv versions --bare | grep \"#{latest}\""
-end
-
 gopath = "#{ENV['HOME']}/workspace/golang"
 directory gopath do
   user node[:user]

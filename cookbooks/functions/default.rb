@@ -36,7 +36,8 @@ define :github_binary, version: nil, repository: nil, archive: nil, binary_path:
     cwd "/tmp"
   end
 
-  execute "mv /tmp/#{params[:binary_path] || cmd} #{bin_path} && chmod +x #{bin_path}" do
+  execute "cp /tmp/#{params[:binary_path] || cmd} #{bin_path} && chmod +x #{bin_path}" do
+    user node[:user]
     not_if "test -f #{bin_path}"
   end
 end
@@ -45,7 +46,7 @@ define :snap, classic: nil do
   opt = ""
   opt = "--classic" if params[:classic]
   execute "snap install #{params[:name]} #{opt}" do
-    not_if "snap list | grep \"^#{params[:name]}$\""
+    not_if "snap list | grep \"#{params[:name]}\""
   end
 end
 

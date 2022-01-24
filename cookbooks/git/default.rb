@@ -15,6 +15,12 @@ directory bin_path do
   owner node[:user]
 end
 
+unless node[:platform] == "darwin"
+  execute "chmod +x /usr/share/doc/git/contrib/diff-highlight/diff-highlight" do
+    not_if "test -L #{File.join(bin_path, "diff-highlight")}"
+  end
+end
+
 link File.join(bin_path, "diff-highlight") do
   case node[:platform]
   when "darwin"
@@ -25,3 +31,4 @@ link File.join(bin_path, "diff-highlight") do
   user node[:user]
   force true
 end
+
