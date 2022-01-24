@@ -12,6 +12,7 @@ fisher 'daenney/pyenv'
 include_cookbook 'fzf'
 fisher 'jethrokuan/fzf'
 
+include_cookbook 'gcloud'
 include_cookbook 'gh'
 include_cookbook 'ghq'
 include_cookbook 'jq'
