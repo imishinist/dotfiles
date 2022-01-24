@@ -40,3 +40,11 @@ define :github_binary, version: nil, repository: nil, archive: nil, binary_path:
     not_if "test -f #{bin_path}"
   end
 end
+
+define :snap, classic: nil do
+  opt = ""
+  opt = "--classic" if params[:classic]
+  execute "snap install #{params[:name]} #{opt}" do
+    not_if "snap list | grep \"^#{params[:name]}$\""
+  end
+end
