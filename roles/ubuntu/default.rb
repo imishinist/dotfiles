@@ -18,6 +18,7 @@ include_cookbook 'ghq'
 include_cookbook 'jq'
 include_cookbook 'ripgrep'
 include_cookbook 'tmux'
+include_cookbook 'multipass'
 include_cookbook 'vim'
 
 include_cookbook 'go'
