@@ -21,7 +21,6 @@ when 'linux'
 end
 
 dotfile '.config/fish/config.fish'
-dotfile '.config/fish/fish_variables'
 dotfile '.config/fish/functions/common.fish'
 dotfile '.config/fish/functions/fish_prompt.fish'
 
