@@ -5,6 +5,11 @@ set -x LANG "ja_JP.UTF-8"
 set -x LC_CTYPE ja_JP.UTF-8
 
 ### PATH
+if test (uname -s) = "Darwin"
+  set -x PATH /opt/homebrew/bin $PATH
+  set -x PATH /opt/homebrew/sbin $PATH
+end
+
 set -x PATH $HOME/bin $PATH
 set -x PATH $HOME/.local/bin $PATH
 
@@ -84,3 +89,5 @@ end
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/usr/local/google-cloud-sdk/path.fish.inc' ]; . '/usr/local/google-cloud-sdk/path.fish.inc'; end
 if [ -f '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc' ]; . '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc'; end
+
+. $HOME/.config/fish/functions/common.fish
