@@ -6,12 +6,14 @@ set -x LC_CTYPE ja_JP.UTF-8
 
 ### PATH
 if test (uname -s) = "Darwin"
-  set -x PATH /opt/homebrew/bin $PATH
-  set -x PATH /opt/homebrew/sbin $PATH
+  fish_add_path /opt/homebrew/bin
+  fish_add_path /opt/homebrew/sbin
+
+  fish_add_path /opt/homebrew/opt/llvm/bin
 end
 
-set -x PATH $HOME/bin $PATH
-set -x PATH $HOME/.local/bin $PATH
+fish_add_path $HOME/bin
+fish_add_path $HOME/.local/bin
 
 ### Editor
 
@@ -32,42 +34,41 @@ end
 ### Language
 
 # Go
-if type go > /dev/null 2>&1
-  set -x GOPATH $HOME/workspace/golang
-  set -x GOROOT (go env GOROOT)
-  set -x PATH $GOPATH/bin/ $PATH
-end
 
 if test -d $HOME/.goenv
-  set -x GOENV_ROOT $HOME/.goenv
-  set -x PATH $GOENV_ROOT/bin $PATH
+  set -gx GOENV_ROOT $HOME/.goenv
+  fish_add_path $GOENV_ROOT/bin
   eval (goenv init - | source)
-  set -x PATH $GOPATH/bin $PATH
-end
-
-# Node.js
-if test -d $HOME/.nodebrew
-  set -x PATH $HOME/.nodebrew/current/bin $PATH
-end
-if type nodenv > /dev/null 2>&1
-   status --is-interactive; and source (nodenv init -|psub)
+  fish_add_path $GOPATH/bin
+else
+  if type go > /dev/null 2>&1
+    set -gx GOPATH $HOME/workspace/golang
+    set -gx GOROOT (go env GOROOT)
+    fish_add_path $GOPATH/bin
+  end
 end
 
 
 # Rust
 if test -d $HOME/.cargo
-  set -x PATH $HOME/.cargo/bin $PATH
-  set PATH $HOME/.wasme/bin $PATH
+  fish_add_path $HOME/.cargo/bin
+  fish_add_path $HOME/.wasme/bin
   set -gx WASMTIME_HOME "$HOME/.wasmtime"
-  string match -r ".wasmtime" "$PATH" > /dev/null; or set -gx PATH "$WASMTIME_HOME/bin" $PATH
+  string match -r ".wasmtime" "$PATH" > /dev/null; or fish_add_path $WASMTIME_HOME/bin
+end
+
+## Volta
+if test -d $HOME/.volta
+  set -gx VOLTA_HOME "$HOME/.volta"
+  fish_add_path $VOLTA_HOME/bin
 end
 
 # Python
 if test -d $HOME/.pyenv
-  set PYENV_ROOT $HOME/.pyenv
-  set PATH $PYENV_ROOT/bin $PATH
-  status --is-interactive; and source (pyenv init - | psub)
-  set PATH (pyenv root)/shims $PATH
+   set -gx PYENV_ROOT $HOME/.pyenv
+   fish_add_path $PYENV_ROOT/bin
+   status --is-interactive; and source (pyenv init - | psub)
+   fish_add_path (pyenv root)/shims
 end
 
 # Ruby

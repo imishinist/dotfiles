@@ -12,6 +12,7 @@ include_cookbook 'emacs'
 include_cookbook 'direnv'
 include_cookbook 'fish'
 fisher 'daenney/pyenv'
+include_cookbook 'volta'
 
 include_cookbook 'fzf'
 fisher 'jethrokuan/fzf'
