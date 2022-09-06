@@ -92,3 +92,6 @@ if [ -f '/usr/local/google-cloud-sdk/path.fish.inc' ]; . '/usr/local/google-clou
 if [ -f '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc' ]; . '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc'; end
 
 . $HOME/.config/fish/functions/common.fish
+if test -f $HOME/.config/fish/config.local.fish
+  . $HOME/.config/fish/config.local.fish
+end

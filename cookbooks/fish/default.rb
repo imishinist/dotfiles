@@ -20,6 +20,17 @@ when 'linux'
   package 'fish'
 end
 
+dotfile '.config/fish/config.local.fish' do
+  case node[:os]
+  when "darwin"
+    source ".config/fish/config.darwin.fish"
+  when "linux"
+    source ".config/fish/config.linux.fish"
+  else
+    raise NotImplmentedError
+  end
+end
+
 dotfile '.config/fish/config.fish'
 dotfile '.config/fish/functions/common.fish'
 dotfile '.config/fish/functions/fish_prompt.fish'
