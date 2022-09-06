@@ -7,6 +7,8 @@ brew 'moreutils'
 brew 'gnu-sed'
 brew 'gnupg'
 brew 'protobuf'
+brew 'bat'
+brew 'fd'
 
 include_cookbook 'emacs'
 include_cookbook 'direnv'
