@@ -8,6 +8,7 @@
           (expand-file-name
            (file-name-directory (or load-file-name byte-compile-current-file))))))
 
+;; <leaf-install-code>
 (eval-and-compile
   (customize-set-variable
    'package-archives '(("gnu"   . "https://elpa.gnu.org/packages/")
@@ -29,11 +30,7 @@
     :config
     ;; initialize leaf-keywords.el
     (leaf-keywords-init)))
-
-(leaf *user-settings
-  :config
-  (setq user-full-name "Taisuke Miyazaki"
-        user-mail-address "imishinist@gmail.com"))
+;; </leaf-install-code>
 
 (leaf cus-edit
   :doc "tools for customizing Emacs and Lisp packages"
@@ -53,6 +50,8 @@
             (user-mail-address . "imishinist@gmail.com")
             (user-login-name . "imishinist")
             (create-lockfiles . nil)
+            (make-backup-files . t)
+            (delete-auto-save-files . nil)
             (debug-on-error . t)
             (init-file-debug . t)
             (frame-resize-pixelwise . t)
@@ -65,29 +64,31 @@
             (ring-bell-function . 'ignore)
             (text-quoting-style . 'straight)
             (truncate-lines . t)
+            (which-function-mode . t)
             ;; (use-dialog-box . nil)
             ;; (use-file-dialog . nil)
-            ;; (menu-bar-mode . t)
-            ;; (tool-bar-mode . nil)
+            (inhibit-startup-message . t)
+            (inhibit-startup-echo-area-message . nil)
+            (menu-bar-mode . nil)
+            (tool-bar-mode . nil)
             (scroll-bar-mode . nil)
             (indent-tabs-mode . nil))
   :config
   (defalias 'yes-or-no-p 'y-or-n-p))
-    
 
 (leaf autorevert
-      :doc "revert buffers when files on disk change"
-      :tag "builtin"
-      :custom ((auto-revert-interval .0.3)
-	       (auto-revert-check-vc-info . t))
-      :global-minor-mode global-auto-revert-mode)
+  :doc "revert buffers when files on disk change"
+  :tag "builtin"
+  :custom ((auto-revert-interval .0.3)
+	   (auto-revert-check-vc-info . t))
+  :global-minor-mode global-auto-revert-mode)
 
 (leaf cc-mode
   :doc "major mode for editing C and similar languages"
   :tag "builtin"
   :defvar (c-basic-offset)
-  :bind (c-mode-base-map
-         ("C-c c" . compile))
+  :bind ((c-mode-base-map
+          ("C-c c" . compile)))
   :mode-hook
   (c-mode-hook . ((c-set-style "bsd")
                   (setq c-basic-offset 4)))
@@ -100,18 +101,17 @@
   :global-minor-mode delete-selection-mode)
 
 
-(leaf *delimitor-settings
-  :config
-  (leaf paren
-    :ensure t
-    :doc "highlight matching paren"
-    :tag "builtin"
-    :custom ((show-paren-delay . 0.1)
-             (show-paren-style . 'mixed))
-    :hook (after-init-hook . show-paren-mode)))
+(leaf paren
+  :ensure t
+  :doc "highlight matching paren"
+  :tag "builtin"
+  :custom ((show-paren-delay . 0.1)
+           (show-paren-style . 'mixed))
+  :hook (after-init-hook . show-paren-mode))
 
 (leaf symbol-overlay
   :ensure t
+  :doc "highlight symbols with keymap-enabled overlays"
   :bind (("M-i" . symbol-overlay-put)
          (symbol-overlay-map
           ((kbd "C-p") . symbol-overlay-jump-prev)
@@ -129,6 +129,30 @@
            (eval-expression-print-length . nil)
            (eval-expression-print-level . nil)))
 
+(leaf files
+  :doc "file input and output commands for Emacs"
+  :tag "builtin"
+  :custom `((auto-save-timeout . 15)
+            (auto-save-interval . 60)
+            (auto-save-file-name-transforms . '((".*" ,(locate-user-emacs-file "backup/") t)))
+            (backup-directory-alist . '((".*" . ,(locate-user-emacs-file "backup"))
+                                        (,tramp-file-name-regexp . nil)))
+            (version-control . t)
+            (delete-old-versions . t)))
+
+(leaf startup
+  :doc "process Emacs shell arguments"
+  :tag "builtin" "internal"
+  :custom `((auto-save-list-file-prefix . ,(locate-user-emacs-file "backup/.saves-"))))
+;; (leaf *startup-settings
+;;   :config
+
+
+(leaf vc-hooks
+  :doc "resident support for version-control"
+  :tag "builtin"
+  :custom ((vc-follow-symlinks . t)))
+
 (leaf ivy
   :doc "Incremental Vertical completYon"
   :req "emacs-24.5"
@@ -145,7 +169,19 @@
            (ivy-use-selectable-prompt . t))
   :global-minor-mode t
   :config
+  (leaf smart-jump
+    :ensure t
+    :bind
+    ("C-c C-j" . smart-jump-go)
+    :custom
+    (dumb-jump-mode . t)
+    (dumb-jump-selector . 'ivy)
+    (dumb-jump-use-visible-window . nil)
+    :config
+    (smart-jump-setup-default-registers))
+
   (leaf avy-migemo
+    :doc "avy for japanese characters"
     :ensure t
     :hook (ivy-mode-hook . avy-migemo-mode))
   (leaf ivy-rich
@@ -178,7 +214,7 @@
               (counsel-find-file-ignore-regexp . ,(rx-to-string '(or "./" "../") 'no-group)))
     :global-minor-mode t))
 
-    
+
 (leaf prescient
   :doc "Better sorting and filtering"
   :req "emacs-25.1"
@@ -190,7 +226,7 @@
   :custom `((prescient-aggressive-file-save . t)
             (prescient-save-file . ,(locate-user-emacs-file "prescient")))
   :global-minor-mode prescient-persist-mode)
-  
+
 (leaf ivy-prescient
   :doc "prescient.el + Ivy"
   :req "emacs-25.1" "prescient-4.0" "ivy-0.11.0"
@@ -213,6 +249,7 @@
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error))
   :hook (prog-mode-hook . flycheck-mode))
+;; note: C-c ! l
 
 (leaf company
   :doc "Modular text completion framework"
@@ -265,16 +302,6 @@
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
 
-(leaf smart-jump
-  :ensure t ivy
-  :bind
-  ("C-c C-j" . smart-jump-go)
-  :custom
-  (dumb-jump-mode . t)
-  (dumb-jump-selector . 'ivy)
-  (dumb-jump-use-visible-window . nil)
-  :config
-  (smart-jump-setup-default-registers))
 
 (leaf lsp-ui
   :ensure t
@@ -310,29 +337,24 @@
   (lsp-ui-peek-peek-height . 20)
   (lsp-ui-peek-list-width . 50))
 
-(leaf company-lsp
-  :ensure t)
-
-(leaf rust-mode
-  :ensure t)
-
-(leaf exec-path-from-shell
- :ensure t
- :config
-    (let ((envs '("GOROOT" "GOPATH" "PATH")))
-      (exec-path-from-shell-copy-envs envs)))
 
 (leaf *golang-settings
   :config
   (leaf go-mode
     :ensure t
     :commands (go-mode)
+    :defvar ((indent-tabs-mode)
+             (gofmt-command))
     :config
+    (leaf exec-path-from-shell
+      :ensure t
+      :config
+      (let ((envs '("GOROOT" "GOPATH" "PATH")))
+        (exec-path-from-shell-copy-envs envs)))
     (setq indent-tabs-mode t)
     (setq gofmt-command "goimports")
     :hook ((go-mode-hook . lsp-deferred)
-           (before-save . gofmt-before-save))
-           ))
+           (before-save . gofmt-before-save))))
 
 (leaf *java-settings
   :config
@@ -380,22 +402,11 @@
   (setq default-process-coding-system '(utf-8 . utf-8))
   (prefer-coding-system 'utf-8-unix))
 
-(leaf *editor-settings
-  :config
-  (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
-  (setq create-lockfiles nil)
-  (setq make-backup-files nil)
-  (setq delete-auto-save-files t))
-
-(leaf *startup-settings
-  :config
-  (setq inhibit-startup-message t)
-  (setq inhibit-startup-echo-area-message -1))
-
 (leaf *line-settings
   :config
   (leaf linum
     :ensure t
+    :defvar (linum-format)
     :config
     (global-linum-mode t)
     (setq linum-format " %4d│")))
@@ -411,12 +422,17 @@
   :mode (("\\.yml\\'")
          ("\\.yaml\\'")))
 
+
 (leaf org
   :leaf-defer t
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
          ("C-c c" . org-capture))
   :mode ("\\.org$'" . org-mode)
+  :defvar ((org-directory)
+           (org-agenda-files)
+           (org-default-notes-file)
+           (org-default-todos-file))
   :config
   (setq org-directory "~/workspace/org/")
   (setq org-agenda-files
@@ -432,11 +448,11 @@
   (org-log-done . 'time)
   (org-todo-keywords . '((sequence "TODO" "DOING" "WAITING" "REVIEWING" "|" "DONE" "CANCELED")))
   (org-todo-keyword-faces . '(("TODO" :foreground "red" :weight bold)
-                            ("DOING" :foreground "cornflower blue" :weight bold)
-                            ("WAITING" :foreground "orange" :weight bold)
-                            ("REVIEWING" :foreground "magenta" :weight bold)
-                            ("DONE" :foreground "green" :weight bold)
-                            ("CANCELED" :foreground "green" :weight bold)))
+                              ("DOING" :foreground "cornflower blue" :weight bold)
+                              ("WAITING" :foreground "orange" :weight bold)
+                              ("REVIEWING" :foreground "magenta" :weight bold)
+                              ("DONE" :foreground "green" :weight bold)
+                              ("CANCELED" :foreground "green" :weight bold)))
   (org-agenda-time-grid .
                         '((daily today require-timed)
 	                  (900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100)
@@ -446,13 +462,14 @@
   :leaf-defer t
   :after org
   :commands (org-capture)
-  :custom
+  :defvar ((org-directory))
+  :config
   (setq org-directory "~/workspace/org/")
-  (org-capture-templates .
-                         '(("t" "Task" entry (file+headline org-default-todos-file "Inbox")
-	                    "** TODO %?\n   %U\n %i")
-	                   ("n" "Note" entry (file+headline org-default-notes-file "Notes")
-	                    "* %?\nEntered on %U\n %i"))))
+  :custom
+  (org-capture-templates . '(("t" "Task" entry (file+headline org-default-todos-file "Inbox")
+	                      "** TODO %?\n   %U\n %i")
+	                     ("n" "Note" entry (file+headline org-default-notes-file "Notes")
+	                      "* %?\nEntered on %U\n %i"))))
 
 (provide 'init)
 
