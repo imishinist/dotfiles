@@ -120,6 +120,16 @@
   :hook ((prog-mode-hook . symbol-overlay-mode)
          (markdown-mode-hook . symbol-overlay-mode)))
 
+(leaf highlight-indent-guides
+  :ensure t
+  :blackout t
+  :hook (((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode))
+  :custom (
+           (highlight-indent-guides-method . 'column)
+           (highlight-indent-guides-auto-enabled . t)
+           (highlight-indent-guides-responsive . t)
+           (highlight-indent-guides-character . ?\|)))
+
 (leaf simple
   :doc "basic editing commands for Emacs"
   :tag "builtin" "internal"
@@ -289,6 +299,7 @@
 
 (leaf lsp-mode
   :ensure t
+  :commands (lsp lsp-deferred)
   :custom
   (lsp-print-io . nil)
   (lsp-rust-server . 'rls)
