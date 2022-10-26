@@ -1,5 +1,7 @@
 #!/usr/local/bin/fish
 
+set fish_greeting
+
 ### common
 set -x LANG "ja_JP.UTF-8"
 set -x LC_CTYPE ja_JP.UTF-8
