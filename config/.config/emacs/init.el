@@ -443,44 +443,77 @@
   :defvar ((org-directory)
            (org-agenda-files)
            (org-default-notes-file)
-           (org-default-todos-file))
+           (org-default-todos-file)
+           (org-default-diary-file))
   :config
   (setq org-directory "~/workspace/org/")
-  (setq org-agenda-files
-        (list (concat org-directory "todo.org")
-              (concat org-directory "notes.org")
-	      (concat org-directory "schedule.org")))
-
+  (setq org-agenda-files (list org-directory))
   (setq org-default-notes-file (concat org-directory "notes.org"))
-  (setq org-default-todos-file (concat org-directory "todo.org"))
+  (setq org-default-todos-file (concat org-directory "refile.org"))
+  (setq org-default-diary-file (concat org-directory "diary.org"))
   :custom
+  (org-refile-targets . '((org-agenda-files :maxlevel . 1)))
   (org-startup-with-inline-images . t)
   (org-hide-leading-stars . t)
   (org-log-done . 'time)
-  (org-todo-keywords . '((sequence "TODO" "DOING" "WAITING" "REVIEWING" "|" "DONE" "CANCELED")))
+                                        ; TODO: 登録されたばかりのタスク
+                                        ; NEXT: 現在進行中、または仕掛け中のタスク、直近着手すべき
+                                        ; WAITING: 他人の作業街のタスク。街内容を記載する
+                                        ; HOLD: 自分が諸事情で延期中のタスク。延期理由を記載する
+                                        ; DONE: 完了したタスク
+                                        ; CANCELED: 実施不要と判断したタスク。判断理由を記載する
+  (org-todo-keywords . '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+                         (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELED(c@/!)")))
+  (org-todo-state-tags-triggers . '((("CANCELED" ("CANCELED" . t))
+                                     ("WAITING" ("WAITING" . t))
+                                     ("HOLD" ("WAITING") ("HOLD" . t))
+                                     (done ("WAITING") ("HOLD"))
+                                     ("TODO" ("WAITING") ("CANCELED") ("HOLD"))
+                                     ("NEXT" ("WAITING") ("CANCELED") ("HOLD"))
+                                     ("DONE" ("WAITING") ("CANCELED") ("HOLD")))))
   (org-todo-keyword-faces . '(("TODO" :foreground "red" :weight bold)
-                              ("DOING" :foreground "cornflower blue" :weight bold)
+                              ("NEXT" :foreground "cornflower blue" :weight bold)
                               ("WAITING" :foreground "orange" :weight bold)
-                              ("REVIEWING" :foreground "magenta" :weight bold)
+                              ("HOLD" :foreground "magenta" :weight bold)
                               ("DONE" :foreground "green" :weight bold)
                               ("CANCELED" :foreground "green" :weight bold)))
+  (org-agenda-span . 'day)
+  (org-capture-templates . '(("t" "Task" entry (file+headline org-default-todos-file "Refile")
+	                      "** TODO %?\n   %U\n %i")
+                             ("n" "Note" entry (file+headline org-default-notes-file "Notes")
+                              "** %?\n   %U\n %i")
+                             ("d" "Dairy" entry (file+datetree org-default-diary-file)
+                              "* %?\n   %U\n %i")))
+  (org-agenda-custom-commands . '(("N" "Notes: メモ一覧" tags "NOTE"
+                                   ((org-agenda-overriding-header "Notes")
+                                    (org-tags-match-list-sublevels t)))
+                                  ("h" "Habits: 習慣タスク一覧" tags-todo "STYLE=\"habit\""
+                                   ((org-agenda-overriding-header "Habits")
+                                    (org-agenda-sorting-strategy
+                                     '(todo-state-down effort-up category-keep))))
+                                  (" " "Agenda: 予定表"
+                                   ((agenda "" nil)
+                                    (tags "REFILE"
+                                          ((org-agenda-overriding-header "リファイル待ち")
+                                           (org-tags-match-list-sublevels nil)))
+                                    (tags-todo "-CANCELLED/!NEXT"
+                                               ((org-agenda-overriding-header "NEXTタスク")
+                                                (org-tags-match-list-sublevels t)
+                                                (org-agenda-sorting-strategy
+                                                 '(todo-state-down effort-up category-keep))))
+                                    (tags-todo "-HOLD-WAITING-CANCELLED/!-NEXT"
+                                               ((org-agenda-overriding-header "処理待ち(NEXT候補)")
+                                                (org-tags-match-list-sublevels 'indented)
+                                                (org-agenda-sorting-strategy
+                                                 '(category-keep))))
+                                    (tags-todo "-CANCELLED+WAITING|HOLD/!"
+                                               ((org-agenda-overriding-header "他者作業待ち・延期中")
+                                                (org-tags-match-list-sublevels nil)))
+                                    nil))))
   (org-agenda-time-grid .
                         '((daily today require-timed)
 	                  (900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100)
 	                  "......" "-----------------")))
-
-(leaf org-capture
-  :leaf-defer t
-  :after org
-  :commands (org-capture)
-  :defvar ((org-directory))
-  :config
-  (setq org-directory "~/workspace/org/")
-  :custom
-  (org-capture-templates . '(("t" "Task" entry (file+headline org-default-todos-file "Inbox")
-	                      "** TODO %?\n   %U\n %i")
-	                     ("n" "Note" entry (file+headline org-default-notes-file "Notes")
-	                      "* %?\nEntered on %U\n %i"))))
 
 (provide 'init)
 
