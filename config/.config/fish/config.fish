@@ -41,7 +41,7 @@ if test -d $HOME/.goenv
   set -gx GOENV_ROOT $HOME/.goenv
   fish_add_path $GOENV_ROOT/bin
   eval (goenv init - | source)
-  fish_add_path $GOPATH/bin
+  fish_add_path $GOENV_ROOT/shims
 else
   if type go > /dev/null 2>&1
     set -gx GOPATH $HOME/workspace/golang
