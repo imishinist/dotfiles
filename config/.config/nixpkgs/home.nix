@@ -15,7 +15,6 @@
   imports = [
       ./emacs
       ./git
-      ./home.base.nix
       ./starship
       ./tmux
   ];
