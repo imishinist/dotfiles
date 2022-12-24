@@ -1,0 +1,12 @@
+[character]
+success_symbol = "λ"
+error_symbol = "λ"
+
+[aws]
+disabled = true
+
+[nix_shell]
+symbol = "nix-shell "
+
+[cmd_duration]
+disabled = true
