@@ -52,6 +52,7 @@
       neovim
       netcat
       nodejs
+      okteto
       openjdk
       openssl
       pkg-config
