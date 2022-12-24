@@ -54,9 +54,9 @@
       nodejs
       okteto
       openjdk
-      openssl
       pkg-config
       protobuf
+      python2
       python3
       ripgrep
       starship
