@@ -6,6 +6,10 @@ on_ft = 'toml'
 [[plugins]]
 repo = 'rust-lang/rust.vim'
 on_ft = 'rust'
+
+[[plugins]]
+repo = 'LnL7/vim-nix'
+on_ft = 'nix'
 # }}}
 
 # テキストを囲うものを編集
