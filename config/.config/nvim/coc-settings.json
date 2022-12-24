@@ -1,0 +1,39 @@
+{
+    "suggest.noselect": true,
+    "suggest.preferCompleteThanJumpPlaceholder": true,
+    "languageserver": {
+        "bash": {
+            "command": "bash-language-server",
+            "args": ["start"],
+            "filetypes": ["sh"]
+        },
+        "dockerfile": {
+            "command": "docker-langserver",
+            "filetypes": ["dockerfile"],
+            "args": ["--stdio"]
+        },
+        "nix": {
+            "command": "rnix-lsp",
+            "filetypes": ["nix"]
+        },
+        "rust": {
+            "command": "rust-analyzer",
+            "filetypes": ["rust"],
+            "rootPatterns": ["Cargo.toml"]
+        },
+        "zig": {
+            "command": "zls",
+            "filetypes": [
+                "zig"
+            ]
+        }
+    },
+    "python.jediEnabled": false,
+    "coc.preferences.formatOnSaveFiletypes": [
+        "c",
+        "cpp",
+        "go",
+        "json",
+        "zig"
+    ]
+}

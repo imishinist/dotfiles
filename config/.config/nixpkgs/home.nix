@@ -32,6 +32,8 @@
       act
       awscli2
       bat
+      clang
+      clangStdenv
       coreutils
       ffmpeg
       fd
@@ -49,9 +51,10 @@
       kubectl
       moreutils
       mosh
-      neovim
       netcat
       nodejs
+      nodePackages.bash-language-server
+      nodePackages.dockerfile-language-server-nodejs
       okteto
       openjdk
       pkg-config
@@ -59,6 +62,7 @@
       python2
       python3
       ripgrep
+      rnix-lsp
       starship
       tree
       unzip
@@ -116,6 +120,14 @@
           fdd = "cd (ghq list --full-path | fzf --layout reverse)";
           gitignore = "curl -sL https://www.gitignore.io/api/$argv";
       };
+  };
+
+  programs.neovim = {
+      enable = true;
+      viAlias = true;
+      vimAlias = true;
+      withPython3 = true;
+      withNodeJs = true;
   };
 
   programs.zsh = {

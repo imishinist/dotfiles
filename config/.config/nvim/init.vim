@@ -25,9 +25,6 @@ if dein#load_state(s:nvim . 'dein')
   endif
 endif
 
-let g:python_host_prog = '~/.nix-profile/python'
-let g:python2_host_prog = '~/.nix-profile/python2'
-let g:python3_host_prog = '~/.nix-profile/python3'
 "}}}
 
 " 標準の設定{{{
@@ -74,7 +71,7 @@ let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
-      \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \   'right': [ ['cocstatus', 'readonly' ], [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
       \ },
       \ 'component_function': {
       \   'fugitive': 'LightLineFugitive',
@@ -85,6 +82,7 @@ let g:lightline = {
       \   'fileencoding': 'LightLineFileencoding',
       \   'mode': 'LightLineMode',
       \   'ctrlpmark': 'CtrlPMark',
+      \   'cocstatus': 'coc#status',
       \ },
       \ 'component_expand': {
       \   'syntastic': 'SyntasticStatuslineFlag',
@@ -201,6 +199,24 @@ hi CursorLine guifg=#E19972
 
 set tags+=.git/tags;
 set tags+=.tags;
+
+" coc 設定{{{
+" :CocInstall
+" :CocCommand go.install.gopls
+
+let g:coc_global_extensions = [
+    \'coc-clangd',
+    \'coc-git',
+    \'coc-go',
+    \'coc-html',
+    \'coc-java',
+    \'coc-json',
+    \'coc-python',
+    \'coc-sh',
+    \'coc-tsserver',
+    \'coc-zig',
+\]
+" }}}
 
 " autocmd関連{{{
 autocmd BufRead,BufNewFile *.go set nocindent

@@ -2,26 +2,10 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
 
-# 非同期でlint実行
 [[plugins]]
-repo = 'neomake/neomake'
-hook_add = '''
-let g:neomake_error_sign = {'text': '>>', 'texthl': 'Error'}
-let g:neomake_warning_sign = {'text': '>>',  'texthl': 'Todo'}
-let g:neomake_go_errcheck_maker = {
-    \ 'append_file': 0,
-    \ 'errorformat': '%f:%l:%c: %m, %f:%l:%c: %#%m',
-    \ }
-let g:neomake_go_enabled_makers = ['golint', 'govet', 'errcheck']
-let g:neomake_cpp_enabled_makers = ['clang']
-let g:neomake_cpp_clang_args = ["-std=c++14"]
-autocmd! BufWritePost * Neomake
-'''
-
-# コマンドを非同期で実行
-[[plugins]]
-repo = 'Shougo/vimproc.vim'
-build = 'make'
+repo = 'neoclide/coc.nvim'
+merged = 0
+rev = 'release'
 
 # status line
 [[plugins]]
@@ -59,16 +43,8 @@ repo = 'tpope/vim-fugitive'
 repo = 'airblade/vim-gitgutter'
 # }}}
 
-# ctagsを使って現在の関数の位置を表示
-[[plugins]]
-repo = 'majutsushi/tagbar'
-
 # ANSI colorを適用
 [[plugins]]
 repo = 'vim-scripts/AnsiEsc.vim'
-
-# undo treeを表示
-[[plugins]]
-repo = 'mbbill/undotree'
 
 # vim:set foldmethod=marker:
