@@ -32,6 +32,7 @@
       act
       awscli2
       bat
+      cargo
       clang
       clangStdenv
       coreutils
@@ -63,6 +64,7 @@
       python3
       ripgrep
       rnix-lsp
+      rustc
       starship
       tree
       unzip
