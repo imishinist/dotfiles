@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   home.packages = with pkgs; [
@@ -6,6 +6,6 @@
     diff-so-fancy
   ];
 
-  home.file.".gitconfig".text = builtins.readFile ./.gitconfig;
-  home.file.".gitignore".text = builtins.readFile ./.gitignore;
+  home.file.".gitconfig".source = config.lib.file.mkOutOfStoreSymlink ./.gitconfig;
+  home.file.".gitignore".source = config.lib.file.mkOutOfStoreSymlink ./.gitignore;
 }
