@@ -53,6 +53,7 @@
     moreutils
     mosh
     netcat
+    niv
     nodejs
     nodePackages.bash-language-server
     nodePackages.dockerfile-language-server-nodejs
