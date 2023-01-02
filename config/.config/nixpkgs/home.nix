@@ -57,6 +57,7 @@
     nodejs
     nodePackages.bash-language-server
     nodePackages.dockerfile-language-server-nodejs
+    nodePackages.localtunnel
     okteto
     openjdk
     pkg-config
