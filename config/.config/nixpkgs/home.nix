@@ -49,6 +49,7 @@
     hyperfine
     imagemagick
     jq
+    k9s
     kubectl
     moreutils
     mosh
@@ -111,6 +112,9 @@
       if test -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish'
         . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish'
       end
+
+      fish_add_path /opt/homebrew/bin
+      fish_add_path $HOME/go/bin
       # End Nix
     '';
     shellAliases = {
