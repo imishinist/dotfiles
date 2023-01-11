@@ -107,6 +107,7 @@
 
       set -x LANG "ja_JP.UTF-8"
       set -x LC_CTYPE ja_JP.UTF-8
+      set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
       # Nix
       if test -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish'
@@ -115,6 +116,7 @@
 
       fish_add_path /opt/homebrew/bin
       fish_add_path $HOME/go/bin
+      fish_add_path $HOME/.local/bin
       # End Nix
     '';
     shellAliases = {
