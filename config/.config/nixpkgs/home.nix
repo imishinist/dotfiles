@@ -43,6 +43,7 @@
     gh
     ghq
     gnused
+    gnuplot
     go
     google-cloud-sdk
     htop
