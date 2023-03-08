@@ -12,6 +12,7 @@
       else
         "/Users/$USER";
   };
+  manual.manpages.enable = false;
   imports = [
     ./emacs
     ./git
@@ -29,12 +30,8 @@
   # changes in each release.
   home.stateVersion = "22.11";
   home.packages = with pkgs; [
-    act
-    awscli2
+    # system tools
     bat
-    cargo
-    clang
-    clangStdenv
     coreutils
     ffmpeg
     fd
@@ -44,36 +41,62 @@
     ghq
     gnused
     gnuplot
-    go
-    google-cloud-sdk
     htop
     hyperfine
     imagemagick
     jq
     k9s
     kubectl
+    mkcert
     moreutils
     mosh
     netcat
-    niv
-    nodejs
-    nodePackages.bash-language-server
-    nodePackages.dockerfile-language-server-nodejs
     nodePackages.localtunnel
-    okteto
-    openjdk
-    pkg-config
     protobuf
-    python2
-    python3
     ripgrep
-    rnix-lsp
-    rustc
     starship
     tree
     unzip
     tmux
     watch
+
+    # Language
+    ## C++
+    clang
+    clangStdenv
+
+    ## Go
+    go
+
+    ## Java
+    openjdk
+
+    ## Node.js
+    nodejs
+
+    ## Python
+    python2
+    python3
+    poetry
+
+    ## Rust
+    cargo
+    rustc
+
+    ## Other Language Server
+    nodePackages.bash-language-server
+    nodePackages.dockerfile-language-server-nodejs
+    rnix-lsp
+
+    # Package Managing
+    niv
+    pkg-config
+
+
+    # Cloud
+    awscli2
+    google-cloud-sdk
+    okteto
   ];
 
   # Let Home Manager install and manage itself.
