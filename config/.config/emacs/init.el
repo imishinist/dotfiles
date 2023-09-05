@@ -329,12 +329,20 @@
   :global-minor-mode global-company-mode)
 
 (leaf lsp
+  :config
+  (setq gc-cons-threshold 100000000)
+  (setq read-process-output-max (* 1024 1024 10))
   :init
   (leaf lsp-mode
     :ensure t
     :commands (lsp lsp-deferred)
     :custom
     (lsp-print-io . nil)
+    :config
+    ;; コード編集時に遅すぎるので、この辺は無効にしておく
+    (setq lsp-diagnostics-provider :none
+          lsp-ui-sideline-enable nil
+          lsp-modeline-diagnostics-enable nil)
     :hook
     (c-mode-hook . lsp-deferred)
     (c++-mode-hook . lsp-deferred)
