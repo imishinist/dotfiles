@@ -5,6 +5,10 @@ set fish_greeting
 ### common
 set -x LANG "ja_JP.UTF-8"
 set -x LC_CTYPE ja_JP.UTF-8
+set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+
+fish_add_path $HOME/.local/bin
+fish_add_path $HOME/bin
 
 ### PATH
 if test (uname -s) = "Darwin"
@@ -13,9 +17,6 @@ if test (uname -s) = "Darwin"
 
   fish_add_path /opt/homebrew/opt/llvm/bin
 end
-
-fish_add_path $HOME/bin
-fish_add_path $HOME/.local/bin
 
 ### Editor
 
@@ -36,7 +37,6 @@ end
 ### Language
 
 # Go
-
 if test -d $HOME/.goenv
   set -gx GOENV_ROOT $HOME/.goenv
   fish_add_path $GOENV_ROOT/bin
@@ -59,18 +59,15 @@ if test -d $HOME/.cargo
   string match -r ".wasmtime" "$PATH" > /dev/null; or fish_add_path $WASMTIME_HOME/bin
 end
 
-## Volta
+# Nodejs
 if test -d $HOME/.volta
   set -gx VOLTA_HOME "$HOME/.volta"
   fish_add_path $VOLTA_HOME/bin
 end
 
 # Python
-if test -d $HOME/.pyenv
-   set -gx PYENV_ROOT $HOME/.pyenv
-   fish_add_path $PYENV_ROOT/bin
-   status --is-interactive; and source (pyenv init - | psub)
-   fish_add_path (pyenv root)/shims
+if test -d $HOME/.rye
+  fish_add_path $HOME/.rye/shims
 end
 
 # Ruby
@@ -93,7 +90,5 @@ end
 if [ -f '/usr/local/google-cloud-sdk/path.fish.inc' ]; . '/usr/local/google-cloud-sdk/path.fish.inc'; end
 if [ -f '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc' ]; . '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc'; end
 
-. $HOME/.config/fish/functions/common.fish
-if test -f $HOME/.config/fish/config.local.fish
-  . $HOME/.config/fish/config.local.fish
-end
+# if [ -f $HOME/.config/fish/functions/common.fish ]; . $HOME/.config/fish/functions/common.fish; end
+if [ -f $HOME/.config/fish/config.local.fish ]; . $HOME/.config/fish/config.local.fish; end

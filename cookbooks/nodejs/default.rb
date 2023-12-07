@@ -1,10 +1,8 @@
-# TODO: nodenv の installがめんどくさい
 
-execute "install nodebrew" do
-  command "curl -L https://git.io/nodebrew | perl - setup" do
-    user node[:user]
-  end
-  not_if "test -d #{ENV['HOME']}/.nodebrew"
+execute "install volta" do
+  command "curl https://get.volta.sh | bash"
+  user node[:user]
+  not_if "test -d #{ENV['HOME']}/.volta"
 end
 
 dotfile '.eslintrc'

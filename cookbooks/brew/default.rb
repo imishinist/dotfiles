@@ -9,5 +9,6 @@ define :brew, opt: nil do
 
   execute "brew install #{opt} #{params[:name]}" do
     not_if "brew list #{opt} | grep \"^#{params[:name]}$\""
+    subscribes :run, "execute[install homebrew]"
   end
 end

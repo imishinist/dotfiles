@@ -32,26 +32,20 @@ dotfile '.config/fish/config.local.fish' do
 end
 
 dotfile '.config/fish/config.fish'
-dotfile '.config/fish/functions/common.fish'
-dotfile '.config/fish/functions/fish_prompt.fish'
+dotfile '.config/fish/conf.d/common.fish'
+dotfile '.config/fish/conf.d/atcoder-tools.fish'
+
+dotfile_copy '.config/fish/fish_plugins'
+dotfile_copy '.config/fish/functions/fish_prompt.fish'
 
 execute "install fisherman" do
-  command "echo \"curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher\" | fish"
+  command 'echo "curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher" | fish'
   user node[:user]
   not_if "echo \"type fisher >/dev/null 2>&1\" | fish"
 end
 
-define :fisher do
-  execute "echo \"fisher install #{params[:name]}\" | fish" do
-    user node[:user]
-    not_if "echo \"fisher list\" | fish | grep \"^#{params[:name]}\""
-  end
+execute "echo \"fisher update\" | fish" do
+  action :nothing
+  user node[:user]
+  subscribes :run, "remote_file[.config/fish/fish_plugins]"
 end
-
-define :fisher_update do
-  execute "echo \"fisher update\" | fish" do
-    user node[:user]
-  end
-end
-
-dotfile '.config/fish/completions/atcoder-tools.fish'

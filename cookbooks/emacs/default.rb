@@ -1,9 +1,10 @@
-directory "#{ENV['HOME']}/.config" do
-  owner node[:user]
+
+%w[.config .config/emacs].each do |dir|
+  directory "#{ENV['HOME']}/#{dir}" do
+    owner node[:user]
+  end
 end
-directory "#{ENV['HOME']}/.config/emacs" do
-  owner node[:user]
-end
+
 
 case node[:os]
 when "darwin"

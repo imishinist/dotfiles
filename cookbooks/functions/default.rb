@@ -11,13 +11,23 @@ define :dotfile, source: nil do
   end
 end
 
+define :dotfile_copy, source: nil do
+  source = params[:source] || params[:name]
+  remote_file params[:name] do
+    path File.join(ENV['HOME'], params[:name])
+    source File.expand_path("../../../config/#{source}", __FILE__)
+    user node[:user]
+  end
+end
+
 package 'unzip'
 
 define :github_binary, version: nil, repository: nil, archive: nil, binary_path: nil do
   cmd = params[:name]
-  bin_path = "#{ENV['HOME']}/bin/#{cmd}"
+  version = params[:version]
   archive = params[:archive]
-  url = "https://github.com/#{params[:repository]}/releases/download/#{params[:version]}/#{archive}"
+  bin_path = "#{ENV['HOME']}/bin/#{cmd}-#{version}"
+  url = "https://github.com/#{params[:repository]}/releases/download/#{version}/#{archive}"
 
   if archive.end_with?('.zip')
     extract = "unzip -o"
@@ -39,6 +49,12 @@ define :github_binary, version: nil, repository: nil, archive: nil, binary_path:
   execute "cp /tmp/#{params[:binary_path] || cmd} #{bin_path} && chmod +x #{bin_path}" do
     user node[:user]
     not_if "test -f #{bin_path}"
+  end
+
+  link "#{ENV['HOME']}/bin/#{cmd}" do
+    to bin_path
+    user node[:user]
+    force true
   end
 end
 

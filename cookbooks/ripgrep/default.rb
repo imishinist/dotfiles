@@ -1,5 +1,5 @@
 # NOTE: only support x86_64
-rg_version = '13.0.0'
+rg_version = '14.0.3'.freeze
 
 github_binary 'rg' do
   repository 'BurntSushi/ripgrep'
