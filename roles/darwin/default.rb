@@ -10,6 +10,7 @@ brew 'protobuf'
 brew 'bat'
 brew 'fd'
 brew 'qemu'
+brew 'diff-so-fancy'
 
 include_cookbook 'emacs'
 include_cookbook 'fish'
