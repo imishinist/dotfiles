@@ -4,11 +4,17 @@ execute "install homebrew" do
   not_if "type brew >/dev/null 2>&1"
 end
 
-define :brew, opt: nil do
-  opt = params[:opt] || ""
+return unless node[:platform] == 'darwin'
 
-  execute "brew install #{opt} #{params[:name]}" do
-    not_if "brew list #{opt} | grep \"^#{params[:name]}$\""
-    subscribes :run, "execute[install homebrew]"
+define :brew, cask: nil do
+  cask = params[:cask] || false
+
+  if cask
+    execute "brew install --cask #{params[:name]}" do
+      not_if "ls -1 $(brew --prefix)/Caskroom/ | cut -d\"/\" -f1 | grep -E \"^#{params[:name]}$\""
+      subscribes :run, "execute[install homebrew]"
+    end
+  else
+    package params[:name]
   end
 end
