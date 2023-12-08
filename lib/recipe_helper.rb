@@ -1,7 +1,12 @@
 MItamae::RecipeContext.class_eval do
   def include_cookbook(name)
     root_dir = File.expand_path('../..', __FILE__)
-    include_recipe File.join(root_dir, 'cookbooks', name, 'default')
+    cookbook_path = File.join(root_dir, 'cookbooks')
+    if File.directory?(File.join(cookbook_path, name))
+      include_recipe File.join(cookbook_path, name, 'default')
+      return
+    end
+    include_recipe File.join(cookbook_path, name)
   end
 
   def include_role(name)
