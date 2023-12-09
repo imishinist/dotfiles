@@ -1,10 +1,10 @@
-# NOTE: only support x86_64
-rg_version = '14.0.3'.freeze
+RG_VERSION = '14.0.3'.freeze
 
-github_binary 'rg' do
+cli_binary 'rg' do
   repository 'BurntSushi/ripgrep'
-  version rg_version
+  version RG_VERSION
   platform = (node[:platform] == 'darwin' ? 'apple-darwin' : 'unknown-linux-musl')
-  archive "ripgrep-#{rg_version}-x86_64-#{platform}.tar.gz"
-  binary_path "ripgrep-#{rg_version}-x86_64-#{platform}/rg"
+  release_name "ripgrep-#{RG_VERSION}-x86_64-#{platform}.tar.gz"
+  target_dir "#{ENV['HOME']}/bin"
+  tar_options "--strip-components 1"
 end

@@ -22,39 +22,34 @@ end
 
 package 'unzip'
 
-define :github_binary, version: nil, repository: nil, archive: nil, binary_path: nil do
+define :cli_binary, repository: nil, version: nil, release_name: nil, target_dir: nil, tar_options: nil, bin_path: nil do
   cmd = params[:name]
-  version = params[:version]
-  archive = params[:archive]
-  bin_path = "#{ENV['HOME']}/bin/#{cmd}-#{version}"
-  url = "https://github.com/#{params[:repository]}/releases/download/#{version}/#{archive}"
+  real_dir = File.join(params[:target_dir], "#{cmd}-#{params[:version]}")
+  real_cmd_path = File.join(real_dir, cmd)
+  real_cmd_path = File.join(real_dir, params[:bin_path]) if params[:bin_path]
+  target_cmd_path = File.join(params[:target_dir], cmd)
 
-  if archive.end_with?('.zip')
-    extract = "unzip -o"
-  elsif archive.end_with?(".tar.gz")
-    extract = "tar xvzf"
-  else
-    extract = "touch"
+  github_release cmd do
+    repository params[:repository]
+    version params[:version]
+    release_name params[:release_name]
+    target_dir real_dir
+    tar_options params[:tar_options]
+
+    not_if "readlink #{target_cmd_path} | grep #{real_dir} && test -f #{real_cmd_path}"
   end
 
-  execute "curl -fSL -o /tmp/#{archive} #{url}" do
-    not_if "test -f #{bin_path}"
-  end
-
-  execute "#{extract} /tmp/#{archive}" do
-    not_if "test -f #{bin_path}"
-    cwd "/tmp"
-  end
-
-  execute "cp /tmp/#{params[:binary_path] || cmd} #{bin_path} && chmod +x #{bin_path}" do
-    user node[:user]
-    not_if "test -f #{bin_path}"
-  end
-
-  link "#{ENV['HOME']}/bin/#{cmd}" do
-    to bin_path
-    user node[:user]
+  link target_cmd_path do
+    to real_cmd_path
     force true
+
+    action :nothing
+    subscribes :create, "github_release[#{cmd}]"
+  end
+
+  execute "chmod +x #{real_cmd_path}" do
+    action :nothing
+    subscribes :run, "github_release[#{cmd}]"
   end
 end
 

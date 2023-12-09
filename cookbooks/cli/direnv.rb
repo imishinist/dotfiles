@@ -1,8 +1,8 @@
 DIRENV_VERSION = '2.33.0'.freeze
 
-github_binary 'direnv' do
+cli_binary 'direnv' do
   repository 'direnv/direnv'
   version "v#{DIRENV_VERSION}"
-  archive "direnv.#{node[:os]}-amd64"
-  binary_path "direnv.#{node[:os]}-amd64"
+  release_name "direnv.#{node[:os]}-amd64"
+  target_dir "#{ENV['HOME']}/bin"
 end
