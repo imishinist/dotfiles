@@ -2,7 +2,9 @@
 
 bin/setup
 
-if [ ! -f config/.config/nvim/dein/repos/github.com/Shougo/dein.vim ]; then
+if [ ! -d config/.config/nvim/dein/repos/github.com/Shougo/dein.vim ] || \
+   [ ! -d config/.config/vim/dein/repos/github.com/Shougo/dein.vim ] || \
+   [ ! -d plugins/itamae-plugin-resource-cask ]; then
     git submodule init && git submodule update --depth 1
 fi
 

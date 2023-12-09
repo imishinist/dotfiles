@@ -1,10 +1,7 @@
 
 case node[:os]
 when 'darwin'
-  include_cookbook 'brew'
-  brew 'multipass' do
-    cask true
-  end
+  cask 'multipass'
 when 'linux'
   snap 'multipass' do
     classic true

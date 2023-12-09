@@ -4,3 +4,6 @@
 [submodule "config/.config/vim/dein/repos/github.com/Shougo/dein.vim"]
 	path = config/.config/vim/dein/repos/github.com/Shougo/dein.vim
 	url = https://github.com/Shougo/dein.vim
+[submodule "plugins/itamae-plugin-resource-cask"]
+	path = plugins/itamae-plugin-resource-cask
+	url = https://github.com/itamae-plugins/itamae-plugin-resource-cask
