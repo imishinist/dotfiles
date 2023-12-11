@@ -29,4 +29,7 @@ packer.startup(function(use)
   }
   use 'norcalli/nvim-colorizer.lua'
   use 'lewis6991/gitsigns.nvim'
+
+  use 'Shougo/context_filetype.vim'
+  use 'osyo-manga/vim-precious'
 end)

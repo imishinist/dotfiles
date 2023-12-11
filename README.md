@@ -1,6 +1,6 @@
 # imishinist's dotfiles
 
-```
+```bash
 ./install.sh
 ```
 
