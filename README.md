@@ -4,6 +4,8 @@
 ./install.sh
 ```
 
+use [nerd-font](https://www.nerdfonts.com/font-downloads)
+
 ## TODO
 
 - [ ] directory owner and groups for ubuntu
