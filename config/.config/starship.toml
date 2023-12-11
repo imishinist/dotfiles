@@ -34,11 +34,6 @@ format = '[$symbol($version )]($style)'
 [docker_context]
 format = "[🐋 $context](blue bold)"
 
-[nix_shell]
-impure_msg = '[impure](bold red)'
-pure_msg = '[pure](bold green)'
-format = '[☃️ $state( \($name\))](bold blue) '
-
 [cmd_duration]
 disabled = true
 

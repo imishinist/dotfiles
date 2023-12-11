@@ -12,6 +12,7 @@ brew 'htop'
 brew 'mkcert'
 brew 'protobuf'
 brew 'qemu'
+brew 'eza'
 
 include_cookbook 'fish'
 include_cookbook 'starship'

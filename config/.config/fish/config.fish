@@ -18,6 +18,8 @@ if test (uname -s) = "Darwin"
   fish_add_path /opt/homebrew/opt/llvm/bin
 end
 
+alias ls='eza'
+
 ### Editor
 
 ## emacs
