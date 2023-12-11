@@ -1,1 +1,50 @@
-../nvim/dein.toml
+# プラグイン管理
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'neoclide/coc.nvim'
+merged = 0
+rev = 'release'
+
+# status line
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+
+# コンテキストによってfiletypeを決定する
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+
+# カーソル位置のコンテキストによってfiletypeを切り替える
+[[plugins]] 
+repo = 'osyo-manga/vim-precious'
+
+# colorscheme 関連{{{
+# solarized
+[[plugins]]
+repo = 'arakashic/nvim-colors-solarized'
+
+# molokai
+[[plugins]]
+repo = 'tomasr/molokai'
+
+# hybrid
+[[plugins]]
+repo = 'w0ng/vim-hybrid'
+# }}}
+
+# git関連{{{
+# gitを使う
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+# gitの差分をgutterに表示
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+# }}}
+
+# ANSI colorを適用
+[[plugins]]
+repo = 'vim-scripts/AnsiEsc.vim'
+
+# vim:set foldmethod=marker:
