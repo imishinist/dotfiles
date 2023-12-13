@@ -20,12 +20,13 @@ end
 
 package 'unzip'
 
-define :cli_binary, repository: nil, version: nil, release_name: nil, target_dir: nil, tar_options: nil, bin_path: nil do
+define :cli_binary, repository: nil, version: nil, release_name: nil, target_dir: nil, tar_options: nil, bin_path: nil, is_tarball: nil do
   cmd = params[:name]
   real_dir = File.join(params[:target_dir], "#{cmd}-#{params[:version]}")
   real_cmd_path = File.join(real_dir, cmd)
   real_cmd_path = File.join(real_dir, params[:bin_path]) if params[:bin_path]
   target_cmd_path = File.join(params[:target_dir], cmd)
+  is_tarball = params[:is_tarball].nil? ? true : false
 
   github_release cmd do
     repository params[:repository]
@@ -33,6 +34,7 @@ define :cli_binary, repository: nil, version: nil, release_name: nil, target_dir
     release_name params[:release_name]
     target_dir real_dir
     tar_options params[:tar_options]
+    is_tarball is_tarball
 
     not_if "readlink #{target_cmd_path} | grep #{real_dir} && test -f #{real_cmd_path}"
   end

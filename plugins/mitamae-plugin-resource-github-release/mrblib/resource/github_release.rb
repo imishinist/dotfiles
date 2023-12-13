@@ -10,6 +10,7 @@ module ::MItamae
         define_attribute :release_name, type: String, required: true
         define_attribute :target_dir, type: String, required: true
         define_attribute :tar_options, type: String, default: ""
+        define_attribute :is_tarball, type: [TrueClass, FalseClass], default: true
 
         self.available_actions = [:install]
       end

@@ -37,8 +37,12 @@ module ::MItamae
 
           case content_type
           when "application/gzip", "application/zip", "application/x-gtar"
-            options = desired.tar_options
-            @runner.run_command("mkdir -p #{target_dir} && curl -sL -o- #{download_url} | tar -C #{target_dir} #{options} -xz")
+            if desired.is_tarball
+              options = desired.tar_options
+              @runner.run_command("mkdir -p #{target_dir} && curl -sL -o- #{download_url} | tar -C #{target_dir} #{options} -xz")
+            else
+              @runner.run_command("mkdir -p #{target_dir} && curl -sL -o- #{download_url} | gunzip -c > #{target_dir}/#{desired.name}")
+            end
           when "application/octet-stream"
             @runner.run_command("mkdir -p #{target_dir} && curl -sL -o #{target_dir}/#{desired.name} #{download_url}")
           else
