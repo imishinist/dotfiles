@@ -1,6 +1,7 @@
 package 'git'
 
 
+# TODO: ubuntu
 if node[:platform] == 'darwin'
   include_cookbook 'brew'
   brew 'diff-so-fancy'

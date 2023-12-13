@@ -10,14 +10,14 @@ end
 
 directory "#{ENV['HOME']}/.cache/nvim/undo"
 
-brew 'lua-language-server'
-brew 'tree-sitter'
 
 # TODO: ubuntu
 
 case node[:os]
 when 'darwin'
   package 'neovim'
+  brew 'lua-language-server'
+  brew 'tree-sitter'
 when 'linux'
   snap 'nvim' do
     classic true
