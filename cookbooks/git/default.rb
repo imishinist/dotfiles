@@ -1,15 +1,12 @@
 package 'git'
 
+DIFF_SO_FANCY_VERSION = '1.4.4'.freeze
 
-# TODO: ubuntu
-if node[:platform] == 'darwin'
-  include_cookbook 'brew'
-  brew 'diff-so-fancy'
-
-  file(gitconfig = File.join(ENV['HOME'], '.gitconfig')) do
-    action :delete
-    only_if { File.file?(gitconfig) && !File.symlink?(gitconfig) }
-  end
+cli_binary 'diff-so-fancy' do
+  repository 'so-fancy/diff-so-fancy'
+  version "v#{DIFF_SO_FANCY_VERSION}"
+  release_name "diff-so-fancy"
+  target_dir "#{ENV['HOME']}/bin"
 end
 
 dotfile '.gitconfig'
