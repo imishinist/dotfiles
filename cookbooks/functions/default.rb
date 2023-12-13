@@ -6,7 +6,6 @@ define :dotfile, source: nil do
   source = params[:source] || params[:name]
   link File.join(ENV['HOME'], params[:name]) do
     to File.expand_path("../../../config/#{source}", __FILE__)
-    user node[:user]
     force true
   end
 end
@@ -16,7 +15,6 @@ define :dotfile_copy, source: nil do
   remote_file params[:name] do
     path File.join(ENV['HOME'], params[:name])
     source File.expand_path("../../../config/#{source}", __FILE__)
-    user node[:user]
   end
 end
 

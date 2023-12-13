@@ -1,8 +1,6 @@
 
 %w[.config .config/emacs].each do |dir|
-  directory "#{ENV['HOME']}/#{dir}" do
-    owner node[:user]
-  end
+  directory "#{ENV['HOME']}/#{dir}"
 end
 
 

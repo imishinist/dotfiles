@@ -15,7 +15,4 @@ if [ $SUBMODULE_NEED_UPDAE -eq 1 ]; then
     git submodule init && git submodule update --depth 1
 fi
 
-case "$(uname)" in
-  "Darwin")  bin/mitamae local $@ lib/recipe.rb ;;
-  *) sudo -E bin/mitamae local $@ lib/recipe.rb ;;
-esac
+bin/mitamae local $@ lib/recipe.rb

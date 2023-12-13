@@ -1,6 +1,4 @@
-directory "#{ENV['HOME']}/.bundle" do
-  owner node[:user]
-end
+directory "#{ENV['HOME']}/.bundle"
 
 dotfile '.bundle/config'
 dotfile '.gemrc'

@@ -6,9 +6,7 @@
   "#{ENV['HOME']}/.config/fish/completions",
   "#{ENV['HOME']}/.config/fish/functions",
 ].each do |dir|
-  directory dir do
-    owner node[:user]
-  end
+  directory dir
 end
 
 case node[:os]
@@ -40,12 +38,10 @@ dotfile_copy '.config/fish/functions/fish_prompt.fish'
 
 execute "install fisherman" do
   command 'echo "curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher" | fish'
-  user node[:user]
   not_if "echo \"type fisher >/dev/null 2>&1\" | fish"
 end
 
 execute "echo \"fisher update\" | fish" do
   action :nothing
-  user node[:user]
   subscribes :run, "remote_file[.config/fish/fish_plugins]"
 end

@@ -1,6 +1,4 @@
-directory "#{ENV['HOME']}/bin" do
-  owner node[:user]
-end
+directory "#{ENV['HOME']}/bin"
 
 include_cookbook 'functions'
 include_cookbook 'git'

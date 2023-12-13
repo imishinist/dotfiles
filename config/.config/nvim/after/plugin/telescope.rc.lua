@@ -37,7 +37,7 @@ telescope.load_extension('file_browser')
 local opts = { noremap = true, silent = true }
 
 -- find files from file name
-vim.keymap.set('n', ';f', '<cmd>lua require("telescope.builtin").find_files({ no_ignore = false, hidden = false })<cr>',
+vim.keymap.set('n', ';f', '<cmd>lua require("telescope.builtin").find_files({ no_ignore = false, hidden = true })<cr>',
   opts)
 -- find files from file content (grep)
 vim.keymap.set('n', ';r', '<cmd>lua require("telescope.builtin").live_grep()<cr>', opts)
