@@ -4,34 +4,28 @@ package "build-essential"
 package "pkg-config"
 package "openssl"
 
-include_cookbook 'emacs'
-include_cookbook 'direnv'
 include_cookbook 'fish'
-fisher 'daenney/pyenv'
-
-include_cookbook 'fzf'
-fisher 'jethrokuan/fzf'
-
-include_cookbook 'gcloud'
-include_cookbook 'gh'
-include_cookbook 'ghq'
-include_cookbook 'jq'
-include_cookbook 'ripgrep'
+include_cookbook 'starship'
+include_cookbook 'vim'
+include_cookbook 'emacs'
 include_cookbook 'tmux'
 include_cookbook 'multipass'
-include_cookbook 'vim'
+include_cookbook 'git'
 
-include_cookbook 'go'
-goinstall 'golang.org/x/tools/cmd/goimports'
-goinstall 'github.com/go-delve/delve/cmd/dlv'
-goinstall 'github.com/golang/protobuf/protoc-gen-go'
-goinstall 'github.com/tsenart/vegeta'
-goinstall 'github.com/orisano/dlayer'
+# cli tools(not use brew)
+include_cookbook 'cli/bat'
+include_cookbook 'cli/bctx'
+include_cookbook 'cli/direnv'
+include_cookbook 'cli/dlayer'
+include_cookbook 'cli/fd'
+include_cookbook 'cli/fzf'
+include_cookbook 'cli/gh'
+include_cookbook 'cli/ghq'
+include_cookbook 'cli/hyperfine'
+include_cookbook 'cli/jq'
+include_cookbook 'cli/ripgrep'
+include_cookbook 'cli/vegeta'
 
 include_cookbook 'nodejs'
-
-include_cookbook 'ruby'
-
 include_cookbook 'rust'
-
-fisher_update 'update'
+include_cookbook 'ruby'
