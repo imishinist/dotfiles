@@ -32,4 +32,8 @@ packer.startup(function(use)
 
   use 'Shougo/context_filetype.vim'
   use 'osyo-manga/vim-precious'
+
+  use 'nvim-lua/plenary.nvim'
+  use 'nvim-telescope/telescope.nvim'
+  use 'nvim-telescope/telescope-file-browser.nvim'
 end)
