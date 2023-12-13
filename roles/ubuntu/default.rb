@@ -4,6 +4,7 @@ package "build-essential"
 package "pkg-config"
 package "openssl"
 
+include_cookbook 'eza'
 include_cookbook 'fish'
 include_cookbook 'starship'
 include_cookbook 'vim'

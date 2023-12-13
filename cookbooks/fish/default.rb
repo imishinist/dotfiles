@@ -5,6 +5,7 @@
   "#{ENV['HOME']}/.config/fish",
   "#{ENV['HOME']}/.config/fish/completions",
   "#{ENV['HOME']}/.config/fish/functions",
+  "#{ENV['HOME']}/.config/fish/conf.d",
 ].each do |dir|
   directory dir
 end
