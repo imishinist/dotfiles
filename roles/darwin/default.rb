@@ -16,6 +16,7 @@ brew 'protobuf'
 brew 'qemu'
 
 include_cookbook 'eza'
+include_cookbook 'fish/install'
 include_cookbook 'fish'
 include_cookbook 'starship'
 include_cookbook 'vim'

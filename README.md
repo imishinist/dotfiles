@@ -12,6 +12,12 @@ use [nerd-font](https://www.nerdfonts.com/font-downloads)
 curl -sL --output-dir /tmp -O (./github-assets.sh neovim/neovim | fzf | awk '{print $2}')
 ```
 
+## ubuntu-only
+
+```bash
+sudo -E bin/mitamae local roles/ubuntu/package.rb
+```
+
 ## TODO
 
 - [ ] directory owner and groups for ubuntu
