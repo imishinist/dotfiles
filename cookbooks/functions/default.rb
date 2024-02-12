@@ -1,6 +1,3 @@
-node.reverse_merge!(
-  os: run_command('uname').stdout.strip.downcase,
-)
 
 define :dotfile, source: nil do
   source = params[:source] || params[:name]
@@ -17,8 +14,6 @@ define :dotfile_copy, source: nil do
     source File.expand_path("../../../config/#{source}", __FILE__)
   end
 end
-
-package 'unzip'
 
 define :cli_binary, repository: nil, version: nil, release_name: nil, target_dir: nil, tar_options: nil, bin_path: nil, is_tarball: nil do
   cmd = params[:name]
