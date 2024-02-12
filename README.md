@@ -18,6 +18,12 @@ curl -sL --output-dir /tmp -O (./github-assets.sh neovim/neovim | fzf | awk '{pr
 sudo -E bin/mitamae local roles/ubuntu/package.rb
 ```
 
+## neovim
+
+```
+:PackerInstall
+```
+
 ## TODO
 
 - [ ] directory owner and groups for ubuntu
