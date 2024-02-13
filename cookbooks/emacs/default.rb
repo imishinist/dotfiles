@@ -8,8 +8,13 @@ case node[:os]
 when "darwin"
   package "emacs"
 when "linux"
-  snap "emacs" do
-    classic true
+  case node[:platform]
+  when "arch"
+    package 'emacs'
+  when "ubuntu"
+    snap "emacs" do
+      classic true
+    end
   end
 end
 

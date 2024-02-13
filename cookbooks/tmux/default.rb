@@ -1,5 +1,3 @@
-package 'tmux'
-
 dotfile '.tmux.conf'
 dotfile '.tmux.conf.local' do
   case node[:os]

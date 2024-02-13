@@ -5,10 +5,6 @@ node.reverse_merge!(
 
 include_role 'base'
 
-include_cookbook 'git'
-include_cookbook 'zsh'
-
-package "build-essential"
 package "pkg-config"
 package "openssl"
 package "unzip"
