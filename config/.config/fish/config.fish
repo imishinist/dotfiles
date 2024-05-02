@@ -93,7 +93,8 @@ end
 if [ -f '/usr/local/google-cloud-sdk/path.fish.inc' ]; . '/usr/local/google-cloud-sdk/path.fish.inc'; end
 if [ -f '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc' ]; . '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc'; end
 
-# if [ -f $HOME/.config/fish/functions/common.fish ]; . $HOME/.config/fish/functions/common.fish; end
+if [ -f $HOME/.config/fish/functions/common.fish ]; . $HOME/.config/fish/functions/common.fish; end
+if [ -f $HOME/.config/fish/functions/pet.fish ]; . $HOME/.config/fish/functions/pet.fish; end
 if [ -f $HOME/.config/fish/config.local.fish ]; . $HOME/.config/fish/config.local.fish; end
 
 starship init fish | source
