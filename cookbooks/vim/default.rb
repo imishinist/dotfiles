@@ -26,7 +26,7 @@ when 'darwin'
   brew 'lua-language-server'
 end
 
-TREE_SITTER_VERSION = '0.20.8'.freeze
+TREE_SITTER_VERSION = '0.22.5'.freeze
 cli_binary 'tree-sitter' do
   repository 'tree-sitter/tree-sitter'
   version "v#{TREE_SITTER_VERSION}"
