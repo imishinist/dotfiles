@@ -9,3 +9,5 @@ cmake-*
 sync
 tmp
 .fleet
+.mtl
+.scripts
