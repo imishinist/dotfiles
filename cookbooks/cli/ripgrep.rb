@@ -1,4 +1,4 @@
-RG_VERSION = '14.0.3'.freeze
+RG_VERSION = '14.1.0'.freeze
 
 cli_binary 'rg' do
   repository 'BurntSushi/ripgrep'

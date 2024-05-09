@@ -1,4 +1,4 @@
-GHQ_VERSION = '1.4.2'.freeze
+GHQ_VERSION = '1.6.1'.freeze
 
 cli_binary 'ghq' do
   repository 'x-motemen/ghq'

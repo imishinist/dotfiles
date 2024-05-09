@@ -1,4 +1,4 @@
-FD_VERSION = '8.7.1'.freeze
+FD_VERSION = '10.1.0'.freeze
 
 cli_binary 'fd' do
   repository 'sharkdp/fd'

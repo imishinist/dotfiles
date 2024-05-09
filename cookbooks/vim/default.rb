@@ -1,7 +1,7 @@
 # NeoVim
 include_cookbook 'functions'
 
-NEOVIM_VERSION = '0.9.4'.freeze
+NEOVIM_VERSION = '0.9.5'.freeze
 cli_binary 'nvim' do
   repository 'neovim/neovim'
   version "v#{NEOVIM_VERSION}"
@@ -26,7 +26,7 @@ when 'darwin'
   brew 'lua-language-server'
 end
 
-TREE_SITTER_VERSION = '0.22.5'.freeze
+TREE_SITTER_VERSION = '0.22.6'.freeze
 cli_binary 'tree-sitter' do
   repository 'tree-sitter/tree-sitter'
   version "v#{TREE_SITTER_VERSION}"

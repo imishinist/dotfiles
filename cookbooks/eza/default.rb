@@ -1,8 +1,7 @@
 
+EZA_VERSION = '0.18.4'.freeze
 case node[:os]
 when "linux"
-  EZA_VERSION = '0.16.3'.freeze
-
   cli_binary 'eza' do
     repository 'eza-community/eza'
     version "v#{EZA_VERSION}"

@@ -1,4 +1,4 @@
-STARSHIP_VERSION = '1.16.0'.freeze
+STARSHIP_VERSION = '1.18.2'.freeze
 
 cli_binary 'starship' do
   repository 'starship/starship'

@@ -1,4 +1,4 @@
-FZF_VERSION = '0.44.1'.freeze
+FZF_VERSION = '0.52.0'.freeze
 
 cli_binary 'fzf' do
   repository 'junegunn/fzf'

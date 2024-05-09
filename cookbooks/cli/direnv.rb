@@ -1,4 +1,4 @@
-DIRENV_VERSION = '2.33.0'.freeze
+DIRENV_VERSION = '2.34.0'.freeze
 
 cli_binary 'direnv' do
   repository 'direnv/direnv'
