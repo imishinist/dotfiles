@@ -1,5 +1,5 @@
 
-EZA_VERSION = '0.18.4'.freeze
+EZA_VERSION = '0.18.5'.freeze
 case node[:os]
 when "linux"
   cli_binary 'eza' do
