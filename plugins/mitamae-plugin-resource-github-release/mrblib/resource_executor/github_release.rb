@@ -44,7 +44,12 @@ module ::MItamae
               @runner.run_command("mkdir -p #{target_dir} && curl -sL -o- #{download_url} | gunzip -c > #{target_dir}/#{desired.name}")
             end
           when "application/octet-stream"
-            @runner.run_command("mkdir -p #{target_dir} && curl -sL -o #{target_dir}/#{desired.name} #{download_url}")
+            if download_url.end_with?(".tar.gz")
+              options = desired.tar_options
+              @runner.run_command("mkdir -p #{target_dir} && curl -sL -o- #{download_url} | tar -C #{target_dir} #{options} -xz")
+            else
+              @runner.run_command("mkdir -p #{target_dir} && curl -sL -o #{target_dir}/#{desired.name} #{download_url}")
+            end
           else
             raise NotImplementedError, "unsupported content_type: '#{content_type}'"
           end
