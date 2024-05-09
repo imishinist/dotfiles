@@ -1,7 +1,6 @@
 
 set -x GPG_TTY $(tty)
 
-if [ -d /opt/cuda ]; then
-    set -x PATH $PATH /opt/cuda/bin
-fi
-
+if test -d /opt/cuda
+  fish_add_path /opt/cuda/bin
+end
