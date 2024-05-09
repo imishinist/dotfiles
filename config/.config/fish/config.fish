@@ -50,6 +50,8 @@ else
     set -gx GOPATH $HOME/workspace/golang
     set -gx GOROOT (go env GOROOT)
     fish_add_path $GOPATH/bin
+
+    fish_add_path $HOME/go/bin
   end
 end
 
