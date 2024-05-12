@@ -5,7 +5,9 @@ set fish_greeting
 ### common
 set -x LANG "ja_JP.UTF-8"
 set -x LC_CTYPE ja_JP.UTF-8
-set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+
+# aws help broken
+# set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 set -x LESSCHARSET utf-8
 
 fish_add_path $HOME/.local/bin
