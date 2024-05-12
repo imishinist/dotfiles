@@ -50,3 +50,11 @@ vim.cmd('autocmd BufRead,BufNewFile *.go set nocindent')
 
 vim.o.undofile = true
 vim.opt.undodir = vim.fn.expand('~/.cache/nvim/undo')
+
+-- save cursor position
+vim.api.nvim_create_autocmd({ 'BufReadPost' }, {
+  pattern = { '*' },
+  callback = function()
+    vim.api.nvim_exec('silent! normal! g`"zv', false)
+  end,
+})
