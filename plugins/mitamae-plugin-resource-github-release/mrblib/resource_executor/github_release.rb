@@ -43,6 +43,9 @@ module ::MItamae
             else
               @runner.run_command("mkdir -p #{target_dir} && curl -sL -o- #{download_url} | gunzip -c > #{target_dir}/#{desired.name}")
             end
+          when "application/x-xz"
+            options = desired.tar_options
+            @runner.run_command("mkdir -p #{target_dir} && curl -sL -o- #{download_url} | tar -C #{target_dir} #{options} -xJ")
           when "application/octet-stream"
             if download_url.end_with?(".tar.gz")
               options = desired.tar_options

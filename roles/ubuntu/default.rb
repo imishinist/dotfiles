@@ -22,6 +22,7 @@ include_cookbook 'cli/mitamae'
 include_cookbook 'cli/pet'
 include_cookbook 'cli/ripgrep'
 include_cookbook 'cli/vegeta'
+include_cookbook 'cli/watchexec'
 
 include_cookbook 'nodejs'
 include_cookbook 'rust'
