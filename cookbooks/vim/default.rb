@@ -13,18 +13,19 @@ cli_binary 'nvim' do
 end
 
 directory "#{ENV['HOME']}/.config"
-directory "#{ENV['HOME']}/.cache/nvim/undo"
 
-git "#{ENV['HOME']}/.local/share/nvim/site/pack/packer/start/packer.nvim" do
-  action :sync
-  repository 'https://github.com/wbthomason/packer.nvim'
-  depth 1
-end
 
-case node[:os]
-when 'darwin'
-  brew 'lua-language-server'
-end
+# directory "#{ENV['HOME']}/.cache/nvim/undo"
+# git "#{ENV['HOME']}/.local/share/nvim/site/pack/packer/start/packer.nvim" do
+#   action :sync
+#   repository 'https://github.com/wbthomason/packer.nvim'
+#   depth 1
+# end
+
+# case node[:os]
+# when 'darwin'
+#   brew 'lua-language-server'
+# end
 
 TREE_SITTER_VERSION = '0.22.6'.freeze
 cli_binary 'tree-sitter' do
@@ -46,8 +47,11 @@ end
 #   bin_path "bin/lua-language-server"
 # end
 
+dotfile '.config/nvim' do
+  source '.config/nvim-lazynvim'
+end
 
-dotfile '.config/nvim'
+# dotfile '.config/nvim'
 
 # Vim
 dotfile '.vimrc'
