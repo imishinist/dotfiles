@@ -5,7 +5,11 @@ return {
     local lint = require("lint")
 
     lint.linters_by_ft = {
+      go = { "golangcilint" },
       python = { "pylint" },
+      proto = { "buf_lint" },
+      sh = { "shellcheck" },
+      bash = { "shellcheck" },
     }
 
     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })

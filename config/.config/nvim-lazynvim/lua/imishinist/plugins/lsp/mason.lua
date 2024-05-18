@@ -22,12 +22,30 @@ return {
     })
     mason_lspconfig.setup({
       ensure_installed = {
+        "bashls",
+        "bufls",
+        "clangd",
+        "gopls",
         "lua_ls",
+        "rust_analyzer",
+        "tsserver",
       },
     })
     mason_tool_installer.setup({
       ensure_installed = {
+        "biome",
+        "bash-language-server",
+        "buf",
+        "protolint",
+        "buf-language-server",
+        "clang-format",
+        "cfn-lint",
+        "goimports",
+        "golangci-lint",
+        "rust-analyzer",
+        "shellcheck",
         "stylua",
+        "typescript-language-server",
         "pylint",
       },
     })
