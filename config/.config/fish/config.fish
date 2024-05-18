@@ -56,6 +56,7 @@ else
     fish_add_path $HOME/go/bin
   end
 end
+set -gx CGO_ENABLED 0
 
 
 # Rust
