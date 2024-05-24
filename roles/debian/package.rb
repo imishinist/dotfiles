@@ -9,6 +9,6 @@ package "pkg-config"
 package "openssl"
 package "unzip"
 
-include_cookbook 'fish/install'
+# include_cookbook 'fish/install'
 include_cookbook 'emacs'
 include_cookbook 'tmux/install'
