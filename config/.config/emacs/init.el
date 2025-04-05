@@ -344,12 +344,7 @@
           lsp-ui-sideline-enable nil
           lsp-modeline-diagnostics-enable nil)
     :hook
-    (c-mode-hook . lsp-deferred)
-    (c++-mode-hook . lsp-deferred)
-    (go-mode-hook . lsp-deferred)
-    (java-mode-hook . lsp-deferred)
-    (rust-mode-hook . lsp-deferred))
-
+    (prog-major-mode-hook . lsp-prog-major-mode-enable))
   (leaf lsp-ui
     :ensure t
     :after lsp-mode
