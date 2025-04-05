@@ -6,6 +6,8 @@ set fish_greeting
 set -x LANG "ja_JP.UTF-8"
 set -x LC_CTYPE ja_JP.UTF-8
 
+bind \cd delete-char
+
 # aws help broken
 # set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 set -x LESSCHARSET utf-8
@@ -79,7 +81,8 @@ if test -d $HOME/.rye
 end
 
 # Ruby
-if type rbenv > /dev/null 2>&1
+if test -d $HOME/.rbenv
+  fish_add_path $HOME/.rbenv/bin
   status --is-interactive; and source (rbenv init -|psub)
 end
 
