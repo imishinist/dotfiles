@@ -5,7 +5,6 @@ return {
     local lint = require("lint")
 
     lint.linters_by_ft = {
-      go = { "golangcilint" },
       python = { "pylint" },
       proto = { "buf_lint" },
       sh = { "shellcheck" },
