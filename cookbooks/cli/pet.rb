@@ -1,4 +1,4 @@
-PET_VERSION = '0.8.4'.freeze
+PET_VERSION = '1.0.1'.freeze
 
 cli_binary 'pet' do
   repository 'knqyf263/pet'

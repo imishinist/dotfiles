@@ -1,4 +1,4 @@
-WATCHEXEC_VERSION = '2.1.1'.freeze
+WATCHEXEC_VERSION = '2.3.0'.freeze
 
 cli_binary 'watchexec' do
   repository 'watchexec/watchexec'

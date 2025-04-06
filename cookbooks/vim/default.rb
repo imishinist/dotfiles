@@ -1,12 +1,13 @@
 # NeoVim
 include_cookbook 'functions'
 
-NEOVIM_VERSION = '0.9.5'.freeze
+NEOVIM_VERSION = '0.11.0'.freeze
 cli_binary 'nvim' do
   repository 'neovim/neovim'
   version "v#{NEOVIM_VERSION}"
   platform = (node[:platform] == 'darwin' ? 'macos' : 'linux64')
-  release_name "nvim-#{platform}.tar.gz"
+  arch = node[:arch] == 'x86_64' ? 'x86_64' : 'arm64'
+  release_name "nvim-#{platform}-#{arch}.tar.gz"
   target_dir "#{ENV['HOME']}/bin"
   bin_path "bin/nvim"
   tar_options '--strip-components 1'
@@ -27,7 +28,7 @@ directory "#{ENV['HOME']}/.config"
 #   brew 'lua-language-server'
 # end
 
-TREE_SITTER_VERSION = '0.22.6'.freeze
+TREE_SITTER_VERSION = '0.25.3'.freeze
 cli_binary 'tree-sitter' do
   repository 'tree-sitter/tree-sitter'
   version "v#{TREE_SITTER_VERSION}"

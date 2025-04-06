@@ -1,4 +1,4 @@
-BAT_VERSION = '0.24.0'.freeze
+BAT_VERSION = '0.25.0'.freeze
 
 cli_binary 'bat' do
   repository 'sharkdp/bat'

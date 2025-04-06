@@ -1,4 +1,4 @@
-JQ_VERSION = '1.7'.freeze
+JQ_VERSION = '1.7.1'.freeze
 
 cli_binary 'jq' do
   repository 'stedolan/jq'

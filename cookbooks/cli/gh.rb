@@ -1,4 +1,4 @@
-GH_VERSION = '2.49.1'.freeze
+GH_VERSION = '2.69.0'.freeze
 
 cli_binary 'gh' do
   repository 'cli/cli'

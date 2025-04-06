@@ -1,4 +1,4 @@
-HYPERFINE_VERSION = '1.18.0'.freeze
+HYPERFINE_VERSION = '1.19.0'.freeze
 
 cli_binary 'hyperfine' do
   repository 'sharkdp/hyperfine'

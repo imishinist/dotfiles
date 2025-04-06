@@ -1,4 +1,4 @@
-VEGETA_VERSION = '12.11.1'.freeze
+VEGETA_VERSION = '12.12.0'.freeze
 
 cli_binary 'vegeta' do
   repository 'tsenart/vegeta'
