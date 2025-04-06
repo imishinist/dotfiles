@@ -23,12 +23,12 @@ return {
     mason_lspconfig.setup({
       ensure_installed = {
         "bashls",
-        "bufls",
+        "buf_ls",
         "clangd",
         "gopls",
         "lua_ls",
         "rust_analyzer",
-        "tsserver",
+        "ts_ls",
       },
     })
     mason_tool_installer.setup({

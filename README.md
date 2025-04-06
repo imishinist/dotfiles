@@ -21,7 +21,7 @@ sudo -E bin/mitamae local roles/ubuntu/package.rb
 ## neovim
 
 ```
-:PackerInstall
+:Lazy
 ```
 
 ## TODO
