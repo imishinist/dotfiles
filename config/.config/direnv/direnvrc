@@ -1,0 +1,4 @@
+use_gcp() {
+    export CLOUDSDK_ACTIVE_CONFIG_NAME="$1"
+    export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+}

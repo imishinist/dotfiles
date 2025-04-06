@@ -15,6 +15,7 @@ brew 'mkcert'
 brew 'protobuf'
 brew 'qemu'
 
+include_cookbook 'alacritty'
 include_cookbook 'eza'
 include_cookbook 'fish/install'
 include_cookbook 'fish'
@@ -25,6 +26,9 @@ include_cookbook 'tmux/install'
 include_cookbook 'tmux'
 include_cookbook 'multipass'
 include_cookbook 'git'
+include_cookbook 'karabiner'
+include_cookbook 'zellij'
+include_cookbook '1Password'
 
 # cli tools(not use brew)
 include_cookbook 'cli/bat'

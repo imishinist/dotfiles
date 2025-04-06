@@ -1,0 +1,11 @@
+[[ssh-keys]]
+vault = "Private"
+item = "GitHub Authentication keys"
+
+[[ssh-keys]]
+vault = "Private"
+item = "miyazaki id_rsa"
+
+[[ssh-keys]]
+vault = "Private"
+item = "Github Signing Key"

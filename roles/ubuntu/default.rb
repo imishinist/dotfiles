@@ -6,6 +6,8 @@ include_cookbook 'vim'
 include_cookbook 'tmux'
 include_cookbook 'git'
 include_cookbook 'fish'
+include_cookbook 'zellij'
+include_cookbook '1Password'
 
 # cli tools(not use brew)
 include_cookbook 'cli/bat'

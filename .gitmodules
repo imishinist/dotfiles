@@ -4,3 +4,6 @@
 [submodule "plugins/itamae-plugin-resource-cask"]
 	path = plugins/itamae-plugin-resource-cask
 	url = https://github.com/itamae-plugins/itamae-plugin-resource-cask
+[submodule "config/.config/alacritty/themes"]
+	path = config/.config/alacritty/themes
+	url = https://github.com/alacritty/alacritty-theme.git

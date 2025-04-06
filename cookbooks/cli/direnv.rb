@@ -6,3 +6,7 @@ cli_binary 'direnv' do
   release_name "direnv.#{node[:os]}-amd64"
   target_dir "#{ENV['HOME']}/bin"
 end
+
+dotfile '.config/direnv' do
+  source '.config/direnv'
+end
