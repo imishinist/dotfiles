@@ -1,45 +1,26 @@
 #!/usr/local/bin/fish
 
-set fish_greeting
-
 ### common
 set -x LANG "ja_JP.UTF-8"
 set -x LC_CTYPE ja_JP.UTF-8
 
-bind \cd delete-char
-
-# aws help broken
-# set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 set -x LESSCHARSET utf-8
+set -x EDITOR nvim
+set -x VISUAL nvim
+set -x GPG_TTY $(tty)
 
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/bin
 
-### PATH
-if test (uname -s) = "Darwin"
-  fish_add_path /opt/homebrew/bin
-  fish_add_path /opt/homebrew/sbin
+bind \cd delete-char
 
-  fish_add_path /opt/homebrew/opt/llvm/bin
-end
-
+### Alias
 alias ls='eza'
-
-### Editor
-
-## emacs
-if type emacs > /dev/null 2>&1
-  alias en 'emacsclient -nw -a ""'
-  alias em 'emacsclient --create-frame -a ""'
-  alias ekill='emacsclient -e "(kill-emacs)"'
-end
-
-## Vim
-if type nvim > /dev/null 2>&1
-  alias vi='nvim'
-  alias vim='nvim'
-end
-
+alias en 'emacsclient -nw -a ""'
+alias em 'emacsclient --create-frame -a ""'
+alias ekill='emacsclient -e "(kill-emacs)"'
+alias vi='nvim'
+alias vim='nvim'
 
 ### Language
 
@@ -62,25 +43,17 @@ set -gx CGO_ENABLED 0
 
 
 # Rust
-if test -d $HOME/.cargo
-  fish_add_path $HOME/.cargo/bin
-  fish_add_path $HOME/.wasme/bin
-  set -gx WASMTIME_HOME "$HOME/.wasmtime"
-  string match -r ".wasmtime" "$PATH" > /dev/null; or fish_add_path $WASMTIME_HOME/bin
-end
+fish_add_path $HOME/.cargo/bin
 
 # Nodejs
-if test -d $HOME/.volta
-  set -gx VOLTA_HOME "$HOME/.volta"
-  fish_add_path $VOLTA_HOME/bin
-end
+set -gx VOLTA_HOME "$HOME/.volta"
+fish_add_path $VOLTA_HOME/bin
 
 # Python
-if test -d $HOME/.rye
-  fish_add_path $HOME/.rye/shims
-end
+fish_add_path $HOME/.rye/shims
 
 # Ruby
+# NOTE: ruby is not installed with mitamae.
 if test -d $HOME/.rbenv
   fish_add_path $HOME/.rbenv/bin
   status --is-interactive; and source (rbenv init -|psub)
@@ -92,18 +65,16 @@ if type java >/dev/null 2>&1
 end
 
 # direnv tool
-if type direnv > /dev/null 2>&1
-   direnv hook fish | source
-end
+direnv hook fish | source
 
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/usr/local/google-cloud-sdk/path.fish.inc' ]; . '/usr/local/google-cloud-sdk/path.fish.inc'; end
 if [ -f '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc' ]; . '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc'; end
 
-if [ -f $HOME/.config/fish/functions/common.fish ]; . $HOME/.config/fish/functions/common.fish; end
-if [ -f $HOME/.config/fish/functions/pet.fish ]; . $HOME/.config/fish/functions/pet.fish; end
-if [ -f $HOME/.config/fish/config.local.fish ]; . $HOME/.config/fish/config.local.fish; end
+. $HOME/.config/fish/functions/common.fish
+. $HOME/.config/fish/functions/pet.fish
+. $HOME/.config/fish/config.local.fish
+if [ -f $HOME/.config/fish/config.custom.fish ]; . $HOME/.config/fish/config.custom.fish; end
 
 starship init fish | source
-

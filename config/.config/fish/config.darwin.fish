@@ -1,7 +1,4 @@
-alias tailscale "/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+fish_add_path /opt/homebrew/bin
+fish_add_path /opt/homebrew/sbin
 
-set -x GPG_TTY $(tty)
-
-if test -d "$HOME/.config/op"
-  source $HOME/.config/op/plugins.sh
-end
+fish_add_path /opt/homebrew/opt/llvm/bin

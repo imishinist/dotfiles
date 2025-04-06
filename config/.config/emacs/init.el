@@ -493,6 +493,10 @@
     :ensure t
     :mode (("\\.yml\\'")
            ("\\.yaml\\'")))
+
+  (leaf fish-mode
+    :ensure t
+    :mode (("\\.fish'")))
   )
 
 

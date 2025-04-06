@@ -1,7 +1,9 @@
 
 case node[:os]
 when 'darwin'
-  cask 'multipass'
+  brew 'multipass' do
+    cask true
+  end
 when 'linux'
   snap 'multipass' do
     classic true
