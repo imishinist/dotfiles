@@ -1,4 +1,12 @@
 
+define :touch do
+  target = params[:name]
+  path = File.join(ENV['HOME'], target)
+  execute "touch" do
+    command "touch #{path}"
+  end
+end
+
 define :dotfile, source: nil do
   source = params[:source] || params[:name]
   link File.join(ENV['HOME'], params[:name]) do

@@ -22,6 +22,8 @@ dotfile '.config/fish/config.local.fish' do
   end
 end
 
+touch '.config/fish/config.custom.fish'
+
 dotfile '.config/fish/config.fish'
 dotfile '.config/fish/conf.d/common.fish'
 dotfile '.config/fish/functions/pet.fish'

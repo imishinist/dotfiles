@@ -18,16 +18,41 @@ unless ENV['PATH'].include?("#{ENV['HOME']}/.goenv/bin:")
   ENV['PATH'] = "#{ENV['HOME']}/.goenv/bin:#{ENV['PATH']}"
 end
 
-gopath = "#{ENV['HOME']}/workspace/golang"
-directory gopath
+go_bin_path = "#{ENV['HOME']}/go/bin"
+directory go_bin_path
 
 define :goinstall, version: nil, bin_name: nil do
   name = params[:name]
-  v = params[:version] || "latest"
-  b = params[:bin_name] || name.split("/").last
+  version = params[:version] || "latest"
+  bin_name = params[:bin_name] || name.split("/").last
 
-  execute "env GOPATH=#{gopath} go install #{name}@#{v}" do
-    not_if "test -e #{gopath}/bin/#{b}"
+  execute "env GOBIN=#{go_bin_path} go install #{name}@#{version}" do
+    not_if "test -e #{go_bin_path}/#{bin_name}"
   end
+end
+
+# formatter
+goinstall "golang.org/x/tools/cmd/goimports" do
+  bin_name "goimports"
+end
+
+# lint
+goinstall "honnef.co/go/tools/cmd/staticcheck" do
+  bin_name "staticcheck"
+end
+
+# debugger
+goinstall "github.com/go-delve/delve/cmd/dlv" do
+  bin_name "dlv"
+end
+
+# lsp-server
+goinstall "golang.org/x/tools/gopls" do
+  bin_name "gopls"
+end
+
+# protobuf config
+goinstall "google.golang.org/protobuf/cmd/protoc-gen-go" do
+  bin_name "protoc-gen-go"
 end
 

@@ -26,6 +26,12 @@ include_cookbook 'cli/ripgrep'
 include_cookbook 'cli/vegeta'
 include_cookbook 'cli/watchexec'
 
+include_cookbook 'go'
 include_cookbook 'nodejs'
 include_cookbook 'rust'
 include_cookbook 'ruby'
+
+# go tools
+include_cookbook 'cli/cobra'
+include_cookbook 'cli/ujsonize'
+include_cookbook 'cli/usql'
