@@ -33,6 +33,7 @@ include_cookbook '1Password'
 # cli tools(not use brew)
 include_cookbook 'cli/bat'
 include_cookbook 'cli/bctx'
+include_cookbook 'cli/conftest'
 include_cookbook 'cli/direnv'
 include_cookbook 'cli/dlayer'
 include_cookbook 'cli/fd'
