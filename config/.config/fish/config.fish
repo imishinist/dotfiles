@@ -4,6 +4,13 @@
 # Environment variables
 ################################################################################
 
+set -q XDG_CONFIG_HOME || set -gx XDG_CONFIG_HOME $HOME/.config
+set -q XDG_DATA_HOME || set -gx XDG_DATA_HOME $HOME/.local/share
+
+set -g FISH_CONFIG_DIR $XDG_CONFIG_HOME/fish
+set -g FISH_CONFIG $FISH_CONFIG_DIR/config.fish
+set -g FISH_CACHE_DIR $HOME/.cache/fish
+
 set -x LANG ja_JP.UTF-8
 set -x LC_CTYPE ja_JP.UTF-8
 
