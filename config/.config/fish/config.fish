@@ -23,6 +23,9 @@ set -x GPG_TTY $(tty)
 # Go
 set -gx GOBIN $HOME/go/bin
 set -gx CGO_ENABLED 0
+## NOTE: goenv not set GOPATH.
+## goenv rehash is so slow, and it is not necessary to set GOPATH.
+set -gx GOENV_DISABLE_GOPATH 1
 set -gx GOENV_ROOT $HOME/.goenv
 
 # Nodejs
@@ -101,11 +104,18 @@ if test "$FISH_CONFIG" -nt "$CONFIG_CACHE"
   echo '' >$CONFIG_CACHE
 
   # Go
-  test -d $GOENV_ROOT && goenv init - >>$CONFIG_CACHE
+  if test -d $GOENV_ROOT
+    # NOTE: workaround for speed up goenv init
+    # https://github.com/go-nv/goenv/blob/ed2e05fbedfd61e05647877c79f79480061f18e5/libexec/goenv-init#L128-L131
+    mv $GOENV_ROOT/completions/goenv.fish{,.bk} 2>/dev/null
+    goenv init --no-rehash - >>$CONFIG_CACHE
+  end
 
   # Ruby
   # NOTE: ruby is not installed with mitamae.
-  test -d $HOME/.rbenv && rbenv init - >> $CONFIG_CACHE
+  if test -d $HOME/.rbenv
+    rbenv init --no-rehash - >>$CONFIG_CACHE
+  end
 
   # direnv
   type -q direnv && direnv hook fish >> $CONFIG_CACHE
