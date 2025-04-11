@@ -92,22 +92,29 @@ set --local google_cloud_sdk_path {$brew_cask_path}/google-cloud-sdk/latest/goog
 if [ -f {$google_cloud_sdk_path}/path.fish.inc ]; . {$google_cloud_sdk_path}/path.fish.inc; end
 
 ################################################################################
-# source
+# source with cache
 ################################################################################
 
-# Go
-if test -d $GOENV_ROOT
-  status --is-interactive; and source (goenv init - | psub)
+set -l CONFIG_CACHE $FISH_CACHE_DIR/config.fish
+if test "$FISH_CONFIG" -nt "$CONFIG_CACHE"
+  mkdir -p $FISH_CACHE_DIR
+  echo '' >$CONFIG_CACHE
+
+  # Go
+  test -d $GOENV_ROOT && goenv init - >>$CONFIG_CACHE
+
+  # Ruby
+  # NOTE: ruby is not installed with mitamae.
+  test -d $HOME/.rbenv && rbenv init - >> $CONFIG_CACHE
+
+  # direnv
+  type -q direnv && direnv hook fish >> $CONFIG_CACHE
+
+  # starship
+  type -q starship && starship init fish --print-full-init >> $CONFIG_CACHE
+
+  set_color brmagenta --bold --underline
+  echo "config cache updated"
+  set_color normal
 end
-
-# Ruby
-# NOTE: ruby is not installed with mitamae.
-if test -d $HOME/.rbenv
-  status --is-interactive; and source (rbenv init - | psub)
-end
-
-# direnv
-status --is-interactive; and source (direnv hook fish | psub)
-
-# starship
-status --is-interactive; and source (starship init fish | psub)
+source $CONFIG_CACHE
