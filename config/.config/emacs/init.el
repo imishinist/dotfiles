@@ -35,7 +35,9 @@
 ;; <leaf-code>
 (leaf leaf
   :config
-  (leaf leaf-convert :ensure t)
+  (leaf leaf-convert
+    :ensure t
+    :config (leaf use-package :ensure t))
   (leaf leaf-tree
     :ensure t
     :custom ((imenu-list-size . 30)
