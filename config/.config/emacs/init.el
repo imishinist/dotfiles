@@ -35,11 +35,20 @@
 ;; <leaf-code>
 (leaf leaf
   :config
+  (leaf leaf-convert :ensure t)
   (leaf leaf-tree
     :ensure t
     :custom ((imenu-list-size . 30)
              (imenu-list-position . 'left))))
 ;; </leaf-code>
+
+(leaf macrostep
+  :doc "Interactive macro expander."
+  :req "cl-lib-0.5" "compat-29"
+  :tag "debugging" "macro" "languages" "lisp"
+  :url "https://github.com/emacsorphanage/macrostep"
+  :ensure t
+  :bind (("C-c e" . macrostep-expand)))
 
 (leaf custom-emacs
   :init
