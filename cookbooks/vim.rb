@@ -1,5 +1,4 @@
 # NeoVim
-include_cookbook 'functions'
 
 NEOVIM_VERSION = '0.11.0'.freeze
 cli_binary 'nvim' do
@@ -15,19 +14,7 @@ end
 
 directory "#{ENV['HOME']}/.config"
 
-
-# directory "#{ENV['HOME']}/.cache/nvim/undo"
-# git "#{ENV['HOME']}/.local/share/nvim/site/pack/packer/start/packer.nvim" do
-#   action :sync
-#   repository 'https://github.com/wbthomason/packer.nvim'
-#   depth 1
-# end
-
-# case node[:os]
-# when 'darwin'
-#   brew 'lua-language-server'
-# end
-
+## tree-sitter
 TREE_SITTER_VERSION = '0.25.3'.freeze
 cli_binary 'tree-sitter' do
   repository 'tree-sitter/tree-sitter'
@@ -38,21 +25,10 @@ cli_binary 'tree-sitter' do
   is_tarball false
 end
 
-# LUA_LANGUAGE_SERVER_VERSION = '3.7.3'.freeze
-# cli_binary 'lua-language-server' do
-#   repository 'LuaLS/lua-language-server'
-#   version LUA_LANGUAGE_SERVER_VERSION
-#   platform = (node[:platform] == 'darwin' ? 'darwin-x64' : 'linux-x64-musl')
-#   release_name "lua-language-server-#{LUA_LANGUAGE_SERVER_VERSION}-#{platform}.tar.gz"
-#   target_dir "#{ENV['HOME']}/bin"
-#   bin_path "bin/lua-language-server"
-# end
-
 dotfile '.config/nvim' do
   source '.config/nvim-lazynvim'
+  # source '.config/nvim'
 end
-
-# dotfile '.config/nvim'
 
 # Vim
 dotfile '.vimrc'

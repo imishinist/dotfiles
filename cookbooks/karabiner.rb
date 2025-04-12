@@ -1,5 +1,3 @@
-include_cookbook 'functions'
-
 case node[:os]
 when 'darwin'
   brew 'karabiner-elements' do
@@ -11,10 +9,5 @@ end
 
 directory "#{ENV['HOME']}/.config/karabiner"
 
-dotfile '.config/karabiner/karabiner.json' do
-  source '.config/karabiner/karabiner.json'
-end
-
-dotfile '.config/karabiner/assets' do
-  source '.config/karabiner/assets'
-end
+dotfile '.config/karabiner/karabiner.json'
+dotfile '.config/karabiner/assets'

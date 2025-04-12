@@ -10,7 +10,6 @@
   directory dir
 end
 
-puts node[:os]
 dotfile '.config/fish/config.local.fish' do
   case node[:os]
   when "darwin"
