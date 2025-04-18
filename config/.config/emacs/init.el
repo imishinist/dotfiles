@@ -204,7 +204,7 @@
     (set-terminal-coding-system 'utf-8-unix)
     (setq default-file-name-coding-system 'utf-8)
     (setq default-process-coding-system '(utf-8 . utf-8))
-    (prefer-coding-system 'utf-8-unix))    
+    (prefer-coding-system 'utf-8-unix))
   )
 
 ;; </general-editting-code>
@@ -229,8 +229,6 @@
   :config
   (leaf smart-jump
     :ensure t
-    :bind
-    ("C-c C-j" . smart-jump-go)
     :custom
     (dumb-jump-mode . t)
     (dumb-jump-selector . 'ivy)
@@ -273,7 +271,7 @@
            ("C-x C-r" . counsel-recentf))
     :custom `((counsel-yank-pop-separator . "\n----------\n")
               (counsel-find-file-ignore-regexp . ,(rx-to-string '(or "./" "../") 'no-group)))
-    :global-minor-mode t)  
+    :global-minor-mode t)
   )
 
 (leaf prescient
