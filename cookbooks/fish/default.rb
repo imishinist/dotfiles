@@ -25,7 +25,7 @@ touch '.config/fish/config.custom.fish'
 
 dotfile '.config/fish/config.fish'
 dotfile '.config/fish/conf.d/common.fish'
-dotfile '.config/fish/functions/pet.fish'
+dotfile '.config/fish/conf.d/pet.fish'
 dotfile '.config/fish/functions/__fzf_insert_reverse_isearch.fish'
 
 dotfile '.config/fish/conf.d/atcoder-tools.fish'

@@ -84,8 +84,6 @@ fish_add_path $HOME/bin
 # load
 ################################################################################
 
-. $HOME/.config/fish/functions/common.fish
-. $HOME/.config/fish/functions/pet.fish
 . $HOME/.config/fish/config.local.fish
 . $HOME/.config/fish/config.custom.fish
 
