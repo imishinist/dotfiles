@@ -3,8 +3,13 @@ case node[:os]
 when 'darwin'
   package "go"
 when 'linux'
-  snap 'go' do
-    classic true
+  case node[:platform]
+  when 'ubuntu'
+    snap 'go' do
+      classic true
+    end
+  when 'arch'
+    package "go"
   end
 end
 

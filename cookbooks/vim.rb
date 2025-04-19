@@ -4,7 +4,7 @@ NEOVIM_VERSION = '0.11.0'.freeze
 cli_binary 'nvim' do
   repository 'neovim/neovim'
   version "v#{NEOVIM_VERSION}"
-  platform = (node[:platform] == 'darwin' ? 'macos' : 'linux64')
+  platform = (node[:platform] == 'darwin' ? 'macos' : 'linux')
   arch = node[:arch] == 'x86_64' ? 'x86_64' : 'arm64'
   release_name "nvim-#{platform}-#{arch}.tar.gz"
   target_dir "#{ENV['HOME']}/bin"
