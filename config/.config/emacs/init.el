@@ -135,7 +135,7 @@
     (modus-themes-bold-constructs . nil)
     (modus-themes-region . '(bg-only no-extend))
     :config
-    (load-theme 'modus-vivendi t)))
+    (load-theme 'modus-vivendi-tinted t)))
 ;; </theme-code>
 
 ;; <general-editting-code>
