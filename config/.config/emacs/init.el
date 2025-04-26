@@ -11,9 +11,9 @@
 ;; <leaf-install-code>
 (eval-and-compile
   (customize-set-variable
-   'package-archives '(("gnu"   . "https://elpa.gnu.org/packages/")
+   'package-archives '(("org"   . "https://orgmode.org/elpa/")
                        ("melpa" . "https://melpa.org/packages/")
-                       ("org"   . "https://orgmode.org/elpa/")))
+                       ("gnu"   . "https://elpa.gnu.org/packages/")))
   (package-initialize)
   (unless (package-installed-p 'leaf)
     (package-refresh-contents)
@@ -33,7 +33,7 @@
 ;; </leaf-install-code>
 
 ;; <leaf-code>
-(leaf leaf
+(leaf *leaf
   :config
   (leaf leaf-convert
     :ensure t
@@ -52,76 +52,66 @@
   :ensure t
   :bind (("C-c e" . macrostep-expand)))
 
-(leaf custom-emacs
-  :init
-  (leaf cus-edit
-    :doc "tools for customizing Emacs and Lisp packages"
-    :tag "builtin" "faces" "help"
-    :custom `((custom-file . ,(locate-user-emacs-file "custom.el"))))
+(leaf *cus
+  :hook
+  (prog-mode-hook . display-line-numbers-mode)
+  :custom `(
+            ; user settings
+            (user-full-name . "Taisuke Miyazaki")
+            (user-mail-address . "imishinist@gmail.com")
+            (user-login-name . "imishinist")
 
-  (leaf cus-start
-    :doc "define customization properties of builtins"
-    :tag "builtin" "install"
-    :preface
-    (defun c/redraw-frame nil
-      (interactive)
-      (redraw-frame))
+            ; metadata files
+            (create-lockfiles . nil)
+            (make-backup-files . t)
+            (delete-auto-save-files . nil)
 
-    :bind (("M-ESC ESC" . c/redraw-frame))
-    :custom '((user-full-name . "Taisuke Miyazaki")
-              (user-mail-address . "imishinist@gmail.com")
-              (user-login-name . "imishinist")
-              (create-lockfiles . nil)
-              (make-backup-files . t)
-              (delete-auto-save-files . nil)
-              (debug-on-error . t)
-              (init-file-debug . t)
-              (frame-resize-pixelwise . t)
-              (enable-recursive-minibuffers . t)
-              (history-length . 1000)
-              (history-delete-duplicates . t)
-              (scroll-preserve-screen-position . t)
-              (scroll-conservatively . 100)
-              (mouse-wheel-scroll-amount . '(1 ((control) . 5)))
-              (ring-bell-function . 'ignore)
-              (text-quoting-style . 'straight)
-              (truncate-lines . t)
-              (which-function-mode . t)
-              ;; (use-dialog-box . nil)
-              ;; (use-file-dialog . nil)
-              (inhibit-startup-message . t)
-              (inhibit-startup-echo-area-message . nil)
-              (menu-bar-mode . nil)
-              (tool-bar-mode . nil)
-              (scroll-bar-mode . nil)
-              (indent-tabs-mode . nil))
-    :config
-    (defalias 'yes-or-no-p 'y-or-n-p))
-  (leaf simple
-    :doc "basic editing commands for Emacs"
-    :tag "builtin" "internal"
-    :custom
-    (kill-ring-max . 100)
-    (kill-read-only-ok . t)
-    (kill-whole-line . t)
-    (eval-expression-print-length . nil)
-    (eval-expression-print-level . nil))
-  (leaf files
-    :doc "file input and output commands for Emacs"
-    :tag "builtin"
-    :custom
-    `((auto-save-timeout . 15)
-      (auto-save-interval . 60)
-      (auto-save-file-name-transforms . '((".*" ,(locate-user-emacs-file "backup/") t)))
-      (backup-directory-alist . '((".*" . ,(locate-user-emacs-file "backup"))
-                                  (,tramp-file-name-regexp . nil)))
-      (version-control . t)
-      (delete-old-versions . t)))
-  (leaf startup
-    :doc "process Emacs shell arguments"
-    :tag "builtin" "internal"
-    :custom `((auto-save-list-file-prefix . ,(locate-user-emacs-file "backup/.saves-"))))
-  )
+            ; debug
+            (debug-on-error . t)
+            (init-file-debug . t)
+
+            ; editor
+            (default-file-name-coding-system 'utf-8)
+            (default-process-coding-system '(utf-8 . utf-8))
+            (frame-resize-pixelwise . t)
+            (enable-recursive-minibuffers . t)
+            (history-length . 1000)
+            (history-delete-duplicates . t)
+            (scroll-preserve-screen-position . t)
+            (scroll-conservatively . 100)
+            (mouse-wheel-scroll-amount . '(1 ((control) . 5)))
+            (ring-bell-function . 'ignore)
+            (text-quoting-style . 'straight)
+            (truncate-lines . t)
+            (which-function-mode . t)
+            (inhibit-startup-message . t)
+            (inhibit-startup-echo-area-message . nil)
+            (menu-bar-mode . nil)
+            (tool-bar-mode . nil)
+            (scroll-bar-mode . nil)
+            (indent-tabs-mode . nil)
+            (version-control . t)
+            (delete-old-versions . t)
+	    (kill-ring-max . 100)
+            (kill-read-only-ok . t)
+            (kill-whole-line . t)
+            (eval-expression-print-length . nil)
+            (eval-expression-print-level . nil)
+	    (auto-save-timeout . 15)
+	    (auto-save-interval . 60)
+	    (auto-save-file-name-transforms
+             . '((".*" ,(locate-user-emacs-file "backup/") t)))
+            (auto-save-list-file-prefix
+             . ,(locate-user-emacs-file "backup/.saves-"))
+            (backup-directory-alist
+             . '((".*" . ,(locate-user-emacs-file "backup"))
+                 (,tramp-file-name-regexp . nil)))
+	    (custom-file . ,(locate-user-emacs-file "custom.el")))
+  :config
+  (set-language-environment 'Japanese)
+  (set-default-coding-systems 'utf-8-unix)
+  (set-terminal-coding-system 'utf-8-unix)
+  (prefer-coding-system 'utf-8-unix))
 
 ;; <theme-code>
 (leaf theme
@@ -130,286 +120,255 @@
     :ensure t
     :req "eamcs-28"
     :emacs>= 28.0
-    :custom
-    (modus-themes-italic-constructs . t)
-    (modus-themes-bold-constructs . nil)
-    (modus-themes-region . '(bg-only no-extend))
+    :custom ((modus-themes-italic-constructs . t)
+             (modus-themes-bold-constructs . nil)
+             (modus-themes-region . '(bg-only no-extend)))
     :config
     (load-theme 'modus-vivendi-tinted t)))
 ;; </theme-code>
 
 ;; <general-editting-code>
-(leaf editting
-  :init
+(leaf *editting
+  :config
   (leaf autorevert
     :doc "revert buffers when files on disk change"
-    :tag "builtin"
+    :ensure t
     :global-minor-mode global-auto-revert-mode
-    :custom
-    (auto-revert-interval .0.3)
-    (auto-revert-check-vc-info . t))
+    :custom ((auto-revert-interval . 0.3)
+             (auto-revert-check-vc-info . t)))
   (leaf delsel
     :doc "delete selection if you insert"
-    :tag "builtin"
+    :ensure t
     :global-minor-mode delete-selection-mode)
-  (leaf paren
-    :doc "show paren mode"
-    :tag "builtin"
-    :commands show-paren-mode
-    :global-minor-mode show-paren-mode
-    :custom
-    (show-paren-delay . 0.2)
-    (show-paren-style quote mixed))
-  (leaf vc-hooks
-    :doc "resident support for version-control"
-    :tag "builtin"
-    :custom
-    (vc-follow-symlinks . t))
-  (leaf symbol-overlay
+  (leaf diff-hl
+    :doc "Highlight uncommitted changes using VC"
+    :emacs>= 26.1
     :ensure t
-    :doc "highlight symbols with keymap-enabled overlays"
-    :bind
-    ("M-i" . symbol-overlay-put)
-    ("M-p" . symbol-overlay-jump-prev)
-    ("M-n" . symbol-overlay-jump-next)
-    (symbol-overlay-map
-     ((kbd "C-g") . symbol-overlay-remove-all))
-    :hook
-    (prog-mode-hook . symbol-overlay-mode)
-    (markdown-mode-hook . symbol-overlay-mode))
+    :commands (diff-hl-margin-mode)
+    :global-minor-mode (global-diff-hl-mode)
+    :config
+    (diff-hl-flydiff-mode))
+
   (leaf highlight-indent-guides
+    :doc "Minor mode to highlight indentation."
+    :emacs>= 26.1
     :ensure t
-    :blackout t
     :hook
     (prog-mode-hook . highlight-indent-guides-mode)
-    (yaml-mode-hook . highlight-indent-guides-mode)
-    :custom
-    (highlight-indent-guides-method . 'column)
-    (highlight-indent-guides-auto-enabled . t)
-    (highlight-indent-guides-responsive . t)
-    (highlight-indent-guides-character . ?\|))
-  (leaf git-gutter+
-    :emacs>= 25
+    :custom ((highlight-indent-guides-method . 'column)
+             (highlight-indent-guides-auto-enabled . t)
+             (highlight-indent-guides-responsive . t)
+             (highlight-indent-guides-character . ?\|)))
+
+  (leaf paren
+    :doc "show paren mode"
+    :ensure t
+    :commands (show-paren-mode)
+    :global-minor-mode show-paren-mode
+    :custom ((show-paren-delay . 0.2)
+             (show-paren-style . 'mixed)))
+  (leaf symbol-overlay
+    :doc "highlight symbols with keymap-enabled overlays"
+    :req "emacs-24.3" "seq-2.2"
+    :emacs>= 24.3
     :ensure t
     :hook
-    (prog-mode-hook . git-gutter+-mode))
-  (leaf line-number
-    :hook
-    (prog-mode-hook . display-line-numbers-mode))
-  (leaf *language-settings
-    :config
-    (setq default-file-name-coding-system nil)
-    (set-language-environment 'Japanese)
-    (set-default-coding-systems 'utf-8-unix)
-    (set-terminal-coding-system 'utf-8-unix)
-    (setq default-file-name-coding-system 'utf-8)
-    (setq default-process-coding-system '(utf-8 . utf-8))
-    (prefer-coding-system 'utf-8-unix))
-  )
-
+    (prog-mode-hook . symbol-overlay-mode)
+    (markdown-mode-hook . symbol-overlay-mode)
+    :bind (("M-i" . symbol-overlay-put)
+           ("M-p" . symbol-overlay-jump-prev)
+           ("M-n" . symbol-overlay-jump-next)
+           (symbol-overlay-map
+            ("C-g" . symbol-overlay-remove-all))))
+  (leaf undo-tree
+    :doc "Treat undo history as a tree"
+    :ensure t
+    :global-minor-mode global-undo-tree-mode
+    :custom ((undo-tree-auto-save-history . t)
+	     (undo-tree-history-directory-alist
+              . `((".*" . ,(expand-file-name "undo-history" user-emacs-directory))))))
+  (leaf vc-hooks
+    :doc "resident support for version-control"
+    :custom ((vc-follow-symlinks . t))))
 ;; </general-editting-code>
 
 
+;; <ivy>
 (leaf ivy
   :doc "Incremental Vertical completYon"
-  :req "emacs-24.5"
-  :tag "matching" "emacs>=24.5"
-  :url "https://github.com/abo-abo/swiper"
   :emacs>= 24.5
-  :ensure t
-  :blackout t
   :leaf-defer nil
-  :custom
-  (ivy-initial-inputs-alist . nil)
-  (ivy-hight . 15)
-  (ivy-re-builders-alist . '((t . ivy--regex-fuzzy)
-                             (swiper . ivy--regex-plus)))
-  (ivy-use-selectable-prompt . t)
-  :global-minor-mode t
+  :ensure t
+  :global-minor-mode ivy-mode
+  :custom ((ivy-initial-inputs-alist . nil)
+           (ivy-height . 15)
+           (ivy-re-builders-alist . '((t . ivy--regex-fuzzy)
+                                      (swiper . ivy--regex-plus)))
+           (ivy-use-selectable-prompt . t))
   :config
-  (leaf smart-jump
-    :ensure t
-    :custom
-    (dumb-jump-mode . t)
-    (dumb-jump-selector . 'ivy)
-    (dumb-jump-use-visible-window . nil)
-    :config
-    (smart-jump-setup-default-registers))
-
-  (leaf avy-migemo
-    :doc "avy for japanese characters"
-    :ensure t
-    :hook
-    (ivy-mode-hook . avy-migemo-mode))
-  (leaf ivy-rich
-    :doc "More friendly display transformer for ivy."
-    :req "emacs-24.5" "ivy-0.8.0"
-    :tag "ivy" "emacs>=24.5"
-    :emacs>= 24.5
-    :ensure t
-    :hook
-    (ivy-mode-hook . ivy-rich-mode))
-  (leaf swiper
-    :doc "Isearch with an overview. Oh, man!"
-    :req "emacs-24.5" "ivy-0.13.0"
-    :tag "matching" "emacs>=24.5"
-    :url "https://github.com/abo-abo/swiper"
-    :emacs>= 24.5
-    :ensure t
-    :bind
-    ("C-s" . swiper))
-
   (leaf counsel
-    :doc "Various completion functions using Ivy"
-    :req "emacs-24.5" "swiper-0.13.0"
-    :tag "tools" "matching" "convenience" "emacs>=24.5"
-    :url "https://github.com/abo-abo/swiper"
+    :doc "Various completion functions using Ivy."
     :emacs>= 24.5
     :ensure t
-    :blackout t
+    :after ivy swiper
+    :global-minor-mode counsel-mode
     :bind (("C-S-s" . counsel-imenu)
            ("C-x C-r" . counsel-recentf))
     :custom `((counsel-yank-pop-separator . "\n----------\n")
-              (counsel-find-file-ignore-regexp . ,(rx-to-string '(or "./" "../") 'no-group)))
-    :global-minor-mode t)
-  )
+              (counsel-find-file-ignore-regexp . ,(rx-to-string '(or "./" "../") 'no-group))))
 
+  (leaf ivy-rich
+    :doc "More friendly display transformer for ivy"
+    :emacs>= 25.1
+    :ensure t
+    :after ivy
+    :hook
+    (ivy-mode-hook . ivy-rich-mode))
+  (leaf smart-jump
+    :doc "Smart go to definition."
+    :emacs>= 25.1
+    :ensure t
+    :custom ((dumb-jump-mode . t)
+             (dumb-jump-selector . 'ivy)
+             (dumb-jump-use-visible-window . nil))
+    :config
+    (smart-jump-setup-default-registers))
+  (leaf swiper
+    :doc "Isearch with an overview.  Oh, man!."
+    :emacs>= 24.5
+    :ensure t
+    :after ivy
+    :bind (("C-s" . swiper))))
+;; </ivy>
+
+;; <prescient>
 (leaf prescient
-  :doc "Better sorting and filtering"
-  :req "emacs-25.1"
-  :tag "extensions" "emacs>=25.1"
-  :url "https://github.com/raxod502/prescient.el"
+  :doc "Better sorting and filtering."
   :emacs>= 25.1
   :ensure t
   :commands (prescient-persist-mode)
+  :global-minor-mode prescient-persist-mode
   :custom `((prescient-aggressive-file-save . t)
             (prescient-save-file . ,(locate-user-emacs-file "prescient")))
-  :global-minor-mode prescient-persist-mode)
-
-(leaf ivy-prescient
-  :doc "prescient.el + Ivy"
-  :req "emacs-25.1" "prescient-4.0" "ivy-0.11.0"
-  :tag "extensions" "emacs>=25.1"
-  :url "https://github.com/raxod502/prescient.el"
-  :emacs>= 25.1
-  :ensure t
-  :after prescient ivy
-  :custom ((ivy-prescient-retain-classic-highlighting . t))
-  :global-minor-mode t)
-
-
-(leaf flycheck
-  :doc "On-the-fly syntax checking"
-  :req "dash-2.12.1" "pkg-info-0.4" "let-alist-1.0.4" "seq-1.11" "emacs-24.3"
-  :tag "minor-mode" "tools" "languages" "convenience" "emacs>=24.3"
-  :url "http://www.flycheck.org"
-  :emacs>= 24.3
-  :ensure t
-  :commands flycheck-mode
-  :bind (("M-n" . flycheck-next-error)
-         ("M-p" . flycheck-previous-error))
-  :hook (prog-mode-hook . flycheck-mode))
-;; note: C-c ! l
-
-(leaf company
-  :doc "Modular text completion framework"
-  :req "emacs-24.3"
-  :tag "matching" "convenience" "abbrev" "emacs>=24.3"
-  :url "http://company-mode.github.io/"
-  :emacs>= 24.3
-  :ensure t
-  :blackout t
-  :leaf-defer nil
-  :bind
-  (company-active-map
-   ("M-n" . nil)
-   ("M-p" . nil)
-   ("C-s" . company-filter-candidates)
-   ("C-n" . company-select-next)
-   ("C-p" . company-select-previous)
-   ("<tab>" . company-complete-selection))
-  (company-search-map
-   ("C-n" . company-select-next)
-   ("C-p" . company-select-previous))
-  :custom
-  (company-idle-delay . 0)
-  (company-minimum-prefix-length . 3)
-  (company-transformers . '(company-sort-by-occurrence))
-  :global-minor-mode global-company-mode)
-
-(leaf lsp
   :config
-  (setq gc-cons-threshold 100000000)
-  (setq read-process-output-max (* 1024 1024 10))
-  :init
-  (leaf lsp-mode
+  (leaf ivy-prescient
+    :doc "Prescient.el + Ivy."
+    :emacs>= 25.1
     :ensure t
-    :commands (lsp lsp-deferred)
-    :custom
-    (lsp-print-io . nil)
-    :config
-    ;; コード編集時に遅すぎるので、この辺は無効にしておく
-    (setq lsp-diagnostics-provider :none
-          lsp-ui-sideline-enable nil
-          lsp-modeline-diagnostics-enable nil)
-    :hook
-    (prog-major-mode-hook . lsp-prog-major-mode-enable))
+    :after prescient ivy
+    :global-minor-mode ivy-prescient-mode
+    :custom ((ivy-prescient-retain-classic-highlighting . t))))
+;; </prescient>
+
+;; <flycheck>
+(leaf flycheck
+  :doc "On-the-fly syntax checking."
+  :emacs>= 27.1
+  :ensure t
+  :hook
+  (prog-mode-hook . flycheck-mode))
+;; </flycheck>
+
+;; <company>
+(leaf company
+  :doc "Modular text completion framework."
+  :emacs>= 26.1
+  :leaf-defer nil
+  :ensure t
+  :global-minor-mode global-company-mode
+  :bind ((company-active-map
+          ("M-n" . nil)
+          ("M-p" . nil)
+          ("C-s" . company-filter-candidates)
+          ("C-n" . company-select-next)
+          ("C-p" . company-select-previous)
+          ("<tab>" . company-complete-selection))
+         (company-search-map
+          ("C-n" . company-select-next)
+          ("C-p" . company-select-previous)))
+  :custom ((company-idle-delay . 0)
+           (company-minimum-prefix-length . 3)
+           (company-transformers . '(company-sort-by-occurrence))))
+;; </company>
+
+(setq read-process-output-max (* 1024 1024 10))
+(setq gc-cons-threshold 100000000)
+
+;; <lsp-mode>
+(leaf lsp-mode
+  :doc "LSP mode."
+  :emacs>= 28.1
+  :commands (lsp lsp-deferred)
+  :ensure t
+  :hook
+  (prog-major-mode-hook . lsp-prog-major-mode-enable)
+  :custom ((lsp-diagnostics-provider . :none)
+           (lsp-print-io . nil))
+  :config
   (leaf lsp-ui
-    :ensure t
+    :doc "UI modules for lsp-mode."
+    :emacs>= 28.1
     :after lsp-mode
-    :commands lsp-ui-mode
-    :hook (lsp-mode-hook . lsp-ui-mode)
+    :ensure t
+    :commands (lsp-ui-mode)
+    :hook
+    (lsp-mode-hook . lsp-ui-mode)
     :bind ((lsp-mode-map
             ("C-c C-r" . lsp-ui-peek-find-references)
             ("C-c C-j" . lsp-ui-peek-find-definitions)
             ("C-c i"   . lsp-ui-peek-find-implementation)
             ("C-c m"   . lsp-ui-imenu)
-            ("C-c s"   . lsp-ui-sideline-mode)
-            ("C-c d"   . ladicle/toggle-lsp-ui-doc)))
-    :custom
-    (lsp-ui-doc-enable . t)
-    (lsp-ui-doc-header . t)
-    (lsp-ui-doc-include-signature . t)
-    (lsp-ui-doc-position . 'top)
-    (lsp-ui-doc-max-width . 60)
-    (lsp-ui-doc-max-height . 20)
-    (lsp-ui-doc-use-childframe . t)
-    (lsp-ui-doc-use-webkit . nil)
-    (lsp-ui-flycheck-enable . t)
-    (lsp-ui-sideline-enable . nil)
-    (lsp-ui-sideline-ignore-duplicate . t)
-    (lsp-ui-sideline-show-symbol . t)
-    (lsp-ui-sideline-show-hover . t)
-    (lsp-ui-sideline-show-diagnostics . nil)
-    (lsp-ui-sideline-show-code-actions . nil)
-    (lsp-ui-imenu-enable . nil)
-    (lsp-ui-imenu-kind-position . 'top)
-    (lsp-ui-peek-enable . t)
-    (lsp-ui-peek-peek-height . 20)
-    (lsp-ui-peek-list-width . 50))
-)
+            ("C-c s"   . lsp-ui-sideline-mode)))
+    :custom ((lsp-ui-doc-enable . t)
+             (lsp-ui-doc-header . t)
+             (lsp-ui-doc-include-signature . t)
+             (lsp-ui-doc-position . 'top)
+             (lsp-ui-doc-max-width . 60)
+             (lsp-ui-doc-max-height . 20)
+             (lsp-ui-doc-use-childframe . t)
+             (lsp-ui-doc-use-webkit . nil)
+             (lsp-ui-flycheck-enable . t)
+             (lsp-ui-sideline-enable . nil)
+             (lsp-ui-sideline-ignore-duplicate . t)
+             (lsp-ui-sideline-show-symbol . t)
+             (lsp-ui-sideline-show-hover . t)
+             (lsp-ui-sideline-show-diagnostics . nil)
+             (lsp-ui-sideline-show-code-actions . nil)
+             (lsp-ui-imenu-enable . nil)
+             (lsp-ui-imenu-kind-position . 'top)
+             (lsp-ui-peek-enable . t)
+             (lsp-ui-peek-peek-height . 20)
+             (lsp-ui-peek-list-width . 50))))
+;; </lsp-mode>
 
-(leaf language-settings
+(leaf *language-settings
   :init
-  (leaf cc
+  (leaf *cc
+    :defvar ((c-basic-offset)
+             (flycheck-clang-include-path))
+    :mode-hook
+    (c-mode-hook . ((c-set-style "bsd")
+                    (setq-local c-basic-offset 4)
+                    (setq-local flycheck-clang-include-path '("/usr/local/include"))))
+    (c++-mode-hook . ((c-set-style "bsd")
+                      (setq-local c-basic-offset 4)
+                      (setq-local flycheck-clang-include-path '("/usr/local/include"))))
     :init
-    (leaf cc-mode
-      :defvar c-basic-offset
-      :mode-hook
-      (c-mode-hook . ((setq-local c-set-style "bsd")
-                      (setq-local c-basic-offset 4)))
-      (c++-mode-hook . ((setq-local c-set-style "bsd")
-                        (setq-local c-basic-offset 4))))
     (leaf ccls
+      :doc "Ccls client for lsp-mode."
+      :emacs>= 28.1
       :ensure t
       :hook
       (c-mode-hook . lsp)
       (c++-mode-hook . lsp)))
-  (leaf go
+
+  (leaf *go
     :config
     (leaf go-mode
+      :doc "Major mode for the Go programming language."
+      :emacs>= 26.1
       :ensure t
-      :commands go-mode
+      :commands (go-mode)
       :defvar ((indent-tabs-mode)
                (gofmt-command))
       :config
@@ -425,88 +384,91 @@
       :hook
       (go-mode-hook . lsp)
       (go-mode-hook . lsp-go-install-save-hooks)))
-  (leaf haskell
+
+  (leaf *haskell
     :config
     (leaf haskell-mode
       :doc "A Haskell editing mode"
-      :req "emacs-25.1"
-      :tag "haskell" "files" "faces" "emacs>=25.1"
-      :url "https://github.com/haskell/haskell-mode"
-      :added "2023-05-14"
       :emacs>= 25.1
       :ensure t
+      :defvar (flycheck-disabled-checkers)
       :config
-      (setq flycheck-disabled-checkers '(haskell-stack-ghc))
+      (setq-local flycheck-disabled-checkers '(haskell-stack-ghc))
       :custom
       (flycheck-mode . nil)))
 
-  (leaf java
+  (leaf *java
     :config
     (leaf lsp-java
+      :doc "Java support for lsp-mode."
+      :emacs>= 28.1
       :ensure t
       :hook
       (java-mode-hook . lsp)))
-  (leaf ocaml
+
+  (leaf *ocaml
     :config
     (leaf caml
       :doc "Caml mode for GNU Emacs"
-      :req "emacs-24.3"
-      :tag "ocaml" "emacs>=24.3"
-      :url "https://github.com/ocaml/caml-mode"
-      :added "2023-05-14"
-      :emacs>= 24.3
+      :emacs>= 24.4
       :ensure t)
 
     (leaf tuareg
-      :doc "OCaml mode"
-      :req "emacs-26.3" "caml-4.8"
-      :tag "languages" "ocaml" "emacs>=26.3"
-      :url "https://github.com/ocaml/tuareg"
-      :added "2023-05-14"
+      :doc "OCaml mode."
       :emacs>= 26.3
       :ensure t
       :after caml)
 
     (leaf dune
-      :doc "Integration with the dune build system"
-      :url "https://github.com/ocaml/dune"
-      :added "2023-05-14"
+      :doc "Integration with the dune build system."
       :ensure t))
 
-  (leaf rust
+  (leaf *rust
     :config
     (leaf rust-mode
+      :doc "A major-mode for editing Rust source code."
+      :emacs>= 25.1
       :ensure t
       :custom
       (rust-format-on-save . t)
       :hook
       (rust-mode-hook . lsp))
+
     (leaf cargo
+      :doc "Emacs Minor Mode for Cargo, Rust's Package Manager."
+      :emacs>= 24.3
       :ensure t
       :hook
       (rust-mode-hook . cargo-minor-mode)))
-  (leaf web
+
+  (leaf *web
     :config
     (leaf web-mode
-      :doc "a web mode"
-      :req "emacs-25.1"
+      :doc "Major mode for editing web templates."
+      :emacs>= 23.1
       :ensure t
+      :defvar ((web-mode-markup-indent-offset)
+               (web-mode-css-indent-offset)
+               (web-mode-code-indent-offset))
       :config
-      (setq web-mode-markup-indent-offset 2)
-      (setq web-mode-css-indent-offset 2)
-      (setq web-mode-code-indent-offset 2)
+      (setq-local web-mode-markup-indent-offset 2)
+      (setq-local web-mode-css-indent-offset 2)
+      (setq-local web-mode-code-indent-offset 2)
       :mode (("\\.ts[x]?\\'")
              ("\\.js[x]?\\'"))))
 
   (leaf yaml-mode
+    :doc "Major mode for editing YAML files."
+    :emacs>= 24.1
     :ensure t
     :mode (("\\.yml\\'")
            ("\\.yaml\\'")))
 
   (leaf fish-mode
+    :doc "Major mode for fish shell scripts."
+    :emacs>= 24
     :ensure t
-    :mode (("\\.fish'")))
-  )
+    :mode (("\\.fish'"))))
 
 
 ;; (leaf org
