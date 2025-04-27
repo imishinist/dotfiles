@@ -192,6 +192,12 @@
     :custom ((vc-follow-symlinks . t))))
 ;; </general-editting-code>
 
+;; <magit>
+(leaf magit
+  :doc "A Git porcelain inside Emacs."
+  :emacs>= 27.1
+  :ensure t)
+;; </magit>
 
 ;; <ivy>
 (leaf ivy
