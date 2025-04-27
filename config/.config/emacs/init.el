@@ -52,66 +52,75 @@
   :ensure t
   :bind (("C-c e" . macrostep-expand)))
 
-(leaf *cus
-  :hook
-  (prog-mode-hook . display-line-numbers-mode)
-  :custom `(
-            ; user settings
-            (user-full-name . "Taisuke Miyazaki")
-            (user-mail-address . "imishinist@gmail.com")
-            (user-login-name . "imishinist")
+(leaf *custom-emacs
+   :init
+   (leaf cus-edit
+     :doc "tools for customizing Emacs and Lisp packages"
+     :tag "builtin" "faces" "help"
+     :custom `((custom-file . ,(locate-user-emacs-file "custom.el"))))
 
-            ; metadata files
-            (create-lockfiles . nil)
-            (make-backup-files . t)
-            (delete-auto-save-files . nil)
+   (leaf cus-start
+     :doc "define customization properties of builtins"
+     :tag "builtin" "install"
+     :preface
+     (defun c/redraw-frame nil
+       (interactive)
+       (redraw-frame))
 
-            ; debug
-            (debug-on-error . t)
-            (init-file-debug . t)
-
-            ; editor
-            (default-file-name-coding-system 'utf-8)
-            (default-process-coding-system '(utf-8 . utf-8))
-            (frame-resize-pixelwise . t)
-            (enable-recursive-minibuffers . t)
-            (history-length . 1000)
-            (history-delete-duplicates . t)
-            (scroll-preserve-screen-position . t)
-            (scroll-conservatively . 100)
-            (mouse-wheel-scroll-amount . '(1 ((control) . 5)))
-            (ring-bell-function . 'ignore)
-            (text-quoting-style . 'straight)
-            (truncate-lines . t)
-            (which-function-mode . t)
-            (inhibit-startup-message . t)
-            (inhibit-startup-echo-area-message . nil)
-            (menu-bar-mode . nil)
-            (tool-bar-mode . nil)
-            (scroll-bar-mode . nil)
-            (indent-tabs-mode . nil)
-            (version-control . t)
-            (delete-old-versions . t)
-	    (kill-ring-max . 100)
-            (kill-read-only-ok . t)
-            (kill-whole-line . t)
-            (eval-expression-print-length . nil)
-            (eval-expression-print-level . nil)
-	    (auto-save-timeout . 15)
-	    (auto-save-interval . 60)
-	    (auto-save-file-name-transforms
-             . '((".*" ,(locate-user-emacs-file "backup/") t)))
-            (auto-save-list-file-prefix
-             . ,(locate-user-emacs-file "backup/.saves-"))
-            (backup-directory-alist
-             . '((".*" . ,(locate-user-emacs-file "backup"))
-                 (,tramp-file-name-regexp . nil)))
-	    (custom-file . ,(locate-user-emacs-file "custom.el")))
-  :config
-  (set-language-environment 'Japanese)
-  (set-default-coding-systems 'utf-8-unix)
-  (set-terminal-coding-system 'utf-8-unix)
-  (prefer-coding-system 'utf-8-unix))
+     :bind (("M-ESC ESC" . c/redraw-frame))
+     :custom '((user-full-name . "Taisuke Miyazaki")
+               (user-mail-address . "imishinist@gmail.com")
+               (user-login-name . "imishinist")
+               (create-lockfiles . nil)
+               (make-backup-files . t)
+               (delete-auto-save-files . nil)
+               (debug-on-error . t)
+               (init-file-debug . t)
+               (frame-resize-pixelwise . t)
+               (enable-recursive-minibuffers . t)
+               (history-length . 1000)
+               (history-delete-duplicates . t)
+               (scroll-preserve-screen-position . t)
+               (scroll-conservatively . 100)
+               (mouse-wheel-scroll-amount . '(1 ((control) . 5)))
+               (ring-bell-function . 'ignore)
+               (text-quoting-style . 'straight)
+               (truncate-lines . t)
+               (which-function-mode . t)
+               ;; (use-dialog-box . nil)
+               ;; (use-file-dialog . nil)
+               (inhibit-startup-message . t)
+               (inhibit-startup-echo-area-message . nil)
+               (menu-bar-mode . nil)
+               (tool-bar-mode . nil)
+               (scroll-bar-mode . nil)
+               (indent-tabs-mode . nil))
+     :config
+     (defalias 'yes-or-no-p 'y-or-n-p))
+   (leaf simple
+     :doc "basic editing commands for Emacs"
+     :tag "builtin" "internal"
+     :custom
+     (kill-ring-max . 100)
+     (kill-read-only-ok . t)
+     (kill-whole-line . t)
+     (eval-expression-print-length . nil)
+     (eval-expression-print-level . nil))
+   (leaf files
+     :doc "file input and output commands for Emacs"
+     :tag "builtin"
+     :custom
+     `((auto-save-timeout . 15)
+       (auto-save-interval . 60)
+       (auto-save-file-name-transforms . '((".*" ,(locate-user-emacs-file "backup/") t)))
+       (backup-directory-alist . '((".*" . ,(locate-user-emacs-file "backup"))
+                                   (,tramp-file-name-regexp . nil)))
+       (version-control . t)
+       (delete-old-versions . t)))
+   (leaf startup
+     :doc "process Emacs shell arguments"
+     :tag "builtin" "internal"
+     :custom `((auto-save-list-file-prefix . ,(locate-user-emacs-file "backup/.saves-")))))
 
 ;; <theme-code>
 (leaf theme
