@@ -1,4 +1,9 @@
 
+alias en 'emacsclient -nw -a ""'
+alias em 'emacsclient --create-frame -a ""'
+alias ekill 'emacsclient -e "(kill-emacs)"'
+alias emacs '/Applications/Emacs.app/Contents/MacOS/Emacs'
+
 # variables
 set -gx SDKROOT $(xcrun --show-sdk-path)
 

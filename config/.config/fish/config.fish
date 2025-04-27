@@ -39,9 +39,6 @@ bind \cd delete-char
 
 # alias
 alias ls='eza'
-alias en 'emacsclient -nw -a ""'
-alias em 'emacsclient --create-frame -a ""'
-alias ekill='emacsclient -e "(kill-emacs)"'
 alias vi='nvim'
 alias vim='nvim'
 

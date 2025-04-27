@@ -1,9 +1,3 @@
-
-%w[.config .config/emacs].each do |dir|
-  directory "#{ENV['HOME']}/#{dir}"
-end
-
-
 case node[:os]
 when "darwin"
   package "emacs"
@@ -17,5 +11,3 @@ when "linux"
     end
   end
 end
-
-dotfile '.config/emacs/init.el'

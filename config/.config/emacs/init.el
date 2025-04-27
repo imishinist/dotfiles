@@ -134,6 +134,11 @@
                                    (,tramp-file-name-regexp . nil)))
        (version-control . t)
        (delete-old-versions . t)))
+   (leaf savehist
+     :doc "Save minibuffer history"
+     :tag "builtin"
+     :custom `((savehist-file . ,(locate-user-emacs-file "savehist")))
+     :global-minor-mode t)
    (leaf startup
      :doc "process Emacs shell arguments"
      :tag "builtin" "internal"
@@ -155,6 +160,28 @@
     (load-theme 'modus-vivendi-tinted t)))
 ;; </theme-code>
 
+(leaf nerd-icons
+  :doc "Emacs Nerd Font Icons Library"
+  :tag "lisp" "emacs>=24.3"
+  :emacs>= 24.3
+  :ensure t)
+
+(leaf which-key
+  :doc "Display available keybindings in popup"
+  :tag "builtin"
+  :global-minor-mode t)
+
+(leaf exec-path-from-shell
+  :doc "Get environment variables such as $PATH from the shell."
+  :tag "environment" "unix" "emacs>=24.4"
+  :emacs>= 24.4
+  :ensure t
+  :defun (exec-path-from-shell-initialize)
+  :custom ((exec-path-from-shell-check-startup-files)
+           (exec-path-from-shell-variables . '("PATH" "GOPATH" "JAVA_HOME" "GOROOT")))
+  :config
+  (exec-path-from-shell-initialize))
+
 ;; <general-editting-code>
 (leaf *editting
   :config
@@ -175,8 +202,8 @@
     :tag "diff" "vc" "emacs>=26.1"
     :emacs>= 26.1
     :ensure t
-    :commands (diff-hl-margin-mode)
-    ; :global-minor-mode (global-diff-hl-mode)
+    ; :commands (diff-hl-margin-mode)
+    :global-minor-mode (global-diff-hl-mode)
     :config
     (diff-hl-flydiff-mode))
 
@@ -429,14 +456,6 @@
       :defvar ((indent-tabs-mode)
                (gofmt-command))
       :config
-      (leaf exec-path-from-shell
-        :doc "Get environment variables such as $PATH from the shell."
-        :tag "environment" "unix" "emacs>=24.4"
-        :emacs>= 24.4
-        :ensure t
-        :config
-        (let ((envs '("GOROOT" "GOPATH" "PATH")))
-          (exec-path-from-shell-copy-envs envs)))
       (setq indent-tabs-mode t)
       (defun lsp-go-install-save-hooks()
         (add-hook 'before-save-hook #'lsp-format-buffer t t)
