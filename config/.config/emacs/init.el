@@ -20,13 +20,24 @@
     (package-install 'leaf))
 
   (leaf leaf-keywords
+    :doc "Additional leaf.el keywords for external packages."
+    :tag "settings" "lisp" "emacs>=24.4"
     :ensure t
     :init
     ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
-    (leaf hydra :ensure t)
-    (leaf el-get :ensure t)
-    (leaf blackout :ensure t)
-
+    (leaf hydra
+      :doc "Make bindings that stick around."
+      :tag "bindings"
+      :ensure t)
+    (leaf el-get
+      :doc "Manage the external elisp bits and pieces you depend upon."
+      :tag "emacswiki" "http-tar" "http" "pacman" "fink" "apt-get" "hg" "darcs" "svn" "cvs" "bzr" "git-svn" "git" "elpa" "install" "elisp" "package" "emacs"
+      :ensure t)
+    (leaf blackout
+      :doc "Better mode lighter overriding."
+      :tag "extensions" "emacs>=26"
+      :emacs>= 26
+      :ensure t)
     :config
     ;; initialize leaf-keywords.el
     (leaf-keywords-init)))
@@ -36,19 +47,25 @@
 (leaf *leaf
   :config
   (leaf leaf-convert
+    :doc "Convert many format to leaf format."
+    :tag "tools" "emacs>=26.1"
+    :emacs>= 26.1
     :ensure t
+    :after leaf
     :config (leaf use-package :ensure t))
   (leaf leaf-tree
+    :doc "Interactive side-bar feature for init.el using leaf."
+    :tag "leaf" "convenience" "emacs>=25.1"
+    :emacs>= 25.1
     :ensure t
+    :after imenu-list
     :custom ((imenu-list-size . 30)
              (imenu-list-position . 'left))))
 ;; </leaf-code>
 
 (leaf macrostep
   :doc "Interactive macro expander."
-  :req "cl-lib-0.5" "compat-29"
   :tag "debugging" "macro" "languages" "lisp"
-  :url "https://github.com/emacsorphanage/macrostep"
   :ensure t
   :bind (("C-c e" . macrostep-expand)))
 
@@ -126,9 +143,11 @@
 (leaf theme
   :init
   (leaf modus-themes
+    :doc "Elegant, highly legible and customizable themes."
+    :tag "accessibility" "theme" "faces" "emacs>=28.1"
     :ensure t
     :req "eamcs-28"
-    :emacs>= 28.0
+    :emacs>= 28.1
     :custom ((modus-themes-italic-constructs . t)
              (modus-themes-bold-constructs . nil)
              (modus-themes-region . '(bg-only no-extend)))
@@ -141,25 +160,29 @@
   :config
   (leaf autorevert
     :doc "revert buffers when files on disk change"
+    :tag "builtin"
     :ensure t
     :global-minor-mode global-auto-revert-mode
     :custom ((auto-revert-interval . 0.3)
              (auto-revert-check-vc-info . t)))
   (leaf delsel
     :doc "delete selection if you insert"
+    :tag "builtin"
     :ensure t
     :global-minor-mode delete-selection-mode)
   (leaf diff-hl
     :doc "Highlight uncommitted changes using VC"
+    :tag "diff" "vc" "emacs>=26.1"
     :emacs>= 26.1
     :ensure t
     :commands (diff-hl-margin-mode)
-    :global-minor-mode (global-diff-hl-mode)
+    ; :global-minor-mode (global-diff-hl-mode)
     :config
     (diff-hl-flydiff-mode))
 
   (leaf highlight-indent-guides
     :doc "Minor mode to highlight indentation."
+    :tag "convenience" "emacs>=26.1"
     :emacs>= 26.1
     :ensure t
     :hook
@@ -171,6 +194,7 @@
 
   (leaf paren
     :doc "show paren mode"
+    :tag "builtin"
     :ensure t
     :commands (show-paren-mode)
     :global-minor-mode show-paren-mode
@@ -178,7 +202,7 @@
              (show-paren-style . 'mixed)))
   (leaf symbol-overlay
     :doc "highlight symbols with keymap-enabled overlays"
-    :req "emacs-24.3" "seq-2.2"
+    :tag "matching" "faces" "emacs>=24.3"
     :emacs>= 24.3
     :ensure t
     :hook
@@ -191,6 +215,7 @@
             ("C-g" . symbol-overlay-remove-all))))
   (leaf undo-tree
     :doc "Treat undo history as a tree"
+    :tag "tree" "history" "redo" "undo" "files" "convenience"
     :ensure t
     :global-minor-mode global-undo-tree-mode
     :custom ((undo-tree-auto-save-history . t)
@@ -198,12 +223,14 @@
               . `((".*" . ,(expand-file-name "undo-history" user-emacs-directory))))))
   (leaf vc-hooks
     :doc "resident support for version-control"
+    :tag "builtin"
     :custom ((vc-follow-symlinks . t))))
 ;; </general-editting-code>
 
 ;; <magit>
 (leaf magit
   :doc "A Git porcelain inside Emacs."
+  :tag "vc" "tools" "git" "emacs>=27.1"
   :emacs>= 27.1
   :ensure t)
 ;; </magit>
@@ -211,6 +238,7 @@
 ;; <ivy>
 (leaf ivy
   :doc "Incremental Vertical completYon"
+  :tag "matching" "emacs>=24.5"
   :emacs>= 24.5
   :leaf-defer nil
   :ensure t
@@ -223,6 +251,7 @@
   :config
   (leaf counsel
     :doc "Various completion functions using Ivy."
+    :tag "tools" "matching" "convenience" "emacs>=24.5"
     :emacs>= 24.5
     :ensure t
     :after ivy swiper
@@ -234,6 +263,7 @@
 
   (leaf ivy-rich
     :doc "More friendly display transformer for ivy"
+    :tag "ivy" "convenience" "emacs>=25.1"
     :emacs>= 25.1
     :ensure t
     :after ivy
@@ -241,6 +271,7 @@
     (ivy-mode-hook . ivy-rich-mode))
   (leaf smart-jump
     :doc "Smart go to definition."
+    :tag "tools" "emacs>=25.1"
     :emacs>= 25.1
     :ensure t
     :custom ((dumb-jump-mode . t)
@@ -250,6 +281,7 @@
     (smart-jump-setup-default-registers))
   (leaf swiper
     :doc "Isearch with an overview.  Oh, man!."
+    :tag "matching" "emacs>=24.5"
     :emacs>= 24.5
     :ensure t
     :after ivy
@@ -259,6 +291,7 @@
 ;; <prescient>
 (leaf prescient
   :doc "Better sorting and filtering."
+  :tag "extensions" "emacs>=25.1"
   :emacs>= 25.1
   :ensure t
   :commands (prescient-persist-mode)
@@ -268,6 +301,7 @@
   :config
   (leaf ivy-prescient
     :doc "Prescient.el + Ivy."
+    :tag "extensions" "emacs>=25.1"
     :emacs>= 25.1
     :ensure t
     :after prescient ivy
@@ -278,6 +312,7 @@
 ;; <flycheck>
 (leaf flycheck
   :doc "On-the-fly syntax checking."
+  :tag "tools" "languages" "convenience" "emacs>=27.1"
   :emacs>= 27.1
   :ensure t
   :hook
@@ -287,6 +322,7 @@
 ;; <company>
 (leaf company
   :doc "Modular text completion framework."
+  :tag "matching" "convenience" "abbrev" "emacs>=26.1"
   :emacs>= 26.1
   :leaf-defer nil
   :ensure t
@@ -312,6 +348,7 @@
 ;; <lsp-mode>
 (leaf lsp-mode
   :doc "LSP mode."
+  :tag "languages" "emacs>=28.1"
   :emacs>= 28.1
   :commands (lsp lsp-deferred)
   :ensure t
@@ -322,6 +359,7 @@
   :config
   (leaf lsp-ui
     :doc "UI modules for lsp-mode."
+    :tag "tools" "languages" "emacs>=28.1"
     :emacs>= 28.1
     :after lsp-mode
     :ensure t
@@ -359,18 +397,21 @@
 (leaf *language-settings
   :init
   (leaf *cc
-    :defvar ((c-basic-offset)
-             (flycheck-clang-include-path))
-    :mode-hook
-    (c-mode-hook . ((c-set-style "bsd")
-                    (setq-local c-basic-offset 4)
-                    (setq-local flycheck-clang-include-path '("/usr/local/include"))))
-    (c++-mode-hook . ((c-set-style "bsd")
-                      (setq-local c-basic-offset 4)
-                      (setq-local flycheck-clang-include-path '("/usr/local/include"))))
     :init
+    (leaf cc-mode
+      :doc "major mode for editing C and similar languages"
+      :tag "builtin"
+      :defvar (c-basic-offset)
+      :bind (c-mode-base-map
+             ("C-c c" . compile))
+      :mode-hook
+      (c-mode-hook . ((c-set-style "bsd")
+                      (setq c-basic-offset 4)))
+      (c++-mode-hook . ((c-set-style "bsd")
+                        (setq c-basic-offset 4))))
     (leaf ccls
       :doc "Ccls client for lsp-mode."
+      :tag "c++" "lsp" "languages" "emacs>=28.1"
       :emacs>= 28.1
       :ensure t
       :hook
@@ -381,6 +422,7 @@
     :config
     (leaf go-mode
       :doc "Major mode for the Go programming language."
+      :tag "go" "languages" "emacs>=26.1"
       :emacs>= 26.1
       :ensure t
       :commands (go-mode)
@@ -388,6 +430,9 @@
                (gofmt-command))
       :config
       (leaf exec-path-from-shell
+        :doc "Get environment variables such as $PATH from the shell."
+        :tag "environment" "unix" "emacs>=24.4"
+        :emacs>= 24.4
         :ensure t
         :config
         (let ((envs '("GOROOT" "GOPATH" "PATH")))
@@ -404,6 +449,7 @@
     :config
     (leaf haskell-mode
       :doc "A Haskell editing mode"
+      :tag "languages" "repl" "ghc" "cabal" "haskell" "emacs>=25.1"
       :emacs>= 25.1
       :ensure t
       :defvar (flycheck-disabled-checkers)
@@ -416,6 +462,7 @@
     :config
     (leaf lsp-java
       :doc "Java support for lsp-mode."
+      :tag "tools" "languague" "emacs>=28.1"
       :emacs>= 28.1
       :ensure t
       :hook
@@ -425,11 +472,13 @@
     :config
     (leaf caml
       :doc "Caml mode for GNU Emacs"
+      :tag "ocaml" "emacs>=24.4"
       :emacs>= 24.4
       :ensure t)
 
     (leaf tuareg
       :doc "OCaml mode."
+      :tag "languages" "ocaml" "emacs>=26.3"
       :emacs>= 26.3
       :ensure t
       :after caml)
@@ -442,6 +491,7 @@
     :config
     (leaf rust-mode
       :doc "A major-mode for editing Rust source code."
+      :tag "languages" "emacs>=25.1"
       :emacs>= 25.1
       :ensure t
       :custom
@@ -451,6 +501,7 @@
 
     (leaf cargo
       :doc "Emacs Minor Mode for Cargo, Rust's Package Manager."
+      :tag "tools" "emacs>=24.3"
       :emacs>= 24.3
       :ensure t
       :hook
@@ -460,6 +511,7 @@
     :config
     (leaf web-mode
       :doc "Major mode for editing web templates."
+      :tag "languages" "emacs>=23.1"
       :emacs>= 23.1
       :ensure t
       :defvar ((web-mode-markup-indent-offset)
@@ -474,6 +526,7 @@
 
   (leaf yaml-mode
     :doc "Major mode for editing YAML files."
+    :tag "yaml" "data" "emacs>=24.1"
     :emacs>= 24.1
     :ensure t
     :mode (("\\.yml\\'")
@@ -481,6 +534,7 @@
 
   (leaf fish-mode
     :doc "Major mode for fish shell scripts."
+    :tag "shell" "fish" "emacs>=24"
     :emacs>= 24
     :ensure t
     :mode (("\\.fish'"))))
