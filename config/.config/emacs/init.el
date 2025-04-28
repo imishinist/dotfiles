@@ -8,6 +8,13 @@
           (expand-file-name
            (file-name-directory (or load-file-name byte-compile-current-file))))))
 
+(tool-bar-mode 0)
+(set-scroll-bar-mode nil)
+(global-display-line-numbers-mode t)
+(custom-set-variables '(display-line-numbers-width-start t))
+(tab-bar-mode t)
+(custom-set-variables '(waring-suppress-types '((comp))))
+
 ;; <leaf-install-code>
 (eval-and-compile
   (customize-set-variable
@@ -160,11 +167,18 @@
     (load-theme 'modus-vivendi-tinted t)))
 ;; </theme-code>
 
-(leaf nerd-icons
-  :doc "Emacs Nerd Font Icons Library"
-  :tag "lisp" "emacs>=24.3"
-  :emacs>= 24.3
-  :ensure t)
+(leaf :font
+  :config
+  (leaf nerd-icons
+    :doc "Emacs Nerd Font Icons Library"
+    :tag "lisp" "emacs>=24.3"
+    :emacs>= 24.3
+    :ensure t)
+  (let* ((family "0xProto Nerd Font Mono")
+         (fontspec (font-spec :family family :weight 'normal)))
+       (set-face-attribute 'default nil :family family :height 120)
+       (set-fontset-font nil 'ascii fontspec nil 'append)
+       (set-fontset-font nil 'japanese-jisx0208 fontspec nil 'append)))
 
 (leaf which-key
   :doc "Display available keybindings in popup"
