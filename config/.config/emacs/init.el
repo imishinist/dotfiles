@@ -174,11 +174,8 @@
     :tag "lisp" "emacs>=24.3"
     :emacs>= 24.3
     :ensure t)
-  (let* ((family "0xProto Nerd Font Mono")
-         (fontspec (font-spec :family family :weight 'normal)))
-       (set-face-attribute 'default nil :family family :height 120)
-       (set-fontset-font nil 'ascii fontspec nil 'append)
-       (set-fontset-font nil 'japanese-jisx0208 fontspec nil 'append)))
+  (when (display-graphic-p)
+    (set-frame-font "0xProto Nerd Font Mono-12" t t)))
 
 (leaf which-key
   :doc "Display available keybindings in popup"
@@ -220,18 +217,6 @@
     :global-minor-mode (global-diff-hl-mode)
     :config
     (diff-hl-flydiff-mode))
-
-  (leaf highlight-indent-guides
-    :doc "Minor mode to highlight indentation."
-    :tag "convenience" "emacs>=26.1"
-    :emacs>= 26.1
-    :ensure t
-    :hook
-    (prog-mode-hook . highlight-indent-guides-mode)
-    :custom ((highlight-indent-guides-method . 'column)
-             (highlight-indent-guides-auto-enabled . t)
-             (highlight-indent-guides-responsive . t)
-             (highlight-indent-guides-character . ?\|)))
 
   (leaf paren
     :doc "show paren mode"
