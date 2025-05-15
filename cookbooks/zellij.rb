@@ -9,4 +9,5 @@ cli_binary 'zellij' do
   target_dir "#{ENV['HOME']}/bin"
 end
 
+directory "#{ENV['HOME']}/.config/zellij"
 dotfile '.config/zellij/config.kdl'

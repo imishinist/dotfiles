@@ -8,13 +8,6 @@
           (expand-file-name
            (file-name-directory (or load-file-name byte-compile-current-file))))))
 
-(tool-bar-mode 0)
-(set-scroll-bar-mode nil)
-(global-display-line-numbers-mode t)
-(custom-set-variables '(display-line-numbers-width-start t))
-(tab-bar-mode t)
-(custom-set-variables '(waring-suppress-types '((comp))))
-
 ;; <leaf-install-code>
 (eval-and-compile
   (customize-set-variable
@@ -24,8 +17,12 @@
   (package-initialize)
   (unless (package-installed-p 'leaf)
     (package-refresh-contents)
-    (package-install 'leaf))
+    (package-install 'leaf)))
+;; </leaf-install-code>
 
+;; <leaf-code>
+(leaf *leaf
+  :config
   (leaf leaf-keywords
     :doc "Additional leaf.el keywords for external packages."
     :tag "settings" "lisp" "emacs>=24.4"
@@ -46,13 +43,7 @@
       :emacs>= 26
       :ensure t)
     :config
-    ;; initialize leaf-keywords.el
-    (leaf-keywords-init)))
-;; </leaf-install-code>
-
-;; <leaf-code>
-(leaf *leaf
-  :config
+    (leaf-keywords-init))
   (leaf leaf-convert
     :doc "Convert many format to leaf format."
     :tag "tools" "emacs>=26.1"
@@ -78,6 +69,15 @@
 
 (leaf *custom-emacs
    :init
+   (leaf emacs
+     :custom
+     ((display-line-numbers-width-start . t)
+      (warning-suppress-types . ((comp))))
+     :config
+     (tool-bar-mode -1)
+     (set-scroll-bar-mode nil)
+     (global-display-line-numbers-mode t)
+     (tab-bar-mode t))
    (leaf cus-edit
      :doc "tools for customizing Emacs and Lisp packages"
      :tag "builtin" "faces" "help"
@@ -428,13 +428,12 @@
       :doc "major mode for editing C and similar languages"
       :tag "builtin"
       :defvar (c-basic-offset)
-      :bind (c-mode-base-map
-             ("C-c c" . compile))
-      :mode-hook
-      (c-mode-hook . ((c-set-style "bsd")
-                      (setq c-basic-offset 4)))
-      (c++-mode-hook . ((c-set-style "bsd")
-                        (setq c-basic-offset 4))))
+      :bind ((c-mode-base-map
+             ("C-c c" . compile)))
+      :hook
+      ((c-mode-common-hook . (lambda ()
+                        (c-set-style "bsd")
+                        (setq c-basic-offset 4)))))
     (leaf ccls
       :doc "Ccls client for lsp-mode."
       :tag "c++" "lsp" "languages" "emacs>=28.1"
@@ -446,6 +445,8 @@
 
   (leaf *go
     :config
+    (declare-function lsp-format-buffer "lsp-mode")
+    (declare-function lsp-organize-imports "lsp-mode")
     (leaf go-mode
       :doc "Major mode for the Go programming language."
       :tag "go" "languages" "emacs>=26.1"
