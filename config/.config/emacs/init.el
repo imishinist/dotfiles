@@ -261,79 +261,60 @@
   :ensure t)
 ;; </magit>
 
-;; <ivy>
-(leaf ivy
-  :doc "Incremental Vertical completYon"
-  :tag "matching" "emacs>=24.5"
-  :emacs>= 24.5
-  :leaf-defer nil
+(leaf vertico
+  :doc "VERTical Interactive COmpletion."
+  :tag "completion" "matching" "files" "convenience" "emacs>=28.1"
+  :emacs>= 28.1
   :ensure t
-  :global-minor-mode ivy-mode
-  :custom ((ivy-initial-inputs-alist . nil)
-           (ivy-height . 15)
-           (ivy-re-builders-alist . '((t . ivy--regex-fuzzy)
-                                      (swiper . ivy--regex-plus)))
-           (ivy-use-selectable-prompt . t))
-  :config
-  (leaf counsel
-    :doc "Various completion functions using Ivy."
-    :tag "tools" "matching" "convenience" "emacs>=24.5"
-    :emacs>= 24.5
+  :init
+  (vertico-mode)
+  (leaf consult
+    :doc "Consulting completing-read."
+    :tag "completion" "files" "matching" "emacs>=28.1"
+    :emacs>= 28.1
     :ensure t
-    :after ivy swiper
-    :global-minor-mode counsel-mode
-    :bind (("C-S-s" . counsel-imenu)
-           ("C-x C-r" . counsel-recentf))
-    :custom `((counsel-yank-pop-separator . "\n----------\n")
-              (counsel-find-file-ignore-regexp . ,(rx-to-string '(or "./" "../") 'no-group))))
-
-  (leaf ivy-rich
-    :doc "More friendly display transformer for ivy"
-    :tag "ivy" "convenience" "emacs>=25.1"
-    :emacs>= 25.1
+    :init
+    (leaf consult-dir
+      :doc "Insert paths into the minibuffer prompt"
+      :tag "convenience" "emacs>=27.1"
+      :emacs>= 27.1
+      :ensure t)
+    :bind
+    (("C-x b" . 'consult-buffer)
+     ("C-s" . 'consult-line)))
+  (leaf orderless
+    :doc "Completion style for matching regexps in any order."
+    :tag "completion" "matching" "emacs>=27.1"
+    :emacs>= 27.1
     :ensure t
-    :after ivy
-    :hook
-    (ivy-mode-hook . ivy-rich-mode))
-  (leaf smart-jump
-    :doc "Smart go to definition."
-    :tag "tools" "emacs>=25.1"
-    :emacs>= 25.1
-    :ensure t
-    :custom ((dumb-jump-mode . t)
-             (dumb-jump-selector . 'ivy)
-             (dumb-jump-use-visible-window . nil))
     :config
-    (smart-jump-setup-default-registers))
-  (leaf swiper
-    :doc "Isearch with an overview.  Oh, man!."
-    :tag "matching" "emacs>=24.5"
-    :emacs>= 24.5
+    (setq completion-styles '(orderless basic)))
+  (leaf marginalia
     :ensure t
-    :after ivy
-    :bind (("C-s" . swiper))))
-;; </ivy>
-
-;; <prescient>
-(leaf prescient
-  :doc "Better sorting and filtering."
-  :tag "extensions" "emacs>=25.1"
-  :emacs>= 25.1
-  :ensure t
-  :commands (prescient-persist-mode)
-  :global-minor-mode prescient-persist-mode
-  :custom `((prescient-aggressive-file-save . t)
-            (prescient-save-file . ,(locate-user-emacs-file "prescient")))
-  :config
-  (leaf ivy-prescient
-    :doc "Prescient.el + Ivy."
-    :tag "extensions" "emacs>=25.1"
-    :emacs>= 25.1
+    :config
+    (marginalia-mode))
+  (leaf embark
+    :doc "Conveniently act on minibuffer completions."
+    :tag "convenience" "emacs>=28.1"
+    :emacs>= 28.1
     :ensure t
-    :after prescient ivy
-    :global-minor-mode ivy-prescient-mode
-    :custom ((ivy-prescient-retain-classic-highlighting . t))))
-;; </prescient>
+    :init
+    (leaf embark-consult
+      :doc "Consult integration for Embark."
+      :req "emacs-28.1" "compat-30" "embark-1.1" "consult-1.8"
+      :tag "convenience" "emacs>=28.1"
+      :url "https://github.com/oantolin/embark"
+      :added "2025-05-16"
+      :emacs>= 28.1
+      :ensure t
+      :after embark consult)
+    :bind (("C-." . 'embark-act)
+	   ("C-;" . 'embark-dwim)
+	   ("C-h B" . 'embark-bindings)))
+  :custom
+  ((vertico-resize . nil)
+   (vertico-count . 20)
+   (vertico-cycle . t)))
 
 ;; <flycheck>
 (leaf flycheck
