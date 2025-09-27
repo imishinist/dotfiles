@@ -10,7 +10,7 @@ style = "bold red"
 ap-northeast-1 = "tokyo"
 
 [gcloud]
-disabled = false
+disabled = true
 format = '[$symbol\($active\)]($style) '
 
 [gcloud.region_aliases]

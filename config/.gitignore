@@ -13,3 +13,4 @@ tmp
 .scripts
 .venv
 .csearchindex
+.qdev-working-memory
