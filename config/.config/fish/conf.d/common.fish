@@ -10,6 +10,7 @@ bind \cs pet-select
 bind \er '__fzf_insert_reverse_isearch'
 
 alias ss "sandbox kiro-cli chat"
+alias sn "sandbox --network kiro-cli chat"
 
 function direnv-githook
   set --local dir $(git rev-parse --show-toplevel)
