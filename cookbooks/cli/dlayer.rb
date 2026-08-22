@@ -4,6 +4,7 @@ cli_binary 'dlayer' do
   repository 'orisano/dlayer'
   version "v#{DLAYER_VERSION}"
   platform = (node[:platform] == 'darwin' ? 'Darwin' : 'Linux')
-  release_name "dlayer_#{DLAYER_VERSION}_#{platform}_x86_64.tar.gz"
+  arch = (node[:arch] == 'x86_64' ? 'x86_64' : 'arm64')
+  release_name "dlayer_#{DLAYER_VERSION}_#{platform}_#{arch}.tar.gz"
   target_dir "#{ENV['HOME']}/bin"
 end

@@ -4,7 +4,8 @@ cli_binary 'bat' do
   repository 'sharkdp/bat'
   version "v#{BAT_VERSION}"
   platform = (node[:platform] == 'darwin' ? 'apple-darwin' : 'unknown-linux-musl')
-  release_name "bat-v#{BAT_VERSION}-x86_64-#{platform}.tar.gz"
+  arch = node[:arch] == 'x86_64' ? 'x86_64' : 'aarch64'
+  release_name "bat-v#{BAT_VERSION}-#{arch}-#{platform}.tar.gz"
   target_dir "#{ENV['HOME']}/bin"
   tar_options '--strip-components 1'
 end
