@@ -6,6 +6,6 @@ dotfile '.tmux.conf.local' do
   when "linux"
     source ".tmux.conf.linux"
   else
-    raise NotImplmentedError
+    raise NotImplementedError
   end
 end

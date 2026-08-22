@@ -26,7 +26,7 @@ elif type vim >/dev/null 2>&1; then
 else
   export EDITOR='nano'
 fi
-export VISUAL='nano'
+export VISUAL="$EDITOR"
 export PAGER='less'
 
 #

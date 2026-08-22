@@ -17,7 +17,7 @@ dotfile '.config/fish/config.local.fish' do
   when "linux"
     source ".config/fish/config.linux.fish"
   else
-    raise NotImplmentedError
+    raise NotImplementedError
   end
 end
 
@@ -34,8 +34,8 @@ dotfile_copy '.config/fish/fish_plugins'
 dotfile_copy '.config/fish/functions/fish_prompt.fish'
 
 execute "install fisherman" do
-  command 'echo "curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher" | fish'
-  not_if "echo \"type fisher >/dev/null 2>&1\" | fish"
+  command "fish -c 'curl -fsSL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source; and fisher install jorgebucaran/fisher'"
+  not_if "fish -c 'type -q fisher'"
 end
 
 execute "echo \"fisher update\" | fish" do
