@@ -35,31 +35,28 @@ module ::MItamae
           content_type, download_url = get_content_type_and_download_url(url, desired.release_name)
           MItamae::logger.info("content_type: #{content_type}, download_url: #{download_url}")
 
-          case content_type
-          when "application/gzip", "application/zip", "application/x-gtar"
-            if desired.is_tarball
-              options = desired.tar_options
-              @runner.run_command("mkdir -p #{target_dir} && curl -sL -o- #{download_url} | tar -C #{target_dir} #{options} -xz")
-            else
-              @runner.run_command("mkdir -p #{target_dir} && curl -sL -o- #{download_url} | gunzip -c > #{target_dir}/#{desired.name}")
-            end
-          when "application/x-xz"
-            options = desired.tar_options
-            @runner.run_command("mkdir -p #{target_dir} && curl -sL -o- #{download_url} | tar -C #{target_dir} #{options} -xJ")
-          when "application/octet-stream"
-            if download_url.end_with?(".tar.gz")
-              options = desired.tar_options
-              @runner.run_command("mkdir -p #{target_dir} && curl -sL -o- #{download_url} | tar -C #{target_dir} #{options} -xz")
-            else
-              @runner.run_command("mkdir -p #{target_dir} && curl -sL -o #{target_dir}/#{desired.name} #{download_url}")
-            end
-          else
-            raise NotImplementedError, "unsupported content_type: '#{content_type}'"
-          end
+          archive = "#{target_dir}.download"
+          options = desired.tar_options
+          command = case desired.release_name
+                    when /\.tar\.gz\z/, /\.tgz\z/
+                      "curl -fsSL #{download_url} | tar -C #{target_dir} #{options} -xz"
+                    when /\.tar\.xz\z/
+                      "curl -fsSL #{download_url} | tar -C #{target_dir} #{options} -xJ"
+                    when /\.zip\z/
+                      "curl -fsSL -o #{archive} #{download_url} && unzip -q #{archive} -d #{target_dir} && rm #{archive}"
+                    when /\.gz\z/
+                      if desired.is_tarball
+                        raise NotImplementedError, "unsupported gzip archive: '#{desired.release_name}'"
+                      end
+                      "curl -fsSL #{download_url} | gzip -dc > #{target_dir}/#{desired.name}"
+                    else
+                      "curl -fsSL -o #{target_dir}/#{desired.name} #{download_url}"
+                    end
+          @runner.run_command("mkdir -p #{target_dir} && #{command}")
         end
 
         def get_content_type_and_download_url(url, release_name)
-          output = @runner.run_command("curl -sL -H \"Accept: application/vnd.github+json\" #{url}")
+          output = @runner.run_command("curl -fsSL -H \"Accept: application/vnd.github+json\" #{url}")
           if output.exit_status != 0
             MItamae::logger.error(output.stderr)
             raise "Failed to download metadata from #{url}"
@@ -67,6 +64,10 @@ module ::MItamae
           asset = JSON::parse(output.stdout)['assets'].filter{|a|
             a['name'] == release_name
           }.first
+
+          unless asset
+            raise "Release asset not found: #{release_name}"
+          end
 
           [asset['content_type'], asset['browser_download_url']]
         end

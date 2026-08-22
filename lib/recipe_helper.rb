@@ -50,7 +50,7 @@ define :cli_binary, repository: nil, version: nil, release_name: nil, target_dir
   real_cmd_path = File.join(real_dir, cmd)
   real_cmd_path = File.join(real_dir, params[:bin_path]) if params[:bin_path]
   target_cmd_path = File.join(params[:target_dir], cmd)
-  is_tarball = params[:is_tarball].nil? ? true : false
+  is_tarball = params[:is_tarball].nil? ? true : params[:is_tarball]
 
   github_release cmd do
     repository params[:repository]

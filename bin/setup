@@ -1,6 +1,9 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
+
+readonly root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$root_dir"
 
 mitamae_version="1.14.1"
 case "$(uname)-$(uname -m)" in
@@ -28,14 +31,14 @@ esac
 
 mitamae_bin="mitamae-${mitamae_target}"
 mitamae_cache="mitamae-${mitamae_version}-${mitamae_target}"
-if ! [ -f "bin/${mitamae_cache}" ]; then
+if [[ ! -f "bin/${mitamae_cache}" ]]; then
   curl -o "bin/${mitamae_bin}.tar.gz" -sSfL "https://github.com/itamae-kitchen/mitamae/releases/download/v${mitamae_version}/${mitamae_bin}.tar.gz"
   sha256="$(/usr/bin/openssl dgst -sha256 "bin/${mitamae_bin}.tar.gz" | cut -d" " -f2)"
-  if [ "$mitamae_sha256" != "$sha256" ]; then
+  if [[ "$mitamae_sha256" != "$sha256" ]]; then
     echo -e "checksum verification failed!\nexpected: ${mitamae_sha256}\n  actual: ${sha256}"
     exit 1
   fi
-  tar xvzf "bin/${mitamae_bin}.tar.gz"
+  tar xzf "bin/${mitamae_bin}.tar.gz"
 
   rm "bin/${mitamae_bin}.tar.gz"
   mv "${mitamae_bin}" "bin/${mitamae_cache}"

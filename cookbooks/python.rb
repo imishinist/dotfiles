@@ -1,22 +1,6 @@
-unless ENV['PATH'].include?("#{ENV['HOME']}/.rye/shims:")
-  MItamae.logger.info('Prepending ~/.rye/shims to PATH during this execution')
-  ENV['PATH'] = "#{ENV['HOME']}/.rye/shims:#{ENV['PATH']}"
-end
+UV_VERSION = '0.12.5'.freeze
 
-local_ruby_block 'install python' do
-  rye_path = "#{ENV['HOME']}/.rye/shims/rye"
-
-  block do
-    case node[:os]
-    when "darwin", "linux"
-      system("bash -c 'curl -sSf https://rye.astral.sh/get | RYE_INSTALL_OPTION=\"--yes\" bash'")
-    else
-      raise NotImplementedError
-    end
-
-    until File.exist?(rye_path)
-      sleep 1
-    end
-  end
-  not_if "test -f #{rye_path}"
+execute 'install uv' do
+  command "curl -LsSf https://astral.sh/uv/#{UV_VERSION}/install.sh | env UV_NO_MODIFY_PATH=1 sh"
+  not_if "test -x #{ENV['HOME']}/.local/bin/uv"
 end

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -euo pipefail
+
+readonly root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$root_dir"
+
+while IFS= read -r file; do
+  ruby -c "$file" >/dev/null
+done < <(rg --files -g '*.rb')
+
+while IFS= read -r file; do
+  bash -n "$file"
+done < <(rg --files -g '*.sh' -g 'install.sh' -g 'update-check.sh')
+
+if command -v zsh >/dev/null 2>&1; then
+  while IFS= read -r file; do
+    zsh -f -n "$file"
+  done < <(rg --files -g '.zshenv' -g '.zprofile' -g '.zshrc' -g '*.zsh')
+fi
+
+if command -v fish >/dev/null 2>&1; then
+  while IFS= read -r file; do
+    fish -n "$file"
+  done < <(rg --files -g '*.fish')
+fi
+
+if command -v shellcheck >/dev/null 2>&1; then
+  shellcheck install.sh update-check.sh bin/*.sh
+fi
+
+git diff --check
+echo 'All checks passed.'

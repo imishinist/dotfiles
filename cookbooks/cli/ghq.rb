@@ -4,7 +4,8 @@ cli_binary 'ghq' do
   repository 'x-motemen/ghq'
   version "v#{GHQ_VERSION}"
   arch = node[:arch] == 'x86_64' ? 'amd64' : 'arm64'
-  release_name "ghq_#{node[:os]}_#{arch}.zip"
+  archive_name = "ghq_#{node[:os]}_#{arch}"
+  release_name "#{archive_name}.zip"
   target_dir "#{ENV['HOME']}/bin"
-  tar_options '--strip-components 1'
+  bin_path "#{archive_name}/ghq"
 end

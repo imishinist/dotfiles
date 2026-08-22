@@ -1,6 +1,6 @@
 
 execute "install homebrew" do
-  command "ruby -e \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\""
+  command '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
   not_if "type brew >/dev/null 2>&1"
 end
 
@@ -11,7 +11,7 @@ define :brew, cask: nil do
 
   if cask
     execute "brew install --cask #{params[:name]}" do
-      not_if "ls -1 $(brew --prefix)/Caskroom/ | cut -d\"/\" -f1 | grep -E \"^#{params[:name]}$\""
+      not_if "test -d \"$(brew --prefix)/Caskroom/#{params[:name]}\""
       subscribes :run, "execute[install homebrew]"
     end
   else

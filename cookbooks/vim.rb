@@ -28,9 +28,7 @@ end
 
 dotfile '.config/nvim' do
   source '.config/nvim-lazynvim'
-  # source '.config/nvim'
 end
 
 # Vim
 dotfile '.vimrc'
-dotfile '.config/vim'

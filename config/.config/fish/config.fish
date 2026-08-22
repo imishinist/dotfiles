@@ -61,9 +61,6 @@ fish_add_path $HOME/.cargo/bin
 # Nodejs
 fish_add_path $VOLTA_HOME/bin
 
-# Python
-fish_add_path $HOME/.rye/shims
-
 # Ruby
 fish_add_path $HOME/.rbenv/bin
 

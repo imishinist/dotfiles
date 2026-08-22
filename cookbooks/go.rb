@@ -18,7 +18,7 @@ execute "install goenv" do
   not_if "test -d #{ENV['HOME']}/.goenv"
 end
 
-unless ENV['PATH'].include?("#{ENV['HOME']}/.goenv/bin:")
+unless ENV['PATH'].split(':').include?("#{ENV['HOME']}/.goenv/bin")
   MItamae.logger.info('Prepending ~/.goenv/bin to PATH during this execution')
   ENV['PATH'] = "#{ENV['HOME']}/.goenv/bin:#{ENV['PATH']}"
 end
@@ -60,4 +60,3 @@ end
 goinstall "google.golang.org/protobuf/cmd/protoc-gen-go" do
   bin_name "protoc-gen-go"
 end
-
