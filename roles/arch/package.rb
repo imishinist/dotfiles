@@ -10,5 +10,5 @@ package "openssl"
 package "unzip"
 
 include_cookbook 'fish/install'
-include_cookbook 'emacs'
+include_cookbook 'emacs/install'
 include_cookbook 'tmux/install'
