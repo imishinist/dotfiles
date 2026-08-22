@@ -1,14 +1,12 @@
 return {
   "neovim/nvim-lspconfig",
-  event = { "BufReadPre", "BufNewFile" },
+  lazy = false,
   dependencies = {
     "hrsh7th/cmp-nvim-lsp",
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "folke/neodev.nvim", opts = {} },
   },
   config = function()
-    local mason_lspconfig = require("mason-lspconfig")
-
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
 
@@ -81,7 +79,21 @@ return {
         },
       },
     })
+    vim.lsp.config("buf_ls", { filetypes = { "proto" } })
+    vim.lsp.config("clangd", { filetypes = { "c", "cpp", "objc", "objcpp", "cuda" } })
+    vim.lsp.config("gopls", { filetypes = { "go", "gomod", "gowork" } })
 
-    vim.lsp.enable(mason_lspconfig.get_installed_servers())
+    local configured_servers = {
+      "buf_ls",
+      "clangd",
+      "gopls",
+      "lua_ls",
+      "rust_analyzer",
+      "ts_ls",
+    }
+    if vim.fn.executable("bash-language-server") == 1 then
+      table.insert(configured_servers, "bashls")
+    end
+    vim.lsp.enable(configured_servers)
   end
 }

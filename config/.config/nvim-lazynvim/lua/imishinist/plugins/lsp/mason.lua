@@ -21,7 +21,7 @@ return {
       },
     })
     -- Do not install missing language servers during editor startup.
-    mason_lspconfig.setup()
+    mason_lspconfig.setup({ automatic_enable = false })
     mason_tool_installer.setup({
       -- Do not turn a temporary network failure into a startup error.
       -- Run :MasonToolsInstall explicitly when tools should be updated.

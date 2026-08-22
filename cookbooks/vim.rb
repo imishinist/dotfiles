@@ -15,7 +15,7 @@ end
 directory "#{ENV['HOME']}/.config"
 
 ## tree-sitter
-TREE_SITTER_VERSION = '0.25.3'.freeze
+TREE_SITTER_VERSION = '0.26.1'.freeze
 cli_binary 'tree-sitter' do
   repository 'tree-sitter/tree-sitter'
   version "v#{TREE_SITTER_VERSION}"
