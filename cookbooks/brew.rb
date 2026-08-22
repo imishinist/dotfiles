@@ -15,6 +15,10 @@ define :brew, cask: nil do
       subscribes :run, "execute[install homebrew]"
     end
   else
-    package params[:name]
+    execute "brew install #{params[:name]}" do
+      command "brew install --formula #{params[:name]}"
+      not_if "brew list --formula #{params[:name]} >/dev/null 2>&1"
+      subscribes :run, "execute[install homebrew]"
+    end
   end
 end
