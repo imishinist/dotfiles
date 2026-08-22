@@ -16,6 +16,7 @@ brew 'mkcert'
 brew 'protobuf'
 brew 'qemu'
 
+include_cookbook 'rectangle'
 include_cookbook 'alacritty'
 include_cookbook 'eza'
 include_cookbook 'fish/install'
