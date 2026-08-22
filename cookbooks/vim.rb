@@ -1,6 +1,6 @@
 # NeoVim
 
-NEOVIM_VERSION = '0.11.1'.freeze
+NEOVIM_VERSION = '0.12.4'.freeze
 cli_binary 'nvim' do
   repository 'neovim/neovim'
   version "v#{NEOVIM_VERSION}"
