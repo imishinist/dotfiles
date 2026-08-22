@@ -12,7 +12,7 @@ return {
     local actions = require("telescope.actions")
 
     telescope.setup({
-      defautls = {
+      defaults = {
         path_display = { "smart" },
         mappings = {
           i = {
