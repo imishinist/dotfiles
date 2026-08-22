@@ -8,6 +8,9 @@ return {
     vim.g.loaded_netrwPlugin = 1
 
     nvimtree.setup({
+      -- Neovim 0.11 no longer defines the legacy FileExplorer event.
+      -- netrw is already disabled above, so hijacking it is unnecessary.
+      hijack_netrw = false,
       view = {
         width = 35,
         relativenumber = true,

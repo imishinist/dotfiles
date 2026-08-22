@@ -20,24 +20,18 @@ return {
         },
       },
     })
-    mason_lspconfig.setup({
-      ensure_installed = {
-        "bashls",
-        "buf_ls",
-        "clangd",
-        "gopls",
-        "lua_ls",
-        "rust_analyzer",
-        "ts_ls",
-      },
-    })
+    -- Do not install missing language servers during editor startup.
+    mason_lspconfig.setup()
     mason_tool_installer.setup({
+      -- Do not turn a temporary network failure into a startup error.
+      -- Run :MasonToolsInstall explicitly when tools should be updated.
+      run_on_start = false,
       ensure_installed = {
         "biome",
         "bash-language-server",
-        "buf",
-        "protolint",
         "buf-language-server",
+        "protolint",
+        "buf",
         "clang-format",
         "cfn-lint",
         "goimports",
