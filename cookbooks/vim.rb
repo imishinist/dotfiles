@@ -20,7 +20,8 @@ cli_binary 'tree-sitter' do
   repository 'tree-sitter/tree-sitter'
   version "v#{TREE_SITTER_VERSION}"
   platform = (node[:platform] == 'darwin' ? 'macos' : 'linux')
-  release_name "tree-sitter-#{platform}-x64.gz"
+  arch = node[:arch] == 'x86_64' ? 'x64' : 'arm64'
+  release_name "tree-sitter-#{platform}-#{arch}.gz"
   target_dir "#{ENV['HOME']}/bin"
   is_tarball false
 end
