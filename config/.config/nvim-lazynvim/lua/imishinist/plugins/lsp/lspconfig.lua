@@ -3,8 +3,6 @@ return {
   lazy = false,
   dependencies = {
     "hrsh7th/cmp-nvim-lsp",
-    { "antosha417/nvim-lsp-file-operations", config = true },
-    { "folke/neodev.nvim", opts = {} },
   },
   config = function()
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
@@ -66,34 +64,23 @@ return {
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
     vim.lsp.config("*", { capabilities = capabilities })
-    vim.lsp.config("lua_ls", {
-      capabilities = capabilities,
-      settings = {
-        Lua = {
-          diagnostics = {
-            globals = { "vim" },
-          },
-          completion = {
-            callSnippet = "Replace",
-          },
-        },
-      },
-    })
-    vim.lsp.config("buf_ls", { filetypes = { "proto" } })
     vim.lsp.config("clangd", { filetypes = { "c", "cpp", "objc", "objcpp", "cuda" } })
     vim.lsp.config("gopls", { filetypes = { "go", "gomod", "gowork" } })
 
-    local configured_servers = {
-      "buf_ls",
-      "clangd",
-      "gopls",
-      "lua_ls",
-      "rust_analyzer",
-      "ts_ls",
+    local servers = {
+      bashls = "bash-language-server",
+      clangd = "clangd",
+      gopls = "gopls",
+      rust_analyzer = "rust-analyzer",
+      ts_ls = "typescript-language-server",
     }
-    if vim.fn.executable("bash-language-server") == 1 then
-      table.insert(configured_servers, "bashls")
+
+    local available_servers = {}
+    for server, command in pairs(servers) do
+      if vim.fn.executable(command) == 1 then
+        table.insert(available_servers, server)
+      end
     end
-    vim.lsp.enable(configured_servers)
+    vim.lsp.enable(available_servers)
   end
 }
