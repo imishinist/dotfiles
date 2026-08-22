@@ -3,27 +3,32 @@
 set -e
 
 mitamae_version="1.14.1"
-mitamae_linux_sha256="dc5fe86e5a6ea46f8d1deedb812670871b9cd06547c7be456ebace73f83cbf7b"
-mitamae_darwin_sha256="afe1a1dd766414d610fd3f05a68d7d223e60c293f4d377b7ec469dd61ba28552"
-
-mitamae_cache="mitamae-${mitamae_version}"
-
-if ! [ -f "bin/${mitamae_cache}" ]; then
-  case "$(uname)" in
-    "Linux")
-      mitamae_bin="mitamae-x86_64-linux"
-      mitamae_sha256="${mitamae_linux_sha256}"
+case "$(uname)-$(uname -m)" in
+  "Linux-x86_64")
+    mitamae_target="x86_64-linux"
+    mitamae_sha256="dc5fe86e5a6ea46f8d1deedb812670871b9cd06547c7be456ebace73f83cbf7b"
     ;;
-    "Darwin")
-      mitamae_bin="mitamae-aarch64-darwin"
-      mitamae_sha256="${mitamae_darwin_sha256}"
-      ;;
-    *)
-      echo "unexpected uname: $(uname)"
-      exit 1
-      ;;
-  esac
+  "Linux-aarch64"|"Linux-arm64")
+    mitamae_target="aarch64-linux"
+    mitamae_sha256="d2cc9d32e99743f4fc20e24f892abbb6c9d3b0950b596cae4323554a05eb749a"
+    ;;
+  "Darwin-x86_64")
+    mitamae_target="x86_64-darwin"
+    mitamae_sha256="eabb808469ee29e41c20de83966d8559604c7cec799475db0c98c379bd3e42aa"
+    ;;
+  "Darwin-arm64")
+    mitamae_target="aarch64-darwin"
+    mitamae_sha256="afe1a1dd766414d610fd3f05a68d7d223e60c293f4d377b7ec469dd61ba28552"
+    ;;
+  *)
+    echo "unsupported platform: $(uname)-$(uname -m)"
+    exit 1
+    ;;
+esac
 
+mitamae_bin="mitamae-${mitamae_target}"
+mitamae_cache="mitamae-${mitamae_version}-${mitamae_target}"
+if ! [ -f "bin/${mitamae_cache}" ]; then
   curl -o "bin/${mitamae_bin}.tar.gz" -sSfL "https://github.com/itamae-kitchen/mitamae/releases/download/v${mitamae_version}/${mitamae_bin}.tar.gz"
   sha256="$(/usr/bin/openssl dgst -sha256 "bin/${mitamae_bin}.tar.gz" | cut -d" " -f2)"
   if [ "$mitamae_sha256" != "$sha256" ]; then
@@ -38,4 +43,3 @@ if ! [ -f "bin/${mitamae_cache}" ]; then
 fi
 
 ln -sf "${mitamae_cache}" bin/mitamae
-
