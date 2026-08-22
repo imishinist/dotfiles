@@ -2,10 +2,16 @@ vim.cmd("let g:netrw_liststyle = 3")
 
 local opt = vim.opt
 
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
+
 opt.shell = "fish"
 opt.backupskip = "/tmp/*,/private/tmp/*"
 opt.wildignore:append({ "*/node_modules/*" })
 opt.undofile = true
+opt.sessionoptions:append("localoptions")
 
 -- file encoding
 vim.scriptencoding = "utf-8"

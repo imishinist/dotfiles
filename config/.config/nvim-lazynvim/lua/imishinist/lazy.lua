@@ -21,4 +21,7 @@ require("lazy").setup({ { import = "imishinist.plugins" }, { import = "imishinis
   change_detection = {
     notify = false,
   },
+  rocks = {
+    enabled = false,
+  },
 })
