@@ -50,7 +50,7 @@ return {
     }
 
 
-    -- see :h luealine
+    -- see :h lualine
     -- section
     lualine.setup({
       options = {
