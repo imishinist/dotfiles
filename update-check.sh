@@ -1,16 +1,17 @@
 #!/bin/bash
 
-# Check for updates
-while read -r line; do
-  repository=$(echo $line | cut -d' ' -f1)
-  version=$(echo $line | cut -d' ' -f2)
-  echo $repository
+set -euo pipefail
 
-  line=$(bin/github-assets.sh $repository | head -1)
-  echo $line | grep -q $version
-  if [ $? -ne 0 ]; then
-    echo "Update available"
-    echo $line | awk '{print $2}' | perl -pe 's/[a-zA-Z0-9_\-\.]+$//g'
+readonly root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$root_dir"
+
+while IFS=$'\t' read -r repository current_version; do
+  release=$(curl -fsSL "https://api.github.com/repos/${repository}/releases/latest")
+  latest_tag=$(jq -r '.tag_name' <<<"$release")
+  latest_version=$(sed -E 's/^[^0-9]*//' <<<"$latest_tag")
+
+  if [[ "$current_version" != "$latest_version" ]]; then
+    release_url=$(jq -r '.html_url' <<<"$release")
+    printf '%-40s %s -> %s\n  %s\n' "$repository" "$current_version" "$latest_version" "$release_url"
   fi
-  echo
 done < <(bin/extract-package-versions.sh)
