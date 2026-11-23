@@ -5,6 +5,7 @@ cli_binary 'direnv' do
   version "v#{DIRENV_VERSION}"
   arch = node[:arch] == 'x86_64' ? 'amd64' : 'arm64'
   release_name "direnv.#{node[:os]}-#{arch}"
+  install_suffix arch
   target_dir "#{ENV['HOME']}/bin"
 end
 
