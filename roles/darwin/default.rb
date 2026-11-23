@@ -17,6 +17,12 @@ brew 'qemu'
 brew '1password-cli' do
   cask true
 end
+brew 'discord' do
+  cask true
+end
+brew 'obsidian' do
+  cask true
+end
 
 include_cookbook 'rectangle'
 include_cookbook 'alacritty'
