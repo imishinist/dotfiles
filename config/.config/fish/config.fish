@@ -118,6 +118,8 @@ if test "$FISH_CONFIG" -nt "$CONFIG_CACHE"
   # starship
   type -q starship && starship init fish --print-full-init >> $CONFIG_CACHE
 
+  type -q mise && mise activate fish >> $CONFIG_CACHE
+
   set_color brmagenta --bold --underline
   echo "config cache updated"
   set_color normal
