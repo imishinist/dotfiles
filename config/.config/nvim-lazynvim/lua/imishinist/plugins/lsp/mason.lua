@@ -31,6 +31,7 @@ return {
         "bash-language-server",
         "clangd",
         "clang-format",
+        "elixir-ls",
         "gopls",
         "goimports",
         "rust-analyzer",

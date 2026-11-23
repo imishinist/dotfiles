@@ -71,6 +71,7 @@ return {
     local servers = {
       bashls = "bash-language-server",
       clangd = "clangd",
+      elixirls = "elixir-ls",
       gopls = "gopls",
       rust_analyzer = "rust-analyzer",
       ts_ls = "typescript-language-server",
