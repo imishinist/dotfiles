@@ -14,6 +14,9 @@ brew 'htop'
 brew 'mkcert'
 brew 'protobuf'
 brew 'qemu'
+brew '1password-cli' do
+  cask true
+end
 
 include_cookbook 'rectangle'
 include_cookbook 'alacritty'

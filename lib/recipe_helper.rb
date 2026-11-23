@@ -44,9 +44,11 @@ define :dotfile_copy, source: nil do
   end
 end
 
-define :cli_binary, repository: nil, version: nil, release_name: nil, target_dir: nil, tar_options: nil, bin_path: nil, is_tarball: nil do
+define :cli_binary, repository: nil, version: nil, release_name: nil, target_dir: nil, tar_options: nil, bin_path: nil, is_tarball: nil, install_suffix: nil do
   cmd = params[:name]
-  real_dir = File.join(params[:target_dir], "#{cmd}-#{params[:version]}")
+  install_name = "#{cmd}-#{params[:version]}"
+  install_name = "#{install_name}-#{params[:install_suffix]}" if params[:install_suffix]
+  real_dir = File.join(params[:target_dir], install_name)
   real_cmd_path = File.join(real_dir, cmd)
   real_cmd_path = File.join(real_dir, params[:bin_path]) if params[:bin_path]
   target_cmd_path = File.join(params[:target_dir], cmd)

@@ -17,3 +17,6 @@ fish_add_path /opt/homebrew/opt/llvm/bin
 set --local gnubin_path $(brew --prefix)/opt/coreutils/libexec/gnubin
 if [ -f {$gnubin_path} ]; fish_add_path $gnubin_path; end
 
+if type -q op; and test -f $HOME/.config/op/plugins.sh
+  source $HOME/.config/op/plugins.sh
+end

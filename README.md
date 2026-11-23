@@ -20,6 +20,7 @@ sudo -E bin/mitamae local roles/arch/package.rb
 ```
 
 On macOS, `./install.sh` also bootstraps Homebrew when necessary.
+It also installs the 1Password CLI. Verify the installation with `op --version`.
 
 Use a [Nerd Font](https://www.nerdfonts.com/font-downloads) for icons in terminal
 tools and Neovim.
