@@ -20,3 +20,5 @@ if [ -f {$gnubin_path} ]; fish_add_path $gnubin_path; end
 if type -q op; and test -f $HOME/.config/op/plugins.sh
   source $HOME/.config/op/plugins.sh
 end
+
+set -gx CONTAINER_DEFAULT_PLATFORM linux/arm64

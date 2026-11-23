@@ -71,6 +71,9 @@ if type java >/dev/null 2>&1
   fish_add_path /opt/homebrew/opt/openjdk@11/bin
 end
 
+# Docker
+fish_add_path $HOME/.docker/bin
+
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/bin
 
